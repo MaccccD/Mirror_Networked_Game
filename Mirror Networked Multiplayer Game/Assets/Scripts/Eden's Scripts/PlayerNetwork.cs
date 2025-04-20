@@ -1,11 +1,13 @@
 using Mirror;
 
+//Eden: This script ensures that the start screen automatically shown (even if other player has
+//not joined yet. Locally shows UI
+
 public class PlayerNetwork : NetworkBehaviour
 {
-    // Runs on each client as soon as their player object is ready
+    //Eden: This function called on local client when player object set up (by mirror)
     public override void OnStartLocalPlayer()
     {
-        // Bring up the Start screen
         UIManager.Instance.ShowStartUI();
     }
 }
