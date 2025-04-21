@@ -43,7 +43,7 @@ namespace Mirror.Examples.Chat
         }
 
         // Called by UI element UsernameInput.OnValueChanged
-        public void ToggleButtons(string username)
+        public void ToggleButtons(string username) // D: the different buttons that enable each playerto switch to the screen view based on which button they click: the Host or the Client 
         {
             hostButton.interactable = !string.IsNullOrWhiteSpace(username);
             clientButton.interactable = !string.IsNullOrWhiteSpace(username);
