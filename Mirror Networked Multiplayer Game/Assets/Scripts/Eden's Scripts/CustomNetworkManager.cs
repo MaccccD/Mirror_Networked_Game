@@ -8,7 +8,7 @@ public class CustomNetworkManager : NetworkManager
 {
     [Header("Auto‑Start Settings")]
     [Tooltip("How many seconds to wait for a host before starting one.")]
-    public float clientConnectTimeout = 0.5f;
+    public float clientConnectTimeout = 1.0f;
 
     void Start()
     {
