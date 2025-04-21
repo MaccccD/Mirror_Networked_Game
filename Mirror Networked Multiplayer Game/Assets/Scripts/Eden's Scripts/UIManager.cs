@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 //Eden: Handles all the panels for the game flow and also handles role selection 
@@ -24,6 +25,24 @@ public class UIManager : MonoBehaviour
     public GameObject OfficeFinalPanel; //Eden: The panel for the actual game play of the office player
     public GameObject BombFinalPanel; //Eden: The panel for the actual game play of the bomb player
 
+    [Header("Bomb Puzzle UI")]
+    public GameObject ConfirmPanel;
+    public Button ConfirmYesButton;
+    public Button ConfirmNoButton;
+    public GameObject WinPanel;
+
+    public Button PinkWireButton;
+    public Button RedWireButton;
+    public Button OrangeWireButton;
+
+    [Header("Screen Shake")]
+    public RectTransform uiRoot;       // for shaking UI directly
+    public float shakeDuration = 0.5f;
+    public float shakeMagnitude = 20f; // in UI units
+
+    bool puzzleRoleIsOffice;
+    string selectedWire;
+
     void Awake()
     {
         //Eden: Singleton setup ensures only one UIManager exists at any time
@@ -41,6 +60,24 @@ public class UIManager : MonoBehaviour
         RolePanel.SetActive(false);
         OfficeFinalPanel.SetActive(false);
         BombFinalPanel.SetActive(false);
+        ConfirmPanel.SetActive(false);
+        WinPanel.SetActive(false);
+
+        StartButton.onClick.RemoveAllListeners();
+        StartButton.onClick.AddListener(OnStartClicked);
+
+        // Wire up role choice buttons
+        OfficeButton.onClick.AddListener(() => MakeRoleChoice("Office"));
+        BombButton.onClick.AddListener(() => MakeRoleChoice("Bomb"));
+
+        // Confirmation dialog
+        ConfirmYesButton.onClick.AddListener(OnConfirmYes);
+        ConfirmNoButton.onClick.AddListener(OnConfirmNo);
+
+        // Wire puzzle
+        PinkWireButton.onClick.AddListener(() => StartConfirm("Pink"));
+        RedWireButton.onClick.AddListener(() => StartConfirm("Red"));
+        OrangeWireButton.onClick.AddListener(() => StartConfirm("Orange"));
     }
 
     //Eden: Called by PlayerNetwork.OnStartLocalPlayer() on each client
@@ -52,8 +89,8 @@ public class UIManager : MonoBehaviour
         StoryPanel.SetActive(false);
 
         //Eden: Clear old listeners and listen for new clicks
-        StartButton.onClick.RemoveAllListeners();
-        StartButton.onClick.AddListener(OnStartClicked);
+        //StartButton.onClick.RemoveAllListeners();
+        //StartButton.onClick.AddListener(OnStartClicked);
     }
 
     /*Eden: Handles the start buttons OnClick functionality
@@ -121,8 +158,73 @@ public class UIManager : MonoBehaviour
 
         //Eden: Determine this client’s role by which button ended up disabled first
         bool isOffice = !OfficeButton.interactable && BombButton.interactable;
+        puzzleRoleIsOffice = isOffice;
 
         OfficeFinalPanel.SetActive(isOffice);
         BombFinalPanel.SetActive(!isOffice);
+    }
+
+    void StartConfirm(string wire)
+    {
+        selectedWire = wire;
+        BombFinalPanel.SetActive(false);
+        ConfirmPanel.SetActive(true);
+    }
+
+    void OnConfirmNo()
+    {
+        ConfirmPanel.SetActive(false);
+        BombFinalPanel.SetActive(true);
+    }
+
+    void OnConfirmYes()
+    {
+        ConfirmPanel.SetActive(false);
+        GameSessionManager.Instance.CmdAttemptCut(selectedWire);
+    }
+
+    // === SCREEN SHAKE on WRONG CUT ===
+    public void ShakeUI()
+    {
+        StartCoroutine(DoUIShake());
+    }
+
+    IEnumerator DoUIShake()
+    {
+        Vector2 orig = uiRoot.anchoredPosition;
+        float elapsed = 0f;
+        while (elapsed < shakeDuration)
+        {
+            float x = Random.Range(-1f, 1f) * shakeMagnitude;
+            float y = Random.Range(-1f, 1f) * shakeMagnitude;
+            uiRoot.anchoredPosition = orig + new Vector2(x, y);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        uiRoot.anchoredPosition = orig;
+    }
+
+    // === WIN PANEL & RESET ===
+    public void ShowWinPanel()
+    {
+        WinPanel.SetActive(true);
+        StartCoroutine(WinSequence());
+    }
+
+    IEnumerator WinSequence()
+    {
+        yield return new WaitForSeconds(5f);
+        WinPanel.SetActive(false);
+
+        if (puzzleRoleIsOffice) OfficeFinalPanel.SetActive(true);
+        else BombFinalPanel.SetActive(true);
+    }
+
+    // === DISABLE ALL WIRES ONCE SOLVED ===
+    public void DisableWireButtons()
+    {
+        PinkWireButton.interactable = false;
+        RedWireButton.interactable = false;
+        OrangeWireButton.interactable = false;
     }
 }

@@ -21,6 +21,9 @@ public class GameSessionManager : NetworkBehaviour
     public bool HasFirstPressedStart => firstPressedStart;
     public string FirstRoleChoice => firstRoleChoice;
 
+    [SyncVar(hook = nameof(OnPuzzleSolvedChanged))]
+    private bool puzzleSolved = false;
+
     void Awake()
     {
         //Eden: Singleton setup ensures only one GameSessionManager exists at any time
@@ -89,5 +92,43 @@ public class GameSessionManager : NetworkBehaviour
     void RpcBothPlayersChosen()
     {
         UIManager.Instance.OnBothPlayersChosen();
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdAttemptCut(string wireColor)
+    {
+        if (!isServer) return;
+
+        if (puzzleSolved) return;
+
+        if (wireColor == "Red")
+        {
+            puzzleSolved = true;
+            Debug.Log("[Server] Puzzle solved!");
+            RpcShowWin();
+        }
+        else
+        {
+            Debug.Log($"[Server] Wrong wire '{wireColor}'");
+            RpcScreenShake();
+        }
+    }
+
+    [ClientRpc]
+    void RpcScreenShake()
+    {
+        UIManager.Instance.ShakeUI();
+    }
+
+    [ClientRpc]
+    void RpcShowWin()
+    {
+        UIManager.Instance.ShowWinPanel();
+    }
+
+    void OnPuzzleSolvedChanged(bool oldVal, bool newVal)
+    {
+        if (newVal)
+            UIManager.Instance.DisableWireButtons();
     }
 }
