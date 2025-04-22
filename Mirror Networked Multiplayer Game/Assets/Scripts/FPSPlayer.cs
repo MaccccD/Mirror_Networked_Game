@@ -1,9 +1,7 @@
-
-using Mirror;
-using Unity.VisualScripting;
-using UnityEngine.InputSystem;
 using UnityEngine;
-
+using Mirror;
+using UnityEngine.InputSystem;
+using System.Collections;
 [RequireComponent(typeof(CharacterController))]
 public class FPSPlayer : NetworkBehaviour
 {
@@ -12,20 +10,27 @@ public class FPSPlayer : NetworkBehaviour
     public float lookSpeed = 2f;
     public float jumpHeight = 1.5f;
     public float gravity = -9.81f;
+    public float boostedSpeed = 100f;
+    private float currentSpeed;
+    [SyncVar] // Show current speed to all players
+    public bool isSpeedBoosted = false;
+
     [Header("References")]
     public Transform playerCamera;
+
     [Header("Private Stuff")]
     private CharacterController controller;
     private Vector2 moveInput;
     private Vector2 lookInput;
     private float verticalVelocity;
     private float cameraPitch = 0f;
+
     [Header("Shooting Stuff")]
     public Transform lazerTransform;
     public TrailRenderer lazerBeam;
-    private bool isShooting;
     void Start()
     {
+        currentSpeed = moveSpeed;
         controller = GetComponent<CharacterController>();
         if (!isLocalPlayer)
         {
@@ -38,6 +43,7 @@ public class FPSPlayer : NetworkBehaviour
     private void Update()
     {
         if (!isLocalPlayer) return;
+        Debug.Log(currentSpeed);
         HandleMovement();
         HandleLook();
     }
@@ -87,6 +93,19 @@ public class FPSPlayer : NetworkBehaviour
             beam.transform.position = lazerTransform.position +
             lazerTransform.forward * 50f;
         }
+    }
+    [Server]
+    public void ApplySpeedBoost()
+    {
+        StartCoroutine(SpeedBoostRoutine());
+    }
+    IEnumerator SpeedBoostRoutine()
+    {
+        isSpeedBoosted = true;
+        currentSpeed = boostedSpeed;
+        yield return new WaitForSeconds(3f);
+        currentSpeed = moveSpeed;
+        isSpeedBoosted = false;
     }
     public void OnMove(InputValue value)
     {
