@@ -2,7 +2,7 @@ using UnityEngine;
 using Mirror;
 using TMPro;
 using System.Collections;
-public class NarrativeManager : MonoBehaviour
+public class NarrativeManager : NetworkBehaviour
 {
     public float typingSpeed = 0.05f; //Dumi: this is the speed at which each letter will be typed in automatically so that it shows like subtitles.
     public TMP_Text narrativeText; //Dumi: the UI text element where the script will dynamically go into and appear 
@@ -10,17 +10,24 @@ public class NarrativeManager : MonoBehaviour
     [TextArea(3, 10)]
     public string fullNarrativeText; // Dumi: the script or where the narrative will be.
 
-    private void Start()
+
+    public override void OnStartClient()
     {
-        // Dumi :  show only  if the panel is active
-        if (narrativePanel && narrativePanel.activeInHierarchy)
+        base.OnStartClient();
+
+        // Dumi: Only the host/server should trigger the narrative once
+        if (isServer)
         {
-            ShowNarrativeText(fullNarrativeText);
-            Debug.Log("Panel is active and the script is currently showing ");
+            RpcShowNarrativeText(fullNarrativeText);
+        }
+        else
+        {
+            Debug.Log("The host has not triggered the narrative !!!!!");
         }
     }
 
-    public void ShowNarrativeText(string sentence)
+    [ClientRpc]
+    void RpcShowNarrativeText(string sentence)
     {
         if (narrativePanel != null && narrativePanel.activeInHierarchy)
         {
@@ -32,6 +39,7 @@ public class NarrativeManager : MonoBehaviour
     private IEnumerator TypeSentence(string sentence)
     {
         narrativeText.text = "";
+
         foreach (char letter in sentence.ToCharArray())
         {
             narrativeText.text += letter;
@@ -45,32 +53,5 @@ public class NarrativeManager : MonoBehaviour
             yield return new WaitForSeconds(typingSpeed);
         }
     }
-
-
-    //The Networking Set Up:
-
-   // public override void OnStartClient()
-   // {
-   //     base.OnStartClient();
-
-        // Dumi  : Only the host/server should trigger the narrative once
-    //    if (isServer)
-   //     {
-  //          RpcShowNarrativeText(fullNarrativeText);
-   //     }
-   //     else
-   //     {
-   //         return;
-    //    }
-   // }
-
-  //  [ClientRpc]
-   // void RpcShowNarrativeText(string sentence)
-  //  {
-    //    if (narrativePanel != null && narrativePanel.activeInHierarchy)
-     //   {
-     //       StopAllCoroutines();
-      //      StartCoroutine(TypeSentence(sentence));
-    //    }
-    //}
 }
+

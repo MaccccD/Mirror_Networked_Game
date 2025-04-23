@@ -1,0 +1,139 @@
+﻿using UnityEngine;
+using Mirror;
+
+/*Eden: This script coordinates multiplayer session flow:
+ * 1. Tracks the first start click
+ * 2. Records first player's role choice and disables that option for both players 
+ * 3. When the second choice is received, both clients go into their appropriate screens*/
+public class GameSessionManager : NetworkBehaviour
+{
+    //Eden: Singleton setup for easy access from UIManager
+    public static GameSessionManager Instance { get; private set; }
+
+    //Eden: SyncVar detects first start click fm any client
+    [SyncVar] private bool firstPressedStart = false;
+
+    //Eden: SyncVar for role selection, hooks OnFirstRoleChoiceChanged() on clients
+    [SyncVar(hook = nameof(OnFirstRoleChoiceChanged))]
+    private string firstRoleChoice = "";
+
+    //Eden: Exposed for UI logic
+    public bool HasFirstPressedStart => firstPressedStart;
+    public string FirstRoleChoice => firstRoleChoice;
+
+    [SyncVar(hook = nameof(OnPuzzleSolvedChanged))]
+    private bool puzzleSolved = false;
+
+
+    public NarrativeManager narrativeManager;
+
+    void Awake()
+    {
+        //Eden: Singleton setup ensures only one GameSessionManager exists at any time
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        Instance = this;
+    }
+
+    /*Eden: This is called when either player clicks start
+     * First click: sets firstPressedStart to true
+     * Second click: calls RpcBeginStory() for all clients to go to story panels*/
+    [Command(requiresAuthority = false)]
+    public void CmdPressStart()
+    {
+        if (!firstPressedStart)
+        {
+            //Eden: First click among all clients
+            firstPressedStart = true;
+        }
+        else
+        {
+            //Eden: Second click, tell everyone to enter the story
+            RpcBeginStory();
+        }
+    }
+
+    //Eden: Rpc to all clients to hide the waiting UI and show the story panel
+    [ClientRpc]
+    void RpcBeginStory()
+    {
+        UIManager.Instance.EnterStory();
+        narrativeManager.OnStartClient();
+
+    }
+
+    /*Eden: This is called by a client when they choose either bomb player or office player
+     * if firstRoleChoice is empty (nobody selected), it will record the selection as the first choice
+     * else if the pick is the alternate, invoke RpcBothPlayersChosen()*/
+    [Command(requiresAuthority = false)]
+    public void CmdSelectRole(string role)
+    {
+        if (string.IsNullOrEmpty(firstRoleChoice))
+        {
+            // record the first choice
+            firstRoleChoice = role;
+            Debug.Log($"[Server] firstRoleChoice set to '{role}'");
+        }
+        else if (role != firstRoleChoice)
+        {
+            // second pick → notify both clients that selection is done
+            Debug.Log($"[Server] second pick = '{role}', both chosen");
+            RpcBothPlayersChosen();
+        }
+        //Eden: If same role twice, ignore
+    }
+
+    /*Eden: Hook that runs on every client when firstRoleChoice changes on server
+     * Disables the same button on each client to ensure players select diff roles*/
+    void OnFirstRoleChoiceChanged(string oldChoice, string newChoice)
+    {
+        UIManager.Instance.OnFirstRoleChosen(newChoice);
+    }
+
+    //Eden: Rpc to all clients indicating both players chosen, triggers appropriate screens for each player
+    [ClientRpc]
+    void RpcBothPlayersChosen()
+    {
+        UIManager.Instance.OnBothPlayersChosen();
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdAttemptCut(string wireColor)
+    {
+        if (!isServer) return;
+
+        if (puzzleSolved) return;
+
+        if (wireColor == "Red")
+        {
+            puzzleSolved = true;
+            Debug.Log("[Server] Puzzle solved!");
+            RpcShowWin();
+        }
+        else
+        {
+            Debug.Log($"[Server] Wrong wire '{wireColor}'");
+            RpcScreenShake();
+        }
+    }
+
+    [ClientRpc]
+    void RpcScreenShake()
+    {
+        UIManager.Instance.ShakeUI();
+    }
+
+    [ClientRpc]
+    void RpcShowWin()
+    {
+        UIManager.Instance.ShowWinPanel();
+    }
+
+    void OnPuzzleSolvedChanged(bool oldVal, bool newVal)
+    {
+        if (newVal)
+            UIManager.Instance.DisableWireButtons();
+    }
+}
