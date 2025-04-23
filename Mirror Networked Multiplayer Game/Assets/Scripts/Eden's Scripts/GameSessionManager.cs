@@ -24,6 +24,9 @@ public class GameSessionManager : NetworkBehaviour
     [SyncVar(hook = nameof(OnPuzzleSolvedChanged))]
     private bool puzzleSolved = false;
 
+
+    public NarrativeManager narrativeManager;
+
     void Awake()
     {
         //Eden: Singleton setup ensures only one GameSessionManager exists at any time
@@ -57,6 +60,8 @@ public class GameSessionManager : NetworkBehaviour
     void RpcBeginStory()
     {
         UIManager.Instance.EnterStory();
+        narrativeManager.OnStartClient();
+
     }
 
     /*Eden: This is called by a client when they choose either bomb player or office player
