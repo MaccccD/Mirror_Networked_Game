@@ -24,7 +24,7 @@ public class GameSessionManager : NetworkBehaviour
     [SyncVar(hook = nameof(OnPuzzleSolvedChanged))]
     private bool puzzleSolved = false;
 
-
+    //Dumi// Calling the narrative manager here to enable the sync of the narrative between the host and the clients.
     public NarrativeManager narrativeManager;
 
     void Awake()
@@ -60,7 +60,7 @@ public class GameSessionManager : NetworkBehaviour
     void RpcBeginStory()
     {
         UIManager.Instance.EnterStory();
-        narrativeManager.OnStartClient();
+        narrativeManager.OnStartClient(); //Dumi:// start the narrative for both the host and the clients
 
     }
 
