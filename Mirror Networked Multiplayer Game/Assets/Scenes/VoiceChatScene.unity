@@ -389,8 +389,12 @@ PrefabInstance:
       value: OdinManager
       objectReference: {fileID: 0}
     - target: {fileID: 3711129780530095855, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: Loopback
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3711129780530095855, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
       propertyPath: AudioClipLength
-      value: 25
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4347901583853084589, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
       propertyPath: m_LocalPosition.x
@@ -450,29 +454,66 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5372910402810491490, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
       propertyPath: PreAmplifier
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5372910402810491490, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
       propertyPath: EchoCanceller
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5372910402810491490, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
       propertyPath: GainController
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5372910402810491490, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
       propertyPath: HighPassFilter
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5372910402810491490, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: DeviceSampleRate
+      value: 48000
       objectReference: {fileID: 0}
     - target: {fileID: 5372910402810491490, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
       propertyPath: TransientSuppressor
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5372910402810491490, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: VoiceActivityDetection
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7715469215244056103, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: Use3DAudio
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7715469215244056103, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: CreatePlayback
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7715469215244056103, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: OnMediaAdded.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7715469215244056103, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: OnMediaAdded.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7715469215244056103, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: OnMediaAdded.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1875845537}
+    - target: {fileID: 7715469215244056103, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: OnMediaAdded.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+--- !u!1 &1875845537 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1257227337902900295, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+  m_PrefabInstance: {fileID: 1623832363}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
