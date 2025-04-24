@@ -38,8 +38,8 @@ public class FPSPlayer : NetworkBehaviour
 
 
         // Lock cursor
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
+      //  Cursor.visible = false;
     }
 
     private void Update()
