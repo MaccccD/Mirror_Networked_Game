@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
 
 //Eden: Handles all the panels for the game flow and also handles role selection 
 //and assigning each player to the correct screens
@@ -54,7 +55,8 @@ public class UIManager : MonoBehaviour
         Instance = this;
 
         //Eden: Hide everything at start except start panel
-        StartPanel.SetActive(true);
+        //Dumi Change: Hide the Start Panel untill players have inputted the correct matching  IP addresses and the port number (Network Address) as per Custom Lobby UI script.
+        StartPanel.SetActive(false);
         WaitingPanel.SetActive(false);
         StoryPanel.SetActive(false);
         RolePanel.SetActive(false);
@@ -84,7 +86,7 @@ public class UIManager : MonoBehaviour
     //and activates the UI 
     public void ShowStartUI()
     {
-        StartPanel.SetActive(true);
+        StartPanel.SetActive(false); //Dumi change explained above.
         WaitingPanel.SetActive(false);
         StoryPanel.SetActive(false);
 
@@ -104,9 +106,21 @@ public class UIManager : MonoBehaviour
         //Eden: if its the first click on start button show waiting panel
         if (!GameSessionManager.Instance.HasFirstPressedStart)
             WaitingPanel.SetActive(true);
+        //Dumi:// added a delay between when the instance of the gsm is called and when it has just been instantiated!
+        StartCoroutine(WaitThenPressStart());
 
         //Eden: this tells the server that this player pressed start
-        GameSessionManager.Instance.CmdPressStart();
+        IEnumerator WaitThenPressStart()
+        {
+            while (GameSessionManager.Instance == null)
+            {
+                Debug.Log("Waiting for GameSessionManager to be assigned...");
+                yield return null; // wait a frame
+            }
+
+            NetworkClient.connection.identity.GetComponent<PlayerNetwork>().CmdTellServerToPressStart();
+            Debug.Log("GSM Instance has now been sucessfully called!!!");
+        }
     }
 
     //Eden: Called via RpcBeginStory() once both players have pressed start button

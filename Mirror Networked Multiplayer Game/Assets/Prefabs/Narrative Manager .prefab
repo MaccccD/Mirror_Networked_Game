@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1335923229848085669
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1258058332161016219}
+  - component: {fileID: 8673047813288305706}
+  - component: {fileID: 8242992720056064186}
+  m_Layer: 0
+  m_Name: 'Narrative Manager '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1258058332161016219
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335923229848085669}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 891.32623, y: 517.4958, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8673047813288305706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335923229848085669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3682bac29e5b4e43919eedf4415b6ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  typingSpeed: 0.07
+  narrativeText: {fileID: 0}
+  narrativePanel: {fileID: 0}
+  nextBtn: {fileID: 0}
+  fullNarrativeText: "It was supposed to be just another dusty, overcast morning
+    at St. Francis College. But within minutes, the ordinary turned into a nightmare.\n\n\r\nA
+    deranged madman and his armed crew stormed the school, locking down the premises
+    and gathering terrified students and teachers into a single room. His demand?
+    R2 million or he detonates the bomb he planted deep inside the school.\r\nBut
+    he made one fatal miscalculation...\n\n\r\nHe doesn\u2019t know that the school\u2019s
+    financial team - whom he\u2019s locked away in a separate office - is made up
+    of retired military bomb specialists, now living civilian lives behind spreadsheets
+    and calculators. And even more unexpected: in the room with the students sits
+    a sharp-witted young girl - the daughter of a veteran teacher \u2014 who once
+    watched her military parent dismantle a practice bomb just for fun.\n\n\r\nThese
+    two - the retired bomb tech posing as a financial clerk (Office Player), and
+    the brave student (Bomb player) hiding in plain sight - are the school\u2019s
+    only hope.\r\nWith earbuds disguised as school-approved accessories, the two
+    silently sync up across rooms, racing against a ticking clock and under the watchful
+    eyes of armed maniacs.\n\n\r\nYour mission is clear. Work together. Stay hidden.
+    Outsmart the enemy. Defuse the bomb.\r\nWill this be the last bell St. Francis
+    ever hears?\r\n\r\n"
+--- !u!114 &8242992720056064186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335923229848085669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  _assetId: 1353542228
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
