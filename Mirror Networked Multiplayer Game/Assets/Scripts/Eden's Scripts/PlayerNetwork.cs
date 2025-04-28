@@ -10,10 +10,4 @@ public class PlayerNetwork : NetworkBehaviour
     {
         UIManager.Instance.ShowStartUI();
     }
-
-    [Command]
-    public void CmdTellServerToPressStart()
-    {
-        GameSessionManager.Instance.CmdPressStart();
-    }
 }
