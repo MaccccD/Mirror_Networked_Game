@@ -10,7 +10,7 @@ public class CustomNetworkManager : NetworkManager
     [Tooltip("How many seconds to wait for a host before starting one.")]
     public float clientConnectTimeout = 1.0f;
 
-    void Start()
+    /*/void Start()
     {
         //Eden: Begin the auto‑start logic as game starts
         StartCoroutine(AutoStart());
@@ -37,7 +37,7 @@ public class CustomNetworkManager : NetworkManager
         //Eden: 3. Timeout expired and still not connected, therefore become host
         Debug.Log("[AutoStart] No host found—starting as host.");
         StartHost();
-    }
+    }*/
 
     //Eden: logs when client disconnects from server
     public override void OnClientDisconnect()
