@@ -10,9 +10,5 @@ public class RoomJoining : MonoBehaviour
         //Dumi: In Odin, a rooom is a virtual spave where peers(users in the room) can communicate with each other.
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 }
