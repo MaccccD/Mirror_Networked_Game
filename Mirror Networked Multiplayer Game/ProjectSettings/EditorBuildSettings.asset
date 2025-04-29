@@ -9,17 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Game Scene.unity
     guid: 1f67324a2be9be643a8a602552307126
   - enabled: 0
-    path: Assets/Scenes/VoiceChatScene.unity
-    guid: 21b4a49d2ae0e6441840b5d0420c7aa4
-  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 0
-    path: Assets/Scenes/ChatScene.unity
-    guid: fff934a76ebe3c04db29d9d81847b34a
-  - enabled: 0
-    path: Assets/Mirror/Examples/Chat/Scenes/MirrorChat.unity
-    guid: f4e8d4de4484e44bba666f2d1f66c73e
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

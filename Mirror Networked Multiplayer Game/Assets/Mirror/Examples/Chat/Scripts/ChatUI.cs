@@ -29,14 +29,14 @@ namespace Mirror.Examples.Chat
             chatHistory.text = "";
         }
 
-        [Command(requiresAuthority = false)] //D: Runs on the server only
+        [Command(requiresAuthority = false)]
         void CmdSend(string message, NetworkConnectionToClient sender = null)
         {
             if (!connNames.ContainsKey(sender))
-                connNames.Add(sender, sender.identity.GetComponent<Player>().playerName);//D: tries to retrive the player name that the player who joined first uses as their username
+                connNames.Add(sender, sender.identity.GetComponent<Player>().playerName);
 
             if (!string.IsNullOrWhiteSpace(message))
-                RpcReceive(connNames[sender], message.Trim()); //D: removves whitespaves on the messages typed.
+                RpcReceive(connNames[sender], message.Trim());
         }
 
         [ClientRpc]

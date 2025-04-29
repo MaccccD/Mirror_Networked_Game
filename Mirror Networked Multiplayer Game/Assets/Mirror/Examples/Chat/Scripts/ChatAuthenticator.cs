@@ -16,7 +16,7 @@ namespace Mirror.Examples.Chat
         internal static readonly HashSet<string> playerNames = new HashSet<string>();
 
         [Header("Client Username")]
-        public string playerName;  //Dumi: Payers will each input the usernames they want to use in the game and then depennding on who connectes to the host first, the other will connect as a client and then each time they type somehing , it wishow in the chat history.
+        public string playerName;
 
         #region Messages
 
@@ -189,7 +189,7 @@ namespace Mirror.Examples.Chat
         {
             if (msg.code == 100)
             {
-                Debug.Log($"Authentication Response: {msg.code} {msg.message}"); // D: Checking if the text typed is recorded in the console for testing purposes.
+                Debug.Log($"Authentication Response: {msg.code} {msg.message}");
 
                 // Authentication has been accepted
                 ClientAccept();
