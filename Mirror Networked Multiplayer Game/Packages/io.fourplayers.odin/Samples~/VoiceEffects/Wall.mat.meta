@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 64edac24ed39bef4e89448064cf39858
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 208568
+  packageName: ODIN Voice Chat
+  packageVersion: 1.6.6
+  assetPath: Packages/io.fourplayers.odin/Samples~/VoiceEffects/Wall.mat
+  uploadId: 700343

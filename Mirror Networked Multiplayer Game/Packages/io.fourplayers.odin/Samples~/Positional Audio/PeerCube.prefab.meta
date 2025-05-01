@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 6e8c52513b91c9141958951eb543aeaf
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 208568
+  packageName: ODIN Voice Chat
+  packageVersion: 1.6.6
+  assetPath: Packages/io.fourplayers.odin/Samples~/Positional Audio/PeerCube.prefab
+  uploadId: 700343

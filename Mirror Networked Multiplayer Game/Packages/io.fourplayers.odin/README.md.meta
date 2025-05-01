@@ -5,3 +5,10 @@ TextScriptImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 208568
+  packageName: ODIN Voice Chat
+  packageVersion: 1.6.6
+  assetPath: Packages/io.fourplayers.odin/README.md
+  uploadId: 700343

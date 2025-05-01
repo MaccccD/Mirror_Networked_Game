@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: ca74db1c5273dfe46a6f377139a4f714
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 208568
+  packageName: ODIN Voice Chat
+  packageVersion: 1.6.6
+  assetPath: Packages/io.fourplayers.odin/Samples~/Positional Audio/DragObject.cs
+  uploadId: 700343

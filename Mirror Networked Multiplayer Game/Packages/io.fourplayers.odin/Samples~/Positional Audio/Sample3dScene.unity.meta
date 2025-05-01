@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 231b9d38762387a4189eeba5c078e97e
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 208568
+  packageName: ODIN Voice Chat
+  packageVersion: 1.6.6
+  assetPath: Packages/io.fourplayers.odin/Samples~/Positional Audio/Sample3dScene.unity
+  uploadId: 700343

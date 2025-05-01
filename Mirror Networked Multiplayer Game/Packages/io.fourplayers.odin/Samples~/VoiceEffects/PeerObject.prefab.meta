@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c6ff63fe1b78ee2419b8af1525875421
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 208568
+  packageName: ODIN Voice Chat
+  packageVersion: 1.6.6
+  assetPath: Packages/io.fourplayers.odin/Samples~/VoiceEffects/PeerObject.prefab
+  uploadId: 700343

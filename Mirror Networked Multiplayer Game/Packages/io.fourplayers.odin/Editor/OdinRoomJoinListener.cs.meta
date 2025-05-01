@@ -1,3 +1,10 @@
 ﻿fileFormatVersion: 2
 guid: a269cd6dd17a4520b2855879cd1bb576
 timeCreated: 1727780366
+AssetOrigin:
+  serializedVersion: 1
+  productId: 208568
+  packageName: ODIN Voice Chat
+  packageVersion: 1.6.6
+  assetPath: Packages/io.fourplayers.odin/Editor/OdinRoomJoinListener.cs
+  uploadId: 700343

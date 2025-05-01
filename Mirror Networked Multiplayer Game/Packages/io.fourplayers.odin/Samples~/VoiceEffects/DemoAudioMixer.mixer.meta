@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b40b1ae88375a9b42a7b6af8163e3036
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 24100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 208568
+  packageName: ODIN Voice Chat
+  packageVersion: 1.6.6
+  assetPath: Packages/io.fourplayers.odin/Samples~/VoiceEffects/DemoAudioMixer.mixer
+  uploadId: 700343

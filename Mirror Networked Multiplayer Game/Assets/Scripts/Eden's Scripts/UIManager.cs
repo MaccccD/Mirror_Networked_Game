@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 //Eden: Handles all the panels for the game flow and also handles role selection 
 //and assigning each player to the correct screens
@@ -42,6 +43,7 @@ public class UIManager : MonoBehaviour
 
     bool puzzleRoleIsOffice;
     string selectedWire;
+   
 
     void Awake()
     {

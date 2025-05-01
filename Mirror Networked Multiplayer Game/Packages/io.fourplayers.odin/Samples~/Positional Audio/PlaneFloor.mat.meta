@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e6239b2068d544c44ab1692158652865
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 208568
+  packageName: ODIN Voice Chat
+  packageVersion: 1.6.6
+  assetPath: Packages/io.fourplayers.odin/Samples~/Positional Audio/PlaneFloor.mat
+  uploadId: 700343

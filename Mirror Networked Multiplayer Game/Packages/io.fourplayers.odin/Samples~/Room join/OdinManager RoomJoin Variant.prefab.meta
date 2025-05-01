@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0ed522ab40bc2ba4db5c8a8795dfd866
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 208568
+  packageName: ODIN Voice Chat
+  packageVersion: 1.6.6
+  assetPath: Packages/io.fourplayers.odin/Samples~/Room join/OdinManager RoomJoin
+    Variant.prefab
+  uploadId: 700343

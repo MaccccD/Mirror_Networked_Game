@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 20a338e186cdf6646b02bcf33cec3c2d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 208568
+  packageName: ODIN Voice Chat
+  packageVersion: 1.6.6
+  assetPath: Packages/io.fourplayers.odin/Samples~/Push-to-talk/OdinManager PushToTalk
+    Variant.prefab
+  uploadId: 700343

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 55dc8cf057b2bfb45a732b75d1ccd8d0
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 208568
+  packageName: ODIN Voice Chat
+  packageVersion: 1.6.6
+  assetPath: Packages/io.fourplayers.odin/Samples~/Room join/JoinRoom.unity
+  uploadId: 700343

@@ -264,69 +264,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 62177435}
   m_CullTransparentMesh: 1
---- !u!1 &67881604
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 67881606}
-  - component: {fileID: 67881605}
-  m_Layer: 0
-  m_Name: UIManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &67881605
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 67881604}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 875c70bc8f25e1d43af2cef821d7b003, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StartPanel: {fileID: 1982711375}
-  StartButton: {fileID: 1896395330}
-  WaitingPanel: {fileID: 285644452}
-  StoryPanel: {fileID: 665047604}
-  RolePanel: {fileID: 514639045}
-  OfficeButton: {fileID: 554268042}
-  BombButton: {fileID: 2116271693}
-  OfficeFinalPanel: {fileID: 1902413648}
-  BombFinalPanel: {fileID: 230119819}
-  ConfirmPanel: {fileID: 213522771}
-  ConfirmYesButton: {fileID: 917771614}
-  ConfirmNoButton: {fileID: 738811120}
-  WinPanel: {fileID: 2121812695}
-  PinkWireButton: {fileID: 440302889}
-  RedWireButton: {fileID: 109545065}
-  OrangeWireButton: {fileID: 211012263}
-  uiRoot: {fileID: 372600191}
-  shakeDuration: 0.5
-  shakeMagnitude: 0.2
---- !u!4 &67881606
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 67881604}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 960, y: 540, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &109545063
 GameObject:
   m_ObjectHideFlags: 0
@@ -2219,7 +2156,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 67881605}
+      - m_Target: {fileID: 7063313325796984856}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: MakeRoleChoice
         m_Mode: 5
@@ -3856,6 +3793,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 832404166}
   m_CullTransparentMesh: 1
+--- !u!1001 &876007181
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1257227337902900295, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: m_Name
+      value: OdinManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 4347901583853084589, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 959.81464
+      objectReference: {fileID: 0}
+    - target: {fileID: 4347901583853084589, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 541.13306
+      objectReference: {fileID: 0}
+    - target: {fileID: 4347901583853084589, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1519.0277
+      objectReference: {fileID: 0}
+    - target: {fileID: 4347901583853084589, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4347901583853084589, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4347901583853084589, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4347901583853084589, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4347901583853084589, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4347901583853084589, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4347901583853084589, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5372910402810491490, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: ClientId
+      value: DefaultCompany.Mirror Networked Multiplayer Game
+      objectReference: {fileID: 0}
+    - target: {fileID: 5372910402810491490, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
+      propertyPath: AccessKey
+      value: Ad+VMXeSN2NpfXOV9Pbf//kecYulC+J+qTSeKiigcbA8
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a421abe223e2dee45b89e686a84e5545, type: 3}
 --- !u!1 &917771612
 GameObject:
   m_ObjectHideFlags: 0
@@ -6054,7 +6056,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 67881605}
+      - m_Target: {fileID: 7063313325796984856}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: MakeRoleChoice
         m_Mode: 5
@@ -6180,6 +6182,69 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2121812695}
   m_CullTransparentMesh: 1
+--- !u!4 &2578840412369573669
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7811354334570295129}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 960, y: 540, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7063313325796984856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7811354334570295129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 875c70bc8f25e1d43af2cef821d7b003, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartPanel: {fileID: 1982711375}
+  StartButton: {fileID: 1896395330}
+  WaitingPanel: {fileID: 285644452}
+  StoryPanel: {fileID: 665047604}
+  RolePanel: {fileID: 514639045}
+  OfficeButton: {fileID: 554268042}
+  BombButton: {fileID: 2116271693}
+  OfficeFinalPanel: {fileID: 1902413648}
+  BombFinalPanel: {fileID: 230119819}
+  ConfirmPanel: {fileID: 213522771}
+  ConfirmYesButton: {fileID: 917771614}
+  ConfirmNoButton: {fileID: 738811120}
+  WinPanel: {fileID: 2121812695}
+  PinkWireButton: {fileID: 440302889}
+  RedWireButton: {fileID: 109545065}
+  OrangeWireButton: {fileID: 211012263}
+  uiRoot: {fileID: 372600191}
+  shakeDuration: 0.5
+  shakeMagnitude: 0.2
+--- !u!1 &7811354334570295129
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2578840412369573669}
+  - component: {fileID: 7063313325796984856}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -6191,4 +6256,5 @@ SceneRoots:
   - {fileID: 994640736}
   - {fileID: 1075312108}
   - {fileID: 192174162}
-  - {fileID: 67881606}
+  - {fileID: 2578840412369573669}
+  - {fileID: 876007181}

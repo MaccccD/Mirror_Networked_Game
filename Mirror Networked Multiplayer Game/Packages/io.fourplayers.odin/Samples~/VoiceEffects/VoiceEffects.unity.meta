@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 782367cd967508d4198223dc6b9ddf3e
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 208568
+  packageName: ODIN Voice Chat
+  packageVersion: 1.6.6
+  assetPath: Packages/io.fourplayers.odin/Samples~/VoiceEffects/VoiceEffects.unity
+  uploadId: 700343

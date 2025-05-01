@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0aa3dc20449b9e9408c1dfd5003b76f6
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 208568
+  packageName: ODIN Voice Chat
+  packageVersion: 1.6.6
+  assetPath: Packages/io.fourplayers.odin/Samples~/Positional Audio/Player.prefab
+  uploadId: 700343
