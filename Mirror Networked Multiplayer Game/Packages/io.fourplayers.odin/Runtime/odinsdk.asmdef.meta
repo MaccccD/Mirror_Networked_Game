@@ -5,10 +5,3 @@ AssemblyDefinitionImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 208568
-  packageName: ODIN Voice Chat
-  packageVersion: 1.6.6
-  assetPath: Packages/io.fourplayers.odin/Runtime/odinsdk.asmdef
-  uploadId: 700343

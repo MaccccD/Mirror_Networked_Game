@@ -9,10 +9,3 @@ ScriptedImporter:
   assetBundleVariant: 
   script: {fileID: 12385, guid: 0000000000000000e000000000000000, type: 0}
   disableValidation: 0
-AssetOrigin:
-  serializedVersion: 1
-  productId: 208568
-  packageName: ODIN Voice Chat
-  packageVersion: 1.6.6
-  assetPath: Packages/io.fourplayers.odin/Editor/Editor Default Resources/OdinKeysWindow.uss
-  uploadId: 700343

@@ -1,5 +1,4 @@
-#define UASOdin
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System.Collections.Generic;
 using OdinNative.Odin;
 using UnityEditor;
