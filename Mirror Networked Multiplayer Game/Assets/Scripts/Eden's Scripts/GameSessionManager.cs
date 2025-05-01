@@ -13,6 +13,9 @@ public class GameSessionManager : NetworkBehaviour
     //Eden: SyncVar detects first start click fm any client
     [SyncVar] private bool firstPressedStart = false;
 
+    [SyncVar(hook = nameof(OnPuzzle1SolvedChanged))]
+    private bool puzzle1Solved = false;
+
     //Eden: SyncVar for role selection, hooks OnFirstRoleChoiceChanged() on clients
     [SyncVar(hook = nameof(OnFirstRoleChoiceChanged))]
     private string firstRoleChoice = "";
@@ -21,8 +24,8 @@ public class GameSessionManager : NetworkBehaviour
     public bool HasFirstPressedStart => firstPressedStart;
     public string FirstRoleChoice => firstRoleChoice;
 
-    [SyncVar(hook = nameof(OnPuzzleSolvedChanged))]
-    private bool puzzleSolved = false;
+    [SyncVar(hook = nameof(OnPuzzle2SolvedChanged))]
+    private bool puzzle2Solved = false;
 
     //Dumi// Calling the narrative manager here to enable the sync of the narrative between the host and the clients.
     public NarrativeManager narrativeManager;
@@ -100,15 +103,37 @@ public class GameSessionManager : NetworkBehaviour
     }
 
     [Command(requiresAuthority = false)]
+    public void CmdPuzzle1Complete()
+    {
+        if (puzzle1Solved) return;
+        puzzle1Solved = true;
+        Debug.Log("[Server] Puzzle 1 complete!");
+    }
+
+    //Eden: Hook fired on each client when puzzle1Solved changes
+    void OnPuzzle1SolvedChanged(bool oldVal, bool newVal)
+    {
+        if (newVal)
+            RpcPuzzle1Complete();
+    }
+
+    [ClientRpc]
+    void RpcPuzzle1Complete()
+    {
+        Debug.Log("[Client] Puzzle 1 RPC fired!");
+        UIManager.Instance.OnPuzzle1Complete();
+    }
+
+    [Command(requiresAuthority = false)]
     public void CmdAttemptCut(string wireColor)
     {
         if (!isServer) return;
 
-        if (puzzleSolved) return;
+        if (puzzle2Solved) return;
 
         if (wireColor == "Red")
         {
-            puzzleSolved = true;
+            puzzle2Solved = true;
             Debug.Log("[Server] Puzzle solved!");
             RpcShowWin();
         }
@@ -117,6 +142,14 @@ public class GameSessionManager : NetworkBehaviour
             Debug.Log($"[Server] Wrong wire '{wireColor}'");
             RpcScreenShake();
         }
+    }
+
+
+    //Eden: Hook fired on each client when puzzle2Solved changes
+    void OnPuzzle2SolvedChanged(bool oldVal, bool newVal)
+    {
+        if (newVal)
+            UIManager.Instance.DisableWireButtons();
     }
 
     [ClientRpc]
@@ -129,11 +162,5 @@ public class GameSessionManager : NetworkBehaviour
     void RpcShowWin()
     {
         UIManager.Instance.ShowWinPanel();
-    }
-
-    void OnPuzzleSolvedChanged(bool oldVal, bool newVal)
-    {
-        if (newVal)
-            UIManager.Instance.DisableWireButtons();
     }
 }
