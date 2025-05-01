@@ -38,6 +38,11 @@ public class NarrativeManager : NetworkBehaviour
             nextBtn.gameObject.SetActive(false);
             StartCoroutine(DelayNextBtn());
             Debug.Log("the co-routine has started!");
+            Debug.Log("narrative is sshowingggggg");
+        }
+        else
+        {
+            Debug.Log("narrative is  not sshowingggggg");
         }
     }
 
