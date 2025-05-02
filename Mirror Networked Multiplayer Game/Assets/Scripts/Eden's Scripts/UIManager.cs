@@ -1,6 +1,8 @@
 ﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
 
 //Eden: Handles all the panels for the game flow and also handles role selection 
 //and assigning each player to the correct screens
@@ -24,6 +26,11 @@ public class UIManager : MonoBehaviour
     [Header("Final Game UI")]
     public GameObject OfficeFinalPanel; //Eden: The panel for the actual game play of the office player
     public GameObject BombFinalPanel; //Eden: The panel for the actual game play of the bomb player
+
+    [Header("Puzzle 1 UI")]
+    public GameObject puzzle1Container;        
+    public TMP_InputField[] letterFields;     
+    public Button puzzle1EnterButton;
 
     [Header("Bomb Puzzle UI")]
     public GameObject ConfirmPanel;
@@ -54,7 +61,7 @@ public class UIManager : MonoBehaviour
         Instance = this;
 
         //Eden: Hide everything at start except start panel
-        StartPanel.SetActive(true);
+        StartPanel.SetActive(false);
         WaitingPanel.SetActive(false);
         StoryPanel.SetActive(false);
         RolePanel.SetActive(false);
@@ -62,22 +69,24 @@ public class UIManager : MonoBehaviour
         BombFinalPanel.SetActive(false);
         ConfirmPanel.SetActive(false);
         WinPanel.SetActive(false);
+        puzzle1Container.SetActive(false);
 
         StartButton.onClick.RemoveAllListeners();
         StartButton.onClick.AddListener(OnStartClicked);
 
-        // Wire up role choice buttons
         OfficeButton.onClick.AddListener(() => MakeRoleChoice("Office"));
         BombButton.onClick.AddListener(() => MakeRoleChoice("Bomb"));
 
-        // Confirmation dialog
+        puzzle1EnterButton.onClick.AddListener(ValidatePuzzle1);
+
         ConfirmYesButton.onClick.AddListener(OnConfirmYes);
         ConfirmNoButton.onClick.AddListener(OnConfirmNo);
 
-        // Wire puzzle
         PinkWireButton.onClick.AddListener(() => StartConfirm("Pink"));
         RedWireButton.onClick.AddListener(() => StartConfirm("Red"));
         OrangeWireButton.onClick.AddListener(() => StartConfirm("Orange"));
+
+        //puzzle1EnterButton.onClick.AddListener(ValidatePuzzle1);
     }
 
     //Eden: Called by PlayerNetwork.OnStartLocalPlayer() on each client
@@ -156,12 +165,83 @@ public class UIManager : MonoBehaviour
         WaitingPanel.SetActive(false);
         RolePanel.SetActive(false);
 
+        puzzle1Container.SetActive(true);
+        foreach (var f in letterFields)
+        {
+            f.text = "";
+            var bg = f.GetComponent<Image>();
+            if (bg != null)
+                bg.color = new Color(1, 1, 1, 0); // transparent
+        }
+
         //Eden: Determine this client’s role by which button ended up disabled first
         bool isOffice = !OfficeButton.interactable && BombButton.interactable;
         puzzleRoleIsOffice = isOffice;
 
         OfficeFinalPanel.SetActive(isOffice);
         BombFinalPanel.SetActive(!isOffice);
+
+    }
+
+    void ValidatePuzzle1()
+    {
+        string answer = "";
+        foreach (var f in letterFields)
+            answer += f.text.Trim().ToUpper();
+
+        if (answer == "CHALK")
+        {
+            GameSessionManager.Instance.CmdPuzzle1Complete();
+        }
+        else
+        {
+            StartCoroutine(FlashWrong());
+        }
+    }
+
+    IEnumerator FlashWrong()
+    {
+        // flash each input's background red, then clear & reset
+        Color[] originals = new Color[letterFields.Length];
+        for (int i = 0; i < letterFields.Length; i++)
+        {
+            var bg = letterFields[i].GetComponent<Image>();
+            originals[i] = bg != null ? bg.color : Color.clear;
+            if (bg != null) bg.color = Color.red;
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
+        for (int i = 0; i < letterFields.Length; i++)
+        {
+            var bg = letterFields[i].GetComponent<Image>();
+            if (bg != null) bg.color = new Color(1, 1, 1, 0);
+            letterFields[i].text = "";
+        }
+    }
+
+    public void OnPuzzle1Complete()
+    {
+        puzzle1Container.SetActive(false);
+        WinPanel.SetActive(true);
+        StartCoroutine(Puzzle1WinSequence());
+    }
+
+    IEnumerator Puzzle1WinSequence()
+    {
+        yield return new WaitForSeconds(5f);
+        WinPanel.SetActive(false);
+        ActivateWirePuzzle();
+    }
+
+     void ActivateWirePuzzle()
+    {
+        OfficeFinalPanel.SetActive(puzzleRoleIsOffice);
+        BombFinalPanel.SetActive(!puzzleRoleIsOffice);
+
+        PinkWireButton.gameObject.SetActive(true);
+        RedWireButton.gameObject.SetActive(true);
+        OrangeWireButton.gameObject.SetActive(true);
     }
 
     void StartConfirm(string wire)
