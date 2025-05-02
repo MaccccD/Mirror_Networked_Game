@@ -12,13 +12,14 @@ public class ChattyUI : NetworkBehaviour
     [SerializeField] private Scrollbar scrollbar;
     [SerializeField] private TMP_InputField chatMessage;
     [SerializeField] private  Button sendButton;
-
+   
 
     private PlayerNetwork localChatPlayer;
     void Start()
     {
         sendButton.onClick.AddListener(OnSendMessage);
         StartCoroutine(FindLocalPlayer());
+       
     }
 
     IEnumerator FindLocalPlayer()
@@ -30,6 +31,7 @@ public class ChattyUI : NetworkBehaviour
                 if (player.isLocalPlayer)
                 {
                     localChatPlayer = player;
+                    Debug.Log("local player found");
                     break;
                 }
             }
@@ -41,8 +43,9 @@ public class ChattyUI : NetworkBehaviour
     {
         if (!string.IsNullOrWhiteSpace(chatMessage.text) && localChatPlayer != null)
         {
-            localChatPlayer.CmdSendMessage(chatMessage.text);
+            localChatPlayer.CmdSendMessage(chatMessage.text.Trim());
             chatMessage.text = "";
+            chatMessage.ActivateInputField();
             Debug.Log("message has been sent and works for both player and client, yayyyy");
         }
     }
@@ -51,10 +54,21 @@ public class ChattyUI : NetworkBehaviour
     {
         chatHistory.text += message + "\n";
         Canvas.ForceUpdateCanvases();
-        scrollbar.value = 0;
+        StartCoroutine(ScrollToBottomNextFrame());
         Debug.Log("chat history is updating as players send and receive each other's messages ");
     }
-
-  
+    IEnumerator ScrollToBottomNextFrame()
+    {
+        //Dumi : Wait for the UI to update
+        yield return null;
+        scrollbar.value = 0f; // 0 = bottom, 1 = top
+    }
+    private void Update()
+    { // Dumi : playeers can send message bu clicking enter as well
+        if (chatMessage.isFocused && Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            OnSendMessage();
+        }
+    }
 
 }
