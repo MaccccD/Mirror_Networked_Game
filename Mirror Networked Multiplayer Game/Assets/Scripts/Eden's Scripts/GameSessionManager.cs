@@ -150,6 +150,7 @@ public class GameSessionManager : NetworkBehaviour
     {
         if (newVal)
             UIManager.Instance.DisableWireButtons();
+           UIManager.Instance.riddleContainer.gameObject.SetActive(true); //Dumi: for debugging purposes , im ensuring that the riddle shows up after the second puzzle is solved
     }
 
     [ClientRpc]

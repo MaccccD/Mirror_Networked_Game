@@ -128,6 +128,9 @@ public class UIManager : MonoBehaviour
 
         //Eden: this tells the server that this player pressed start
         GameSessionManager.Instance.CmdPressStart();
+
+        //Dumi: disabling the bomb btns functionality here as early as possible before players choose their roles:
+        DisableBombBtns();
     }
 
     //Eden: Called via RpcBeginStory() once both players have pressed start button
@@ -274,6 +277,14 @@ public class UIManager : MonoBehaviour
     {
         ConfirmPanel.SetActive(false);
         GameSessionManager.Instance.CmdAttemptCut(selectedWire);
+       // riddleContainer.gameObject.SetActive(true); //Dumi: so enabling the riddle that will aid in solving the disbaling of the bomb , but this only happnes ater the cutting of the wire has been completed and solved.
+        foreach (Button riddleBtn in RiddleButtons) //Dumi: so im ensuring that players only get access to the btns in the bomb after the 2nd puzzle has been solved and completed.
+        {
+            riddleBtn.gameObject.SetActive(true);
+            Debug.Log("all riddle btns have been enabled successfully, dankoooooo");
+        }
+        
+      
     }
 
     // === SCREEN SHAKE on WRONG CUT ===
@@ -320,7 +331,15 @@ public class UIManager : MonoBehaviour
         RedWireButton.interactable = false;
         OrangeWireButton.interactable = false;
     }
-
+    public void DisableBombBtns() //Dumi: this will control the disabled bomb btns for the whole game  untill all 2 puzzles are completed.
+    {
+        foreach(Button riddleBtn in RiddleButtons)
+        {
+            riddleBtn.gameObject.SetActive(false);
+            Debug.Log("All riddle btns have be disabled successfully, yayyy");
+        }
+       
+    }
     public void SolveRiddlePuzzle() //Sibahle: The last bomb logic puzzle with riddle from office player
     {
         string[] correctOrder = { "Red Btn", "Blue Btn", "Green Btn" };
