@@ -994,6 +994,7 @@ MonoBehaviour:
   - {fileID: 1022749555}
   - {fileID: 2045364989}
   puzzle1EnterButton: {fileID: 30865436}
+  riddleContainer: {fileID: 446992997}
   ConfirmPanel: {fileID: 213522771}
   ConfirmYesButton: {fileID: 917771614}
   ConfirmNoButton: {fileID: 738811120}

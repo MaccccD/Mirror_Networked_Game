@@ -34,6 +34,7 @@ public class UIManager : MonoBehaviour
     public GameObject puzzle1Container;        
     public TMP_InputField[] letterFields;     
     public Button puzzle1EnterButton;
+    public GameObject riddleContainer;
 
     [Header("Bomb Puzzle UI")]
     public GameObject ConfirmPanel;
@@ -236,6 +237,7 @@ public class UIManager : MonoBehaviour
         puzzle1Container.SetActive(false);
         WinPanel.SetActive(true);
         StartCoroutine(Puzzle1WinSequence());
+        riddleContainer.SetActive(true);
     }
 
     IEnumerator Puzzle1WinSequence()
