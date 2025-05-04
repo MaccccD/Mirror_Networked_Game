@@ -373,6 +373,7 @@ public class UIManager : MonoBehaviour
                 {
                     DeactivationText.gameObject.SetActive(true);
                     countdownTimer.PauseTimer(); //Sibahle: Calling method from Timer script to pause the countdown
+                    Debug.Log("Timer reference: " + countdownTimer);
                 }
 
             });

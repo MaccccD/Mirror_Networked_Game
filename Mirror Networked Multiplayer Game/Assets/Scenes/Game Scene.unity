@@ -1012,7 +1012,7 @@ MonoBehaviour:
   uiRoot: {fileID: 372600191}
   shakeDuration: 0.5
   shakeMagnitude: 0.2
-  countdownTimer: {fileID: 0}
+  countdownTimer: {fileID: 920865080}
 --- !u!4 &67881606
 Transform:
   m_ObjectHideFlags: 0
