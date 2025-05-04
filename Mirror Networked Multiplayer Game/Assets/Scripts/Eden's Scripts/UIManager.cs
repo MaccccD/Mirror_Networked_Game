@@ -3,6 +3,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
+using Mirror.Examples.BilliardsPredicted;
+using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 //Eden: Handles all the panels for the game flow and also handles role selection 
 //and assigning each player to the correct screens
@@ -42,6 +45,12 @@ public class UIManager : MonoBehaviour
     public Button RedWireButton;
     public Button OrangeWireButton;
 
+    [Header("Riddle Puzzle UI")] //Sibahle: riddle variables
+    public GameObject riddlepuzzleContainer;
+    public Button[] RiddleButtons;
+    public TMP_Text DeactivationText;
+    public GameObject ErrorFlash;
+
     [Header("Screen Shake")]
     public RectTransform uiRoot;       // for shaking UI directly
     public float shakeDuration = 0.5f;
@@ -50,6 +59,8 @@ public class UIManager : MonoBehaviour
     bool puzzleRoleIsOffice;
     string selectedWire;
 
+    private List<string> playerInput = new List<string>(); // Sibahle: refers to what button the player selects in the list
+    public Timer countdownTimer;
     void Awake()
     {
         //Eden: Singleton setup ensures only one UIManager exists at any time
@@ -306,5 +317,52 @@ public class UIManager : MonoBehaviour
         PinkWireButton.interactable = false;
         RedWireButton.interactable = false;
         OrangeWireButton.interactable = false;
+    }
+
+    public void SolveRiddlePuzzle() //Sibahle: The last bomb logic puzzle with riddle from office player
+    {
+        string[] correctOrder = { "Red Btn", "Blue Btn", "Green Btn" };
+        
+        DeactivationText.gameObject.SetActive(false);
+        ErrorFlash.gameObject.SetActive(false);
+
+        playerInput.Clear(); // Sibahle: refers to what button the player selects
+
+        foreach (Button btn in RiddleButtons)
+        {
+            string btnName = btn.name;
+
+            btn.onClick.RemoveAllListeners(); // Sibahle: prevents multiple listeners so that function can be attached onto a single button but reads all inputs
+            btn.onClick.AddListener(() =>
+            {
+                playerInput.Add(btnName);
+                
+                for (int i = 0; i < playerInput.Count; i++) //Sibahle: If wrong button is selected, FlashandReset method is called
+                {
+                    if (playerInput[i] != correctOrder[i])
+                    {
+                        StartCoroutine(FlashandReset());
+                        
+                        return;
+                    }
+                }
+
+            
+                if (playerInput.Count == correctOrder.Length) //Sibahle: When player selects buttons in the correct order
+                {
+                    DeactivationText.gameObject.SetActive(true);
+                    countdownTimer.PauseTimer(); //Sibahle: Calling method from Timer script to pause the countdown
+                }
+
+            });
+        }
+    }
+
+    IEnumerator FlashandReset()
+    {
+        ErrorFlash.gameObject.SetActive(true); //Sibahle: Red flash image on screen displayed
+        yield return new WaitForSeconds(1f);
+        ErrorFlash.gameObject.SetActive(false);
+        
     }
 }
