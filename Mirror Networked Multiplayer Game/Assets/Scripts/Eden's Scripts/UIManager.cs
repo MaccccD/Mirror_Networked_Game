@@ -29,6 +29,7 @@ public class UIManager : MonoBehaviour
     [Header("Final Game UI")]
     public GameObject OfficeFinalPanel; //Eden: The panel for the actual game play of the office player
     public GameObject BombFinalPanel; //Eden: The panel for the actual game play of the bomb player
+    public GameObject endofGamePanel;
 
     [Header("Puzzle 1 UI")]
     public GameObject puzzle1Container;        
@@ -315,6 +316,18 @@ public class UIManager : MonoBehaviour
         StartCoroutine(WinSequence());
     }
 
+    public void ShowBombDeactivationWin()
+    {
+        WinPanel.SetActive(true);
+        StartCoroutine(BombWinDeactivation());
+    }
+    IEnumerator BombWinDeactivation()
+    {
+        yield return new WaitForSeconds(5f);
+        WinPanel.SetActive(false);
+        endofGamePanel.gameObject.SetActive(true);
+        Debug.Log("Win Panel and end of game panel have shown");
+    }
     IEnumerator WinSequence()
     {
         yield return new WaitForSeconds(5f);
@@ -374,6 +387,9 @@ public class UIManager : MonoBehaviour
                     DeactivationText.gameObject.SetActive(true);
                     countdownTimer.PauseTimer(); //Sibahle: Calling method from Timer script to pause the countdown
                     Debug.Log("Timer reference: " + countdownTimer);
+                    ShowBombDeactivationWin();
+                    
+
                 }
 
             });

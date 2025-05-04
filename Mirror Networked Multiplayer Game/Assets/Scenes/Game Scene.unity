@@ -986,6 +986,7 @@ MonoBehaviour:
   BombButton: {fileID: 2116271693}
   OfficeFinalPanel: {fileID: 1902413648}
   BombFinalPanel: {fileID: 230119819}
+  endofGamePanel: {fileID: 497090524}
   puzzle1Container: {fileID: 567981315}
   letterFields:
   - {fileID: 812655010}
