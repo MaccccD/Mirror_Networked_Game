@@ -237,7 +237,7 @@ public class UIManager : MonoBehaviour
         puzzle1Container.SetActive(false);
         WinPanel.SetActive(true);
         StartCoroutine(Puzzle1WinSequence());
-        riddleContainer.SetActive(true);
+        //riddleContainer.SetActive(true); //Sibahle: Supposed to set active after Password Puzzle deactivates
     }
 
     IEnumerator Puzzle1WinSequence()
