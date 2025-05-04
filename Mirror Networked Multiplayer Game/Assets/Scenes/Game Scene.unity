@@ -4183,6 +4183,7 @@ MonoBehaviour:
   portInputField: {fileID: 1309391935}
   usernameInputField: {fileID: 1362709379}
   lobbyPanel: {fileID: 1243234167}
+  endgamePanel: {fileID: 497090524}
   startPanel: {fileID: 1982711375}
   chatBtn: {fileID: 1609750112}
   networkManager: {fileID: 994640738}
@@ -13893,7 +13894,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1609750113
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17095,7 +17096,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2062090475}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 372600192}
+        m_TargetAssemblyTypeName: CustomLobbyUI, Assembly-CSharp
+        m_MethodName: OnEndGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2062090475
 MonoBehaviour:
   m_ObjectHideFlags: 0

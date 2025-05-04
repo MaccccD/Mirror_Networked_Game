@@ -10,6 +10,7 @@ public class CustomLobbyUI : MonoBehaviour
     public TMP_InputField portInputField;
     public TMP_InputField usernameInputField;
     public GameObject lobbyPanel;
+    public GameObject endgamePanel;
     public GameObject startPanel;
     public GameObject chatBtn;
 
@@ -82,5 +83,32 @@ public class CustomLobbyUI : MonoBehaviour
     {
         Debug.Log("Connected — hide lobby UI");
         lobbyPanel.SetActive(false); // when we are hidng the panel when both players are connected since they would be done using the panel
+    }
+  
+    public  void OnEndGame()// Dumi : Here I'm making players disconnect from the networked game by resetting their connections and taking them back to the lobby scree to connect or restart the game.
+    {
+        if (NetworkServer.active && NetworkClient.isConnected)
+        {
+            networkManager.StopHost();
+            Debug.Log("The host has been disconnected");
+        }
+
+        else if (NetworkClient.isConnected)
+        {
+            networkManager.StopClient();
+            Debug.Log("the client has been disconnected");
+        }
+
+        else if (NetworkServer.active)
+        {
+            networkManager.StopServer();
+            Debug.Log("the server has been disconnected");
+        }
+
+        lobbyPanel.SetActive(true); // D: take pkayers back to lobby so they can restart and connected again over the network
+        endgamePanel.SetActive(false); //D: close the end game panel
+        startPanel.SetActive(false);
+        chatBtn.SetActive(false);
+        Debug.Log("Restart screen back to lobby executed successfullyyy, yayyy!");
     }
 }
