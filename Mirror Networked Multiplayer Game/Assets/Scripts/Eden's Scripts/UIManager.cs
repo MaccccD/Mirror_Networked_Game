@@ -415,7 +415,9 @@ public class UIManager : MonoBehaviour
                     DeactivationText.gameObject.SetActive(true);
                     countdownTimer.PauseTimer(); //Sibahle: Calling method from Timer script to pause the countdown
                     Debug.Log("Timer reference: " + countdownTimer);
-                    ShowBombDeactivationWin();
+                    GameSessionManager.Instance.CmdRiddleSolved(); //Dumi : ensuring that the end of game panel shows up on both screen after bomb deactivates
+                    Debug.Log("Yayyyy, the end game panel is showing on both screenns!!!");
+                    
                     
 
                 }

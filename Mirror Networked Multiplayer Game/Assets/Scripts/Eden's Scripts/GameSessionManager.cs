@@ -116,7 +116,7 @@ public class GameSessionManager : NetworkBehaviour
         if (newVal)
             RpcPuzzle1Complete();
     }
-
+  
     [ClientRpc]
     void RpcPuzzle1Complete()
     {
@@ -163,5 +163,17 @@ public class GameSessionManager : NetworkBehaviour
     void RpcShowWin()
     {
         UIManager.Instance.ShowWinPanel();
+    }
+
+
+    [Command(requiresAuthority =false)]
+   public  void CmdRiddleSolved()
+    {
+        EndGameLogic();
+    }
+    [ClientRpc]
+    void EndGameLogic()
+    {
+        UIManager.Instance.ShowBombDeactivationWin();
     }
 }
