@@ -58,6 +58,10 @@ public class UIManager : MonoBehaviour
     public float shakeDuration = 0.5f;
     public float shakeMagnitude = 20f; // in UI units
 
+    [Header("Error Flash UI")]
+    public GameObject errorFlashPanel;  
+    //public TMP_Text errorFlashText;
+
     bool puzzleRoleIsOffice;
     string selectedWire;
 
@@ -99,7 +103,25 @@ public class UIManager : MonoBehaviour
         RedWireButton.onClick.AddListener(() => StartConfirm("Red"));
         OrangeWireButton.onClick.AddListener(() => StartConfirm("Orange"));
 
+        errorFlashPanel.SetActive(false);
+        //errorFlashText.gameObject.SetActive(false);
+
         //puzzle1EnterButton.onClick.AddListener(ValidatePuzzle1);
+    }
+
+    IEnumerator FlashErrorPanel()
+    {
+        errorFlashPanel.SetActive(true);
+        //errorFlashText.gameObject.SetActive(true);
+
+        for (int i = 0; i < 3; i++)
+        {
+            yield return new WaitForSeconds(0.5f);
+            errorFlashPanel.SetActive(!errorFlashPanel.activeSelf);
+        }
+
+        errorFlashPanel.SetActive(false);
+        //errorFlashText.gameObject.SetActive(false);
     }
 
     //Eden: Called by PlayerNetwork.OnStartLocalPlayer() on each client
@@ -278,7 +300,13 @@ public class UIManager : MonoBehaviour
     {
         ConfirmPanel.SetActive(false);
         GameSessionManager.Instance.CmdAttemptCut(selectedWire);
-       // riddleContainer.gameObject.SetActive(true); //Dumi: so enabling the riddle that will aid in solving the disbaling of the bomb , but this only happnes ater the cutting of the wire has been completed and solved.
+        // riddleContainer.gameObject.SetActive(true); //Dumi: so enabling the riddle that will aid in solving the disbaling of the bomb , but this only happnes ater the cutting of the wire has been completed and solved.
+
+        if (selectedWire == "Pink" || selectedWire == "Orange")
+        {
+            StartCoroutine(FlashErrorPanel());
+        }
+
         foreach (Button riddleBtn in RiddleButtons) //Dumi: so im ensuring that players only get access to the btns in the bomb after the 2nd puzzle has been solved and completed.
         {
             riddleBtn.gameObject.SetActive(true);

@@ -1013,6 +1013,7 @@ MonoBehaviour:
   uiRoot: {fileID: 372600191}
   shakeDuration: 0.5
   shakeMagnitude: 0.2
+  errorFlashPanel: {fileID: 1448325966}
   countdownTimer: {fileID: 920865080}
 --- !u!4 &67881606
 Transform:
@@ -2670,7 +2671,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &230119820
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11583,7 +11584,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1243234168
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12901,7 +12902,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 22, y: 450}
+  m_AnchoredPosition: {x: 0, y: 450}
   m_SizeDelta: {x: 298.736, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1456815317
