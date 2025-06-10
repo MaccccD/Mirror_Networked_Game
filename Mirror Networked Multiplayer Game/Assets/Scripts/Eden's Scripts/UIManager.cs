@@ -426,6 +426,8 @@ public class UIManager : MonoBehaviour
         }
     }
 
+
+
     IEnumerator FlashandReset()
     {
         ErrorFlash.gameObject.SetActive(true); //Sibahle: Red flash image on screen displayed
