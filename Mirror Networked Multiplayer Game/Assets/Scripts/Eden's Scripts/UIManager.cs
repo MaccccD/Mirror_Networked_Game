@@ -3,41 +3,47 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
-using Mirror.Examples.BilliardsPredicted;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 
 //Eden: Handles all the panels for the game flow and also handles role selection 
-//and assigning each player to the correct screens
+//and assigning each player to the correct screens.
+//Dumi: I updated the ui manager to reference methods in the new story manager. The new methods include the stiry intergration UI ans well as the added  puzzle solving UI
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
     [Header("Startup UI")]
-    public GameObject StartPanel;    
-    public Button StartButton;    
-    public GameObject WaitingPanel;  
+    public GameObject StartPanel;
+    public Button StartButton;
+    public GameObject WaitingPanel;
 
-    [Header("Story UI")]
+    [Header("Story UI")] //Dumi : added more Ui for the story , having taken out the narrative manager we had previously
     public GameObject StoryPanel; //Eden: Panel to explain our narrative once written
+    public TMP_Text StoryText; //D: For displaying story dialogue
+    public GameObject FlashbackPanel; //D: For flashback sequences
+    public TMP_Text FlashbackText; //D: Text for flashback dialogue
+    public GameObject ActDisplay; //D: Shows current act
+    public TMP_Text ActText; //D: Text for current act
 
     [Header("Role Selection UI")]
     public GameObject RolePanel; //Eden: Panel for players to select either office player or bomb player 
-    public Button OfficeButton; 
+    public Button OfficeButton;
     public Button BombButton;
 
     [Header("Final Game UI")]
     public GameObject OfficeFinalPanel; //Eden: The panel for the actual game play of the office player
     public GameObject BombFinalPanel; //Eden: The panel for the actual game play of the bomb player
     public GameObject endofGamePanel;
+    public TMP_Text TimerText; // Timer display
 
     [Header("Puzzle 1 UI")]
-    public GameObject puzzle1Container;        
-    public TMP_InputField[] letterFields;     
+    public GameObject puzzle1Container;
+    public TMP_InputField[] letterFields;
     public Button puzzle1EnterButton;
     public GameObject riddleContainer;
 
-    [Header("Bomb Puzzle UI")]
+    [Header("Bomb Puzzle UI")]
     public GameObject ConfirmPanel;
     public Button ConfirmYesButton;
     public Button ConfirmNoButton;
@@ -54,19 +60,70 @@ public class UIManager : MonoBehaviour
     public GameObject ErrorFlash;
 
     [Header("Screen Shake")]
-    public RectTransform uiRoot;       // for shaking UI directly
+    public RectTransform uiRoot;       //Eden: for shaking UI directly
     public float shakeDuration = 0.5f;
-    public float shakeMagnitude = 20f; // in UI units
+    public float shakeMagnitude = 20f; //Eden: in UI units
 
     [Header("Error Flash UI")]
-    public GameObject errorFlashPanel;  
+    public GameObject errorFlashPanel;
     //public TMP_Text errorFlashText;
+
+    [Header("Story Integration UI")]//Dumi: I added the Ui for the stiry integration that contains story momenbts reveal at each puzzle solving moment
+    public GameObject StoryMomentPanel; //D: For story revelations
+    public TMP_Text StoryMomentText;
+    public GameObject InstructionPanel; //D: For instruction text
+    public TMP_Text InstructionText;
+    public GameObject SuccessPanel; //D: Success messages
+    public TMP_Text SuccessText;
+    public GameObject FailurePanel; //D: Failure messages
+    public TMP_Text FailureText;
+
+    [Header("Light Switch Puzzle UI")] //Sibahle's Switch on the Light puzzel ui/ Can change based on how she's implementing the logic 
+    public GameObject LightSwitchPanel;
+    public GameObject SecurityFootagePanel; //Dumi: Sibahle you can change this name if its confusing. I just named it like this bc the pattern the other player will see mimicks a security footage esp bc the panel will be dark like you envisoned it. 
+    public TMP_Text SecurityFootageText;
+    public GameObject PatternDisplayPanel;
+    public Button[] LightSwitchButtons; // Grid of buttons for bomb player
+    public GameObject LightGridPanel;
+
+    [Header("Anagram Puzzle UI")]//Dumi Anagram puzzle ui logic
+    public GameObject AnagramPanel;
+    public TMP_Text AnagramDisplayText;
+    public TMP_InputField AnagramInputField;
+    public Button AnagramSubmitButton;
+    public GameObject StoryContextPanel;
+    public TMP_Text StoryContextText;
+
+    [Header("Periodic Table Puzzle UI")] //Dumi: Eden's Periodic table UI logic. Can change based on how she's implementing her logic.
+    public GameObject PeriodicTablePanel;
+    public TMP_Text ElementNumbersText;
+    public GameObject PeriodicTableGrid; // Visual periodic table
+    public TMP_InputField PeriodicSolutionInput;
+    public Button PeriodicSubmitButton;
+
+    [Header("Moral Choice UI")]//Dumi: The moral choie puzzle for btoh players at the end of the game
+    public GameObject MoralChoicePanel;
+    public Button[] MoralChoiceButtons;
+    public TMP_Text[] MoralChoiceTexts;
+    public GameObject ChoiceResultPanel;
+    public TMP_Text ChoiceResultText;
+    public GameObject ConflictPanel;
+    public TMP_Text ConflictText;
+
+    [Header("Ending UI")]
+    public GameObject EndingPanel;
+    public TMP_Text EndingText;
+    public TMP_Text EndingTitle;
 
     bool puzzleRoleIsOffice;
     string selectedWire;
 
+    [Header("Game session Mnanager Reference")]
+    private GameSessionManager sessionManager;
+
     private List<string> playerInput = new List<string>(); // Sibahle: refers to what button the player selects in the list
     public Timer countdownTimer;
+
     void Awake()
     {
         //Eden: Singleton setup ensures only one UIManager exists at any time
@@ -78,15 +135,7 @@ public class UIManager : MonoBehaviour
         Instance = this;
 
         //Eden: Hide everything at start except start panel
-        StartPanel.SetActive(false);
-        WaitingPanel.SetActive(false);
-        StoryPanel.SetActive(false);
-        RolePanel.SetActive(false);
-        OfficeFinalPanel.SetActive(false);
-        BombFinalPanel.SetActive(false);
-        ConfirmPanel.SetActive(false);
-        WinPanel.SetActive(false);
-        puzzle1Container.SetActive(false);
+        HideAllPanels();
 
         StartButton.onClick.RemoveAllListeners();
         StartButton.onClick.AddListener(OnStartClicked);
@@ -103,11 +152,356 @@ public class UIManager : MonoBehaviour
         RedWireButton.onClick.AddListener(() => StartConfirm("Red"));
         OrangeWireButton.onClick.AddListener(() => StartConfirm("Orange"));
 
-        errorFlashPanel.SetActive(false);
-        //errorFlashText.gameObject.SetActive(false);
+        // Dumi : Initialize new puzzle button listeners
+        if (AnagramSubmitButton != null)
+            AnagramSubmitButton.onClick.AddListener(SubmitAnagram);
 
-        //puzzle1EnterButton.onClick.AddListener(ValidatePuzzle1);
+        if (PeriodicSubmitButton != null)
+            PeriodicSubmitButton.onClick.AddListener(SubmitPeriodicSolution);
+
+        //Eden: puzzle1EnterButton.onClick.AddListener(ValidatePuzzle1);
     }
+
+    void HideAllPanels()
+    {
+        StartPanel.SetActive(false);
+        WaitingPanel.SetActive(false);
+        StoryPanel.SetActive(false);
+        RolePanel.SetActive(false);
+        OfficeFinalPanel.SetActive(false);
+        BombFinalPanel.SetActive(false);
+        ConfirmPanel.SetActive(false);
+        WinPanel.SetActive(false);
+        puzzle1Container.SetActive(false);
+        errorFlashPanel.SetActive(false);
+
+        //Dumi :  Hide all new panels when the game starts
+        if (StoryMomentPanel != null) StoryMomentPanel.SetActive(false);
+        if (InstructionPanel != null) InstructionPanel.SetActive(false);
+        if (SuccessPanel != null) SuccessPanel.SetActive(false);
+        if (FailurePanel != null) FailurePanel.SetActive(false);
+        if (LightSwitchPanel != null) LightSwitchPanel.SetActive(false);
+        if (SecurityFootagePanel != null) SecurityFootagePanel.SetActive(false);
+        if (PatternDisplayPanel != null) PatternDisplayPanel.SetActive(false);
+        if (AnagramPanel != null) AnagramPanel.SetActive(false);
+        if (StoryContextPanel != null) StoryContextPanel.SetActive(false);
+        if (PeriodicTablePanel != null) PeriodicTablePanel.SetActive(false);
+        if (MoralChoicePanel != null) MoralChoicePanel.SetActive(false);
+        if (ChoiceResultPanel != null) ChoiceResultPanel.SetActive(false);
+        if (ConflictPanel != null) ConflictPanel.SetActive(false);
+        if (EndingPanel != null) EndingPanel.SetActive(false);
+        if (endofGamePanel != null) endofGamePanel.SetActive(false);
+        if (FlashbackPanel != null) FlashbackPanel.SetActive(false);
+    }
+
+    #region Dumi: Newly Added Story Game Manager Methods
+
+    public void DisplayStoryText(string dialogue, float duration)//Dumi:// this is responsible for displaying the actual text/story beats at each act during gameplay.
+    {
+        if (StoryText != null)
+        {
+            StoryPanel.SetActive(true);
+            StoryText.text = dialogue;
+            StartCoroutine(HideStoryTextAfterDelay(duration));
+        }
+    }
+
+    IEnumerator HideStoryTextAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (StoryPanel != null) StoryPanel.SetActive(false);
+    }
+
+    public void StartFlashbackEffect() //Dumi: this is responsible for the flash back effect in Act 2 of the stiry and gameplay
+    {
+        if (FlashbackPanel != null)
+        {
+            FlashbackPanel.SetActive(true);
+            //Dumi:  Add any visual effects for flashback (screen tint, etc.) coming back here
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    public void EndFlashbackEffect()
+    {
+        if (FlashbackPanel != null)
+        {
+            FlashbackPanel.SetActive(false);
+        }
+    }
+
+    public IEnumerator ShowFlashbackDialogue(string dialogue, float duration)//Dumi: this is responsible for the flash back effect in Act 2 of the stiry and gameplay
+    {
+        if (FlashbackText != null)
+        {
+            FlashbackText.text = dialogue;
+            yield return new WaitForSeconds(duration);
+        }
+    }
+
+    public void ShowEnding(string endingMessage, string endingType) //Dumi// this is responsible for the dning after sibahle's puzzle and the krola choices have been selected.
+    {
+        if (EndingPanel != null && EndingText != null && EndingTitle != null)
+        {
+            EndingPanel.SetActive(true);
+            EndingText.text = endingMessage;
+            EndingTitle.text = endingType;
+        }
+    }
+
+    public void UpdateActDisplay(StoryManager.GameAct newAct) //Dumi: this is responsible for showing the palyers which act of the story they are on as the game progresses kinda like how books signal to readers the chaperts they are on n the book
+    {
+        if (ActDisplay != null && ActText != null)
+        {
+            ActDisplay.SetActive(true);
+            ActText.text = "ACT " + ((int)newAct + 1).ToString();
+        }
+    }
+
+    public void UpdateStoryState(StoryManager.StoryState newState) //Dumi: this method updatres the state at which the story is in during gameplay just to keep trakc of the pacing
+    {
+        // Dumi : Update UI based on story state if needed
+        Debug.Log($"Story state changed to: {newState}");
+    }
+
+    public void ShowGameOverScreen(bool success, float timeRemaining) //Dumi: Game ending stuff
+    {
+        if (endofGamePanel != null)
+        {
+           
+            endofGamePanel.gameObject.SetActive(true);
+            Debug.Log("Win Panel and end of game panel have shown");
+            string message = success ? "Mission Accomplished!" : "Mission Failed!";
+            message += $"\nTime Remaining: {timeRemaining:F1}s";
+        }
+    }
+
+    #endregion
+
+    #region Dumi :Newly added   Puzzle Manager Methods
+
+    //D: Light Switch Puzzle Methods NB: Sibahle you can changed the logic here if that's not how it works according to how you envisioned it for the UI.
+    public void ShowSecurityFootage(string footageText)
+    {
+        if (SecurityFootagePanel != null && SecurityFootageText != null)
+        {
+            SecurityFootagePanel.SetActive(true);
+            SecurityFootageText.text = footageText;
+        }
+    }
+
+    public void DisplayPattern(int[] pattern, float duration)
+    {
+        if (PatternDisplayPanel != null)
+        {
+            PatternDisplayPanel.SetActive(true);
+            // Implement pattern display logic here
+            StartCoroutine(HidePatternAfterDelay(duration));
+        }
+    }
+
+    IEnumerator HidePatternAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        HidePattern();
+    }
+
+    public void HidePattern()
+    {
+        if (PatternDisplayPanel != null)
+            PatternDisplayPanel.SetActive(false);
+    }
+
+    public void ShowLightSwitchGrid()
+    {
+        if (LightGridPanel != null)
+        {
+            LightGridPanel.SetActive(true);
+        }
+    }
+
+    public void ShowInstructionText(string instruction)
+    {
+        if (InstructionPanel != null && InstructionText != null)
+        {
+            InstructionPanel.SetActive(true);
+            InstructionText.text = instruction;
+        }
+    }
+
+    // Dumi: Anagram Puzzle Methods
+    public void ShowAnagramDisplay(string scrambledText)
+    {
+        if (AnagramPanel != null && AnagramDisplayText != null)
+        {
+            AnagramPanel.SetActive(true);
+            AnagramDisplayText.text = scrambledText;
+        }
+    }
+
+    public void ShowAnagramInput()
+    {
+        if (AnagramInputField != null)
+        {
+            AnagramInputField.gameObject.SetActive(true);
+            AnagramInputField.text = "";
+        }
+    }
+
+    public void ShowStoryContext(string context)
+    {
+        if (StoryContextPanel != null && StoryContextText != null)
+        {
+            StoryContextPanel.SetActive(true);
+            StoryContextText.text = context;
+        }
+    }
+
+    void SubmitAnagram()
+    {
+        if (AnagramInputField != null)
+        {
+            string answer = AnagramInputField.text.Trim();
+            //Dumi:  Send to PuzzleManager
+            FindObjectOfType<GameSessionManager>()?.CmdSubmitAnagram(answer);
+        }
+    }
+
+    // Periodic Table Puzzle Methods NB: Eden you can change the code here if that's not how you envision the logic to work for the UI.
+    public void ShowElementNumbers(int[] elements)
+    {
+        if (PeriodicTablePanel != null && ElementNumbersText != null)
+        {
+            PeriodicTablePanel.SetActive(true);
+            string elementText = "Elements: " + string.Join(", ", elements);
+            ElementNumbersText.text = elementText;
+        }
+    }
+
+    public void ShowPeriodicTable()
+    {
+        if (PeriodicTableGrid != null)
+        {
+            PeriodicTableGrid.SetActive(true);
+        }
+    }
+
+    void SubmitPeriodicSolution()
+    {
+        if (PeriodicSolutionInput != null)
+        {
+            string solution = PeriodicSolutionInput.text.Trim();
+            // FindObjectOfType<PuzzleManager>()?.CmdSubmitPeriodicSolution(solution);
+        }
+    }
+
+    public void ShowStoryReveal(string revealText)
+    {
+        ShowStoryMoment(revealText, 3f);
+    }
+
+    //Dumi :  Moral Choice Methods
+    public void ShowMoralChoiceInterface()
+    {
+        if (MoralChoicePanel != null)
+        {
+            MoralChoicePanel.SetActive(true);
+        }
+    }
+
+    public void ShowChoiceOptions(string[] options)
+    {
+        for (int i = 0; i < MoralChoiceButtons.Length && i < options.Length; i++)
+        {
+            if (MoralChoiceButtons[i] != null && MoralChoiceTexts[i] != null)
+            {
+                MoralChoiceButtons[i].gameObject.SetActive(true);
+                MoralChoiceTexts[i].text = options[i];
+                int choiceIndex = i;
+                MoralChoiceButtons[i].onClick.RemoveAllListeners();
+                MoralChoiceButtons[i].onClick.AddListener(() => MakeMoralChoice(choiceIndex));
+            }
+        }
+    }
+
+    void MakeMoralChoice(int choiceIndex)
+    {
+        FindObjectOfType<GameSessionManager>()?.CmdMakeMoralChoice(choiceIndex);
+    }
+
+    public void ShowChoiceResult(string result)//Dumi: Showing reuslts of the kroal choice acter p;ayers have made their choices
+    {
+        if (ChoiceResultPanel != null && ChoiceResultText != null)
+        {
+            ChoiceResultPanel.SetActive(true);
+            ChoiceResultText.text = result;
+        }
+    }
+
+    public void ShowConflictMessage(string conflictText)
+    {
+        if (ConflictPanel != null && ConflictText != null)
+        {
+            ConflictPanel.SetActive(true);
+            ConflictText.text = conflictText;
+        }
+    }
+
+    //Dumi:  General Feedback Methods
+    public void ShowSuccess(string message)
+    {
+        if (SuccessPanel != null && SuccessText != null)
+        {
+            SuccessPanel.SetActive(true);
+            SuccessText.text = message;
+            StartCoroutine(HideSuccessAfterDelay(2f));
+        }
+    }
+
+    IEnumerator HideSuccessAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (SuccessPanel != null) SuccessPanel.SetActive(false);
+    }
+
+    public void ShowFailure(string message)
+    {
+        if (FailurePanel != null && FailureText != null)
+        {
+            FailurePanel.SetActive(true);
+            FailureText.text = message;
+            StartCoroutine(HideFailureAfterDelay(2f));
+        }
+    }
+
+    IEnumerator HideFailureAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (FailurePanel != null) FailurePanel.SetActive(false);
+    }
+
+    public void ShowStoryMoment(string storyText, float duration)
+    {
+        if (StoryMomentPanel != null && StoryMomentText != null)
+        {
+            StoryMomentPanel.SetActive(true);
+            StoryMomentText.text = storyText;
+            StartCoroutine(HideStoryMomentAfterDelay(duration));
+        }
+    }
+
+    IEnumerator HideStoryMomentAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (StoryMomentPanel != null) StoryMomentPanel.SetActive(false);
+    }
+
+    #endregion
+
+    #region Original Methods (Preserved like we had)
 
     IEnumerator FlashErrorPanel()
     {
@@ -140,7 +534,7 @@ public class UIManager : MonoBehaviour
     /*Eden: Handles the start buttons OnClick functionality
      * if player has pressed the button and is waiting for other player (communicates through server)
      * then wait panel is displayed*/
-    
+
     void OnStartClicked()
     {
         StartPanel.SetActive(false);
@@ -212,7 +606,7 @@ public class UIManager : MonoBehaviour
                 bg.color = new Color(1, 1, 1, 0); // transparent
         }
 
-        //Eden: Determine this client’s role by which button ended up disabled first
+        //Eden: Determine this client's role by which button ended up disabled first
         bool isOffice = !OfficeButton.interactable && BombButton.interactable;
         puzzleRoleIsOffice = isOffice;
 
@@ -273,7 +667,7 @@ public class UIManager : MonoBehaviour
         ActivateWirePuzzle();
     }
 
-     void ActivateWirePuzzle()
+    void ActivateWirePuzzle()
     {
         OfficeFinalPanel.SetActive(puzzleRoleIsOffice);
         BombFinalPanel.SetActive(!puzzleRoleIsOffice);
@@ -312,8 +706,8 @@ public class UIManager : MonoBehaviour
             riddleBtn.gameObject.SetActive(true);
             Debug.Log("all riddle btns have been enabled successfully, dankoooooo");
         }
-        
-      
+
+
     }
 
     // === SCREEN SHAKE on WRONG CUT ===
@@ -353,8 +747,7 @@ public class UIManager : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
         WinPanel.SetActive(false);
-        endofGamePanel.gameObject.SetActive(true);
-        Debug.Log("Win Panel and end of game panel have shown");
+      
     }
     IEnumerator WinSequence()
     {
@@ -374,17 +767,17 @@ public class UIManager : MonoBehaviour
     }
     public void DisableBombBtns() //Dumi: this will control the disabled bomb btns for the whole game  untill all 2 puzzles are completed.
     {
-        foreach(Button riddleBtn in RiddleButtons)
+        foreach (Button riddleBtn in RiddleButtons)
         {
             riddleBtn.gameObject.SetActive(false);
             Debug.Log("All riddle btns have be disabled successfully, yayyy");
         }
-       
+
     }
     public void SolveRiddlePuzzle() //Sibahle: The last bomb logic puzzle with riddle from office player
     {
         string[] correctOrder = { "Red Btn", "Blue Btn", "Green Btn" };
-        
+
         DeactivationText.gameObject.SetActive(false);
         ErrorFlash.gameObject.SetActive(false);
 
@@ -398,18 +791,18 @@ public class UIManager : MonoBehaviour
             btn.onClick.AddListener(() =>
             {
                 playerInput.Add(btnName);
-                
+
                 for (int i = 0; i < playerInput.Count; i++) //Sibahle: If wrong button is selected, FlashandReset method is called
                 {
                     if (playerInput[i] != correctOrder[i])
                     {
                         StartCoroutine(FlashandReset());
-                        
+
                         return;
                     }
                 }
 
-            
+
                 if (playerInput.Count == correctOrder.Length) //Sibahle: When player selects buttons in the correct order
                 {
                     DeactivationText.gameObject.SetActive(true);
@@ -417,22 +810,20 @@ public class UIManager : MonoBehaviour
                     Debug.Log("Timer reference: " + countdownTimer);
                     GameSessionManager.Instance.CmdRiddleSolved(); //Dumi : ensuring that the end of game panel shows up on both screen after bomb deactivates
                     Debug.Log("Yayyyy, the end game panel is showing on both screenns!!!");
-                    
-                    
+
+
 
                 }
 
             });
         }
     }
-
-
-
     IEnumerator FlashandReset()
     {
         ErrorFlash.gameObject.SetActive(true); //Sibahle: Red flash image on screen displayed
         yield return new WaitForSeconds(1f);
         ErrorFlash.gameObject.SetActive(false);
-        
+
     }
+    #endregion
 }
