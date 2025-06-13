@@ -71,6 +71,7 @@ public class GameSessionManager : NetworkBehaviour
         if (isServer && bombTimer > 0)
         {
             bombTimer -= Time.deltaTime;
+            uiManager.TimerText.text = bombTimer.ToString("F0"); //Dumi: Show the actual timer for both players to see
             if (bombTimer <= 0)
             {
                 RpcGameOver(false);
@@ -104,6 +105,20 @@ public class GameSessionManager : NetworkBehaviour
     void RpcBeginStory()
     {
         UIManager.Instance.EnterStory();
+
+
+        if (isServer) //Dumi :  trigger the story flow from Act 1 after the players have selected their roles and have connected
+        {
+            StoryManager storyManager = FindObjectOfType<StoryManager>();
+            if (storyManager != null)
+            {
+                storyManager.BeginStoryFlow();
+            }
+            else
+            {
+                Debug.LogError("StoryManager not found! Make sure it's spawned before GameSessionManager.");
+            }
+        }
     }
 
     /*Eden: This is called by a client when they choose either bomb player or office player
@@ -193,7 +208,7 @@ public class GameSessionManager : NetworkBehaviour
 
     private System.Collections.IEnumerator ShowLightSwitchPatternCoroutine()
     {
-        // Generate and show pattern for 3 seconds
+        //Dumi: Generate and show pattern for 3 seconds.@sibahle you can change the logic if this is not how you envision it to work
         int[] pattern = GenerateLightSwitchPattern();
         uiManager.DisplayPattern(pattern, 3f);
         yield return new WaitForSeconds(3f);
@@ -258,7 +273,7 @@ public class GameSessionManager : NetworkBehaviour
         {
             anagramComplete = true;
             RpcAnagramSuccess();
-            AddStoryPoints(1);
+            AddStoryPoints(1); //Dumi: gain one story point for solving the puzzle correctly.
         }
         else
         {
@@ -301,7 +316,7 @@ public class GameSessionManager : NetworkBehaviour
         {
             periodicTableComplete = true;
             RpcPeriodicTableSuccess();
-            RpcTriggerStoryMoment("The word that started it all... 'You're just not a GENIUS, Zipho.'");
+            RpcTriggerStoryMoment("The word that started it all... 'You're just not a GENIUS, Zipho.' from the flashback!");
             AddStoryPoints(1);
         }
         else
@@ -410,7 +425,7 @@ public class GameSessionManager : NetworkBehaviour
 
     #endregion
 
-    #region Communication Tracking
+    #region Dumi : (Extra) Communication Tracking
 
     [Command(requiresAuthority = false)]
     public void CmdLogCommunication(string messageType, NetworkConnectionToClient sender = null)
@@ -537,7 +552,7 @@ public class GameSessionManager : NetworkBehaviour
     [ClientRpc]
     void RpcLightSwitchFailure()
     {
-        uiManager.ShowFailure("Wrong sequence! Time penalty applied.");
+        uiManager.ShowFailure();
     }
 
     [ClientRpc]
@@ -549,7 +564,7 @@ public class GameSessionManager : NetworkBehaviour
     [ClientRpc]
     void RpcAnagramFailure()
     {
-        uiManager.ShowFailure("Incorrect. Try again.");
+        uiManager.ShowFailure();
     }
 
     [ClientRpc]
@@ -561,7 +576,7 @@ public class GameSessionManager : NetworkBehaviour
     [ClientRpc]
     void RpcPeriodicTableFailure()
     {
-        uiManager.ShowFailure("Incorrect elements. Time penalty.");
+        uiManager.ShowFailure();
     }
 
     [ClientRpc]

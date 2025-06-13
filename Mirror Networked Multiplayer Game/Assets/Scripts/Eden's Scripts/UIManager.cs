@@ -76,7 +76,7 @@ public class UIManager : MonoBehaviour
     public GameObject SuccessPanel; //D: Success messages
     public TMP_Text SuccessText;
     public GameObject FailurePanel; //D: Failure messages
-    public TMP_Text FailureText;
+    public GameObject failureImage;
 
     [Header("Light Switch Puzzle UI")] //Sibahle's Switch on the Light puzzel ui/ Can change based on how she's implementing the logic 
     public GameObject LightSwitchPanel;
@@ -360,7 +360,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    void SubmitAnagram()
+  public  void SubmitAnagram()
     {
         if (AnagramInputField != null)
         {
@@ -467,12 +467,12 @@ public class UIManager : MonoBehaviour
         if (SuccessPanel != null) SuccessPanel.SetActive(false);
     }
 
-    public void ShowFailure(string message)
+    public void ShowFailure()
     {
-        if (FailurePanel != null && FailureText != null)
+        if (FailurePanel != null && failureImage != null)
         {
             FailurePanel.SetActive(true);
-            FailureText.text = message;
+            failureImage.gameObject.SetActive(true);
             StartCoroutine(HideFailureAfterDelay(2f));
         }
     }
@@ -553,9 +553,10 @@ public class UIManager : MonoBehaviour
     //Eden: Called via RpcBeginStory() once both players have pressed start button
     public void EnterStory()
     {
-        //Eden: Once both pressed, the players go to a narrative or story panel 
+        //Eden: Once both pressed, the players go to the story panel 
         WaitingPanel.SetActive(false);
         StoryPanel.SetActive(true);
+
     }
 
     //Eden: This is called by the role buttons (onClick)

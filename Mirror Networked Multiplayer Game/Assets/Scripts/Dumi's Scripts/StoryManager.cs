@@ -17,31 +17,16 @@ public class StoryManager : NetworkBehaviour
     [SyncVar] public bool flashbackRevealed = false;
     [SyncVar] public bool ziphoMotivationKnown = false;
     [SyncVar] public bool finalChoiceUnlocked = false;
+    [SyncVar] public bool isStoryStarted = false;
 
-    [Header("Audio Management")]
-    public AudioSource storyAudioSource;
-    public AudioClip[] actTransitionSounds;
-    public AudioClip[] characterVoiceLines;
+  //  [Header("Audio Management")]
+  //  public AudioSource storyAudioSource;
+   // public AudioClip[] actTransitionSounds;
+ 
 
     public enum GameAct { Act1_Setup, Act2_Reaction, Act3_Action, Act4_Resolution }//Dumi: tracks the current act the game is on and show relevant feedback
     public enum StoryState { IntroDialogue, PuzzleSolving, StoryReveal, ActTransition, GameEnd }//Dumi: tracking the current state of the game for pacing purposes.
    
-
-    [System.Serializable]
-    public class StoryBeat
-    {
-        public string dialogue;
-        public PlayerRole targetPlayer;
-        public float displayDuration;
-        public bool requiresBothPlayers;
-    }
-
-    [Header("Story Content")]//Dumi: each act has relevant story beats that will show for it which will be  stored inside here.
-    public StoryBeat[] act1Beats;
-    public StoryBeat[] act2Beats;
-    public StoryBeat[] act3Beats;
-    public StoryBeat[] act4Beats;
-
     // Component References
     private GameSessionManager sessionManager;
     private UIManager uiManager;
@@ -53,17 +38,15 @@ public class StoryManager : NetworkBehaviour
         uiManager = FindObjectOfType<UIManager>();
         audioManager = GetComponent<AudioManager>();
 
-        if (isServer)
-        {
-            StartCoroutine(GameFlow());
-        }
+ 
     }
 
     void Update()
     {
-        if (isServer && bombTimer > 0)
+        if (isServer && isStoryStarted && bombTimer > 0)
         {
             bombTimer -= Time.deltaTime;
+            uiManager.TimerText.text = bombTimer.ToString("F0"); //Dumi: Show the actual timer for both players to see
             if (bombTimer <= 0)
             {
                 GameOver(false);
@@ -73,6 +56,19 @@ public class StoryManager : NetworkBehaviour
     }
 
     #region Game Flow Management
+
+
+    [Server]
+    public void BeginStoryFlow()
+    {
+        if (!isStoryStarted)
+        {
+            isStoryStarted = true;
+            StartCoroutine(GameFlow());
+            Debug.Log("[Server] Story flow officially started!");
+        }
+        
+    }
 
     IEnumerator GameFlow() //Dumi: Divided the acts of the story into co-routines that will execute all the story context and the puzzle solving in each act.
     {
@@ -86,15 +82,15 @@ public class StoryManager : NetworkBehaviour
     {
         currentAct = GameAct.Act1_Setup;
 
-        //Dumi:  Story Introduction
+        //Dumi:  Story Introduction like we discussed
         storyState = StoryState.IntroDialogue;
-        RpcShowStoryBeat("A bomb has been planted at St Francis College...", PlayerRole.OfficePlayer, 3f);
-        RpcShowStoryBeat("You must work together to defuse it before time runs out.", PlayerRole.BombPlayer, 3f);
+        RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You must work together to defuse the bomb before the timer runs out. before time runs out.", PlayerRole.OfficePlayer, 3f);
+        RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You must work together to defuse the bomb before the timer runs out. before time runs out.", PlayerRole.BombPlayer, 3f);
         yield return new WaitForSeconds(4f);
 
         // Dumi : Sibahle's Light Switch Memory Puzzle with Story Context
         storyState = StoryState.PuzzleSolving;
-        RpcShowStoryBeat("The security system has been tampered with. Restore power to see the bomb clearly.", PlayerRole.OfficePlayer, 2f);
+        RpcShowStoryBeat("The security system  of the school has been tampered with. Restore power to see the bomb clearly.", PlayerRole.OfficePlayer, 2f);
 
         // Dumi : Start Sibahle's  Light Switch Puzzle
         sessionManager.StartLightSwitchPuzzle();
@@ -105,8 +101,8 @@ public class StoryManager : NetworkBehaviour
         RpcShowStoryBeat("Security footage shows a figure entering the building... someone familiar with the layout.", PlayerRole.OfficePlayer, 4f);
 
         //Dumi:  Anagram Puzzle Introduction
-        RpcShowStoryBeat("There's a message on the bomb... 'HATEBYFUELED'", PlayerRole.BombPlayer, 3f);
-        sessionManager.StartAnagramPuzzle("HAETBEYFUDEL", "FUELEDBYHATE");//Dumi: the scamb;ed verison >>> the corrrect answer to be typed in
+        RpcShowStoryBeat("There's a message on the bomb... 'HATEBYFUELED'. What could this mean ???", PlayerRole.BombPlayer, 3f);
+        sessionManager.StartAnagramPuzzle("HAETBEYFUDEL", "FUELEDBYHATE");//Dumi: the scambled verison >>> the corrrect answer to be typed in
         yield return new WaitUntil(() => sessionManager.IsAnagramComplete());
 
         //Dumi :  Act 1 Story Conclusion
@@ -126,7 +122,7 @@ public class StoryManager : NetworkBehaviour
 
         //Dumi : Eden's Periodic Table Puzzle with Story Integration
         storyState = StoryState.PuzzleSolving;
-        RpcShowStoryBeat("The bomb is connected to Mr. Du Plessis's classroom computer. You need his access code.", PlayerRole.OfficePlayer, 3f);
+        RpcShowStoryBeat("The bomb is connected to Mr. Du Plessis's classroom computer. You need his access code. Is there anything you see, eisther numbers of anyting that could imply an acccess code of some sort?", PlayerRole.OfficePlayer, 3f);
         RpcShowStoryBeat("I see numbers on the bomb display: 32, 28, 92, 16", PlayerRole.BombPlayer, 2f);
 
         sessionManager.StartPeriodicTablePuzzle(new int[] { 32, 28, 92, 16 }, "GeNiUS");
@@ -134,8 +130,8 @@ public class StoryManager : NetworkBehaviour
 
         //D: Story Revelation
         flashbackRevealed = true;
-        RpcShowStoryBeat("GeNiUS... The same word that destroyed a young student's confidence years ago.", PlayerRole.OfficePlayer, 4f);
-        RpcShowStoryBeat("This is about Zipho... Mr. Du Plessis's former student.", PlayerRole.OfficePlayer, 3f);
+        RpcShowStoryBeat("GeNiUS... That's the same word that destroyed a young student's confidence years ago.", PlayerRole.OfficePlayer, 4f);
+        RpcShowStoryBeat("This is about Zipho... Mr. Du Plessis's former student. He is on a mission to avenge himself to Mr Du Plessi's for the used he used to 'curse' him.", PlayerRole.OfficePlayer, 3f);
 
         //D: Increase tension
         RpcTriggerAudioCue("revelation_theme");
@@ -148,12 +144,12 @@ public class StoryManager : NetworkBehaviour
 
         //wait untill the correct wire is cut
         yield return new WaitUntil(() => GameSessionManager.Instance.puzzle2Solved);
-        //to iunclude the wire cutting puzzle validation
+        //to include the wire cutting puzzle validation
 
         // Peak Tension - Zipho's Plan Unfolds
         storyState = StoryState.StoryReveal;
-        RpcShowStoryBeat("The bomb is more complex than initially thought. Zipho planned this meticulously.", PlayerRole.OfficePlayer, 3f);
-        RpcShowStoryBeat("There are multiple wire sequences... each one seems to represent something personal.", PlayerRole.BombPlayer, 3f);
+        RpcShowStoryBeat("The bomb is more complex than I  initially thought. Zipho planned this meticulously.", PlayerRole.OfficePlayer, 3f);
+        RpcShowStoryBeat("There are multiple wire sequences... each one seems to represent something personal. Maybe we can try figure out what each wire represents as a starting point", PlayerRole.BombPlayer, 3f);
 
         // Transition to Resolution
         finalChoiceUnlocked = true;
@@ -166,7 +162,7 @@ public class StoryManager : NetworkBehaviour
 
         //Dumi :  Moral Choice Setup
         storyState = StoryState.StoryReveal;
-        RpcShowStoryBeat("The bomb is defused... but Zipho left one final choice.", PlayerRole.OfficePlayer, 4f);
+        RpcShowStoryBeat("The bomb has been successfully defused... but Zipho left one final choice.", PlayerRole.OfficePlayer, 4f);
         RpcShowStoryBeat("You can either:", PlayerRole.BombPlayer, 2f);
         RpcShowStoryBeat("1. Completely neutralize everything, or", PlayerRole.OfficePlayer, 2f);
         RpcShowStoryBeat("2. Leave a harmless but symbolic message for Mr. Du Plessis", PlayerRole.BombPlayer, 3f);
