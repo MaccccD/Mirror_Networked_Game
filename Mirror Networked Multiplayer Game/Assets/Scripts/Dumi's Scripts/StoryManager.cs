@@ -84,8 +84,9 @@ public class StoryManager : NetworkBehaviour
 
         //Dumi:  Story Introduction like we discussed
         storyState = StoryState.IntroDialogue;
-        RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You must work together to defuse the bomb before the timer runs out. before time runs out.", PlayerRole.OfficePlayer, 3f);
-        RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You must work together to defuse the bomb before the timer runs out. before time runs out.", PlayerRole.BombPlayer, 3f);
+
+        RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You must work together to defuse the bomb before the timer runs out. before time runs out.", PlayerRole.OfficePlayer, 15f);
+        RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You must work together to defuse the bomb before the timer runs out. before time runs out.", PlayerRole.BombPlayer, 15f);
         yield return new WaitForSeconds(4f);
 
         // Dumi : Sibahle's Light Switch Memory Puzzle with Story Context
@@ -195,13 +196,15 @@ public class StoryManager : NetworkBehaviour
     #region Network RPCs
 
     [ClientRpc]
-    void RpcShowStoryBeat(string dialogue, PlayerRole targetPlayer, float duration)
+    void RpcShowStoryBeat(string dialogue, PlayerRole targetPlayer, float duration) // Dumi: Each story beat is role specific and thus I need to obtain the player's role first before the relevant story beat shows
     {
-        // Check if this client should receive this story beat
         PlayerRole clientRole = GetClientRole();
+        Debug.Log($"Client role: {clientRole}, Target: {targetPlayer}, Should show: {targetPlayer == clientRole || targetPlayer == PlayerRole.None}");
+
         if (targetPlayer == clientRole || targetPlayer == PlayerRole.None)
         {
-            uiManager.DisplayStoryText(dialogue, duration);
+            uiManager.DisplayStoryText(dialogue, duration); 
+            uiManager.UpdateActDisplay(currentAct);
         }
     }
 
@@ -267,9 +270,9 @@ public class StoryManager : NetworkBehaviour
 
     PlayerRole GetClientRole()
     {
-        // Determine if this client is Office or Bomb player
-        // This would be set during connection/room joining
-        return NetworkClient.localPlayer.GetComponent<PlayerRole>();
+        //Dumi: Here I'm tracking the role that each player has chosen using a bool that perfoms a conditional rendering check.By default, the role first picked is the office player
+        bool isOffice = !uiManager.OfficeButton.interactable && uiManager.BombButton.interactable;
+        return isOffice ? PlayerRole.OfficePlayer : PlayerRole.BombPlayer;
     }
 
     [Server]
