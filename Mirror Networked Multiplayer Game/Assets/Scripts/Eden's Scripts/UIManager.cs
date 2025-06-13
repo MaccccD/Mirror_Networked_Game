@@ -217,7 +217,8 @@ public class UIManager : MonoBehaviour
         if (FlashbackPanel != null)
         {
             FlashbackPanel.SetActive(true);
-            //Dumi:  Add any visual effects for flashback (screen tint, etc.) coming back here
+            Debug.Log("Flashback panel is active !");
+
         }
         else
         {
@@ -225,22 +226,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void EndFlashbackEffect()
-    {
-        if (FlashbackPanel != null)
-        {
-            FlashbackPanel.SetActive(false);
-        }
-    }
-
-    public IEnumerator ShowFlashbackDialogue(string dialogue, float duration)//Dumi: this is responsible for the flash back effect in Act 2 of the stiry and gameplay
-    {
-        if (FlashbackText != null)
-        {
-            FlashbackText.text = dialogue;
-            yield return new WaitForSeconds(duration);
-        }
-    }
 
     public void ShowEnding(string endingMessage, string endingType) //Dumi// this is responsible for the dning after sibahle's puzzle and the krola choices have been selected.
     {

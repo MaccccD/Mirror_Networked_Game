@@ -19,6 +19,9 @@ public class StoryManager : NetworkBehaviour
     [SyncVar] public bool finalChoiceUnlocked = false;
     [SyncVar] public bool isStoryStarted = false;
 
+
+    public FlashbackManager flashbackManager;
+
   //  [Header("Audio Management")]
   //  public AudioSource storyAudioSource;
    // public AudioClip[] actTransitionSounds;
@@ -216,14 +219,23 @@ public class StoryManager : NetworkBehaviour
 
     IEnumerator PlayFlashbackSequence()
     {
-        uiManager.StartFlashbackEffect();
+        flashbackManager.StartFlashbackEffect();
 
-        // 10 years ago flashback dialogue
-        yield return StartCoroutine(uiManager.ShowFlashbackDialogue("10 years ago...", 2f));
-        yield return StartCoroutine(uiManager.ShowFlashbackDialogue("'You'll never amount to anything, Zipho. You're just not smart enough.'", 4f));
-        yield return StartCoroutine(uiManager.ShowFlashbackDialogue("- Mr. Du Plessis", 2f));
+        //Dumi:  Initialize the flashback with the intro text
+        yield return StartCoroutine(flashbackManager.StartFlashbackDialogue("10 years ago... An exchange between a student and a teacher led to the threat that looms over St Francis college:", 5f));
 
-        uiManager.EndFlashbackEffect();
+
+        //Dumi: Then  add each dialogue line progressively
+        yield return StartCoroutine(flashbackManager.AddFlashbackDialogue("Zipho: \"Sir, I couldn't do your assignment because we didn't have electricity at home. I promise I'll get it done by tomorrow\"", 4f));
+
+        yield return StartCoroutine(flashbackManager.AddFlashbackDialogue("Mr Du Plessis: \"Zipho, it's always the same excuses with you. This is the 5th time I'm reminding you about this assignment.\"", 4f));
+
+        yield return StartCoroutine(flashbackManager.AddFlashbackDialogue("Zipho: \"Sir, you know me. I'll do it\"", 3f));
+
+        yield return StartCoroutine(flashbackManager.AddFlashbackDialogue("Mr Du Plessis: \"You just don't have it in you Zipho. You'll never be SMART enough in your life with this kind of attitude. You'll never amount to anything.\"", 5f));
+
+
+        flashbackManager.EndFlashbackEffect();
     }
 
     [ClientRpc]
