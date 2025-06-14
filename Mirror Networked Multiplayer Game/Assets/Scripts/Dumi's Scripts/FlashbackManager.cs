@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using TMPro;
-
+using Mirror;
 /*Dumi: This scripts handles the visual effects and Ui for the flashback display.
  * It applies color fliters  and  camera setting to make the flashback display to look and  feel like an actual flashback, 
  * similar to how you would normally findit depicted in movies*/
@@ -11,7 +11,7 @@ public class FlashbackManager : MonoBehaviour
 {
     [Header("UI Elements")]
     public GameObject flashbackPanel;
-    public TextMeshProUGUI flashbackText;
+    public Text flashbackText;
     public Image backgroundOverlay;
     public RectTransform dialogueContainer;
 
@@ -31,6 +31,8 @@ public class FlashbackManager : MonoBehaviour
     public bool useTypewriterEffect = true;
     public float typewriterSpeed = 0.05f;
     public AudioSource typewriterSound;
+    private float lastSoundTime = 0f; 
+    
 
     void Start()
     {
@@ -42,11 +44,14 @@ public class FlashbackManager : MonoBehaviour
     public void StartFlashbackEffect()
     {
         StartCoroutine(TransitionToFlashback());
+        Debug.Log("Flashback has started!");
     }
 
     public void EndFlashbackEffect()
     {
         StartCoroutine(TransitionFromFlashback());
+        typewriterSound.Pause();
+        Debug.Log("flashback is overrr");
     }
 
     IEnumerator TransitionToFlashback()
@@ -149,24 +154,21 @@ public class FlashbackManager : MonoBehaviour
     {
         if (flashbackText != null)
         {
-            flashbackText.fontSize = 28;
+            flashbackText.fontSize = 45;
             flashbackText.color = flashbackTextColor;
 
-            //D: Style the text for flashback feel
-            flashbackText.fontStyle = FontStyles.Italic;
-            flashbackText.enableVertexGradient = true;
-
+           
             //D: Create a subtle gradient
             VertexGradient gradient = new VertexGradient();
             gradient.topLeft = flashbackTextColor;
             gradient.topRight = flashbackTextColor;
             gradient.bottomLeft = new Color(flashbackTextColor.r * 0.8f, flashbackTextColor.g * 0.8f, flashbackTextColor.b * 0.6f);
             gradient.bottomRight = new Color(flashbackTextColor.r * 0.8f, flashbackTextColor.g * 0.8f, flashbackTextColor.b * 0.6f);
-            flashbackText.colorGradient = gradient;
+           
         }
     }
 
-    //Dumi: Updated dialogue methods
+    //Dumi: the dialogue will display with typer writer effect where each character is typed one after the other and then will append in the next line below
     public IEnumerator StartFlashbackDialogue(string initialText, float duration)
     {
         if (flashbackText != null)
@@ -184,7 +186,7 @@ public class FlashbackManager : MonoBehaviour
         }
     }
 
-    public IEnumerator AddFlashbackDialogue(string newDialogue, float duration)
+    public IEnumerator AddFlashbackDialogue(string newDialogue, float duration)//Dumi: the dialogue will display with typer writer effect where each character is typed one after the other and then will append in the next line below
     {
         if (flashbackText != null)
         {
@@ -213,11 +215,25 @@ public class FlashbackManager : MonoBehaviour
         {
             flashbackText.text = fullText.Substring(0, i);
 
-            //D: Play typing sound
-            if (typewriterSound != null && i < fullText.Length)
-                typewriterSound.Play();
+            //Dumi: Only play sound on the host/server to prevent overlap
+            if (NetworkServer.active && typewriterSound != null && i < fullText.Length)
+            {
+                char currentChar = fullText[i];
+
+                bool isStartOfWord = (i == 0) ||
+                                    (!char.IsLetterOrDigit(fullText[i - 1]) && char.IsLetterOrDigit(currentChar));
+
+                float soundInterval = typewriterSpeed * 45f; 
+
+                if (isStartOfWord && Time.time - lastSoundTime >= soundInterval)
+                {
+                    typewriterSound.PlayOneShot(typewriterSound.clip, 0.08f);
+                    lastSoundTime = Time.time;
+                }
+            }
 
             yield return new WaitForSeconds(typewriterSpeed);
+          
         }
     }
 }

@@ -88,9 +88,9 @@ public class StoryManager : NetworkBehaviour
         //Dumi:  Story Introduction like we discussed
         storyState = StoryState.IntroDialogue;
 
-        RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You must work together to defuse the bomb before the timer runs out. before time runs out.", PlayerRole.OfficePlayer, 15f);
-        RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You must work together to defuse the bomb before the timer runs out. before time runs out.", PlayerRole.BombPlayer, 15f);
-        yield return new WaitForSeconds(4f);
+         RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You must work together to defuse the bomb before the timer runs out. before time runs out.", PlayerRole.OfficePlayer, 15f);
+         RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You must work together to defuse the bomb before the timer runs out. before time runs out.", PlayerRole.BombPlayer, 15f);
+         yield return new WaitForSeconds(4f);
 
         // Dumi : Sibahle's Light Switch Memory Puzzle with Story Context
         storyState = StoryState.PuzzleSolving;
@@ -222,7 +222,7 @@ public class StoryManager : NetworkBehaviour
         flashbackManager.StartFlashbackEffect();
 
         //Dumi:  Initialize the flashback with the intro text
-        yield return StartCoroutine(flashbackManager.StartFlashbackDialogue("10 years ago... An exchange between a student and a teacher led to the threat that looms over St Francis college:", 5f));
+        yield return StartCoroutine(flashbackManager.StartFlashbackDialogue("10 years ago... An exchange between a student and a teacher led to the threat that looms over St Francis college", 5f));
 
 
         //Dumi: Then  add each dialogue line progressively
