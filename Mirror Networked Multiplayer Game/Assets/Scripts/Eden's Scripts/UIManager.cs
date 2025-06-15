@@ -118,9 +118,6 @@ public class UIManager : MonoBehaviour
     bool puzzleRoleIsOffice;
     string selectedWire;
 
-    [Header("Game session Mnanager Reference")]
-    private GameSessionManager sessionManager;
-
     private List<string> playerInput = new List<string>(); // Sibahle: refers to what button the player selects in the list
     public Timer countdownTimer;
 
@@ -374,12 +371,13 @@ public class UIManager : MonoBehaviour
         }
     }*/
 
-    void SubmitPeriodicSolution()
+   public  void SubmitPeriodicSolution()
     {
-        if (PeriodicSolutionInput != null && sessionManager != null)
+        if (PeriodicSolutionInput != null)
         {
             string solution = PeriodicSolutionInput.text.Trim();
-            sessionManager.CmdSubmitPeriodicSolution(solution);
+            GameSessionManager.Instance.CmdSubmitPeriodicSolution(solution);
+            Debug.Log("Answer submitted bc button has been pressed: " + solution);
         }
     }
 
@@ -540,7 +538,8 @@ public class UIManager : MonoBehaviour
     {
         //Eden: Once both pressed, the players go to the story panel 
         WaitingPanel.SetActive(false);
-        StoryPanel.SetActive(true);
+        RolePanel.SetActive(true);
+       // StoryPanel.SetActive(true);
 
     }
 

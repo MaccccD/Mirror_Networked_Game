@@ -290,6 +290,7 @@ public class GameSessionManager : NetworkBehaviour
     public void StartPeriodicTablePuzzle(int[] elements, string solution)
     {
         RpcInitializePeriodicTablePuzzle(elements, solution);
+        Debug.Log("Periodic table puzzle  has started!");
     }
 
     [ClientRpc]
@@ -302,14 +303,14 @@ public class GameSessionManager : NetworkBehaviour
             uiManager.OfficeFinalPanel.SetActive(true);
             uiManager.BombFinalPanel.SetActive(false);
             //uiManager.ShowElementNumbers(elements);
-            uiManager.ShowStoryContext("These numbers appeared after accessing Mr. Du Plessis's computer...");
+            uiManager.ShowStoryContext("These numbers mean something. Try ask the bomb player if they are seeing the same numbers on their side..");
         }
         else if (role == PlayerRole.BombPlayer) // dumi: the bomb player will the periodic table and needs to communicate with the O.P.
         {
             uiManager.OfficeFinalPanel.SetActive(false);
             uiManager.BombFinalPanel.SetActive(true);
             //uiManager.ShowPeriodicTable();
-            uiManager.ShowStoryContext("Cross-reference these numbers with the periodic table to find the hidden message.");
+            uiManager.ShowStoryContext("Cross-reference these numbers with the periodic table.");
         }
     }
 
