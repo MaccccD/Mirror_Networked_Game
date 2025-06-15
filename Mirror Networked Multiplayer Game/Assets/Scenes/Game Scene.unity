@@ -1040,11 +1040,8 @@ MonoBehaviour:
   AnagramSubmitButton: {fileID: 1066402308}
   StoryContextPanel: {fileID: 665047604}
   StoryContextText: {fileID: 1679556039}
-  PeriodicTablePanel: {fileID: 0}
-  ElementNumbersText: {fileID: 0}
-  PeriodicTableGrid: {fileID: 0}
-  PeriodicSolutionInput: {fileID: 0}
-  PeriodicSubmitButton: {fileID: 0}
+  PeriodicSolutionInput: {fileID: 1160353462}
+  PeriodicSubmitButton: {fileID: 506828544}
   MoralChoicePanel: {fileID: 0}
   MoralChoiceButtons: []
   MoralChoiceTexts: []
@@ -6344,7 +6341,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &567981316
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12700,7 +12697,7 @@ GameObject:
   - component: {fileID: 1160353463}
   - component: {fileID: 1160353462}
   m_Layer: 5
-  m_Name: Input 1
+  m_Name: Periodic Table Input Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18605,7 +18602,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1902109076
 RectTransform:
   m_ObjectHideFlags: 0

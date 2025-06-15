@@ -299,12 +299,16 @@ public class GameSessionManager : NetworkBehaviour
 
         if (role == PlayerRole.OfficePlayer) //Dumi: the office player will type in the correct answer to this puzzle as discussed
         {
-            uiManager.ShowElementNumbers(elements);
+            uiManager.OfficeFinalPanel.SetActive(true);
+            uiManager.BombFinalPanel.SetActive(false);
+            //uiManager.ShowElementNumbers(elements);
             uiManager.ShowStoryContext("These numbers appeared after accessing Mr. Du Plessis's computer...");
         }
         else if (role == PlayerRole.BombPlayer) // dumi: the bomb player will the periodic table and needs to communicate with the O.P.
         {
-            uiManager.ShowPeriodicTable();
+            uiManager.OfficeFinalPanel.SetActive(false);
+            uiManager.BombFinalPanel.SetActive(true);
+            //uiManager.ShowPeriodicTable();
             uiManager.ShowStoryContext("Cross-reference these numbers with the periodic table to find the hidden message.");
         }
     }
