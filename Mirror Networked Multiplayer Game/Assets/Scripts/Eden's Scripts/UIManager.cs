@@ -538,8 +538,7 @@ public class UIManager : MonoBehaviour
     {
         //Eden: Once both pressed, the players go to the story panel 
         WaitingPanel.SetActive(false);
-        RolePanel.SetActive(true);
-       // StoryPanel.SetActive(true);
+        StoryPanel.SetActive(true);
 
     }
 
