@@ -312,7 +312,7 @@ public class GameSessionManager : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdSubmitPeriodicSolution(string solution, NetworkConnectionToClient sender = null)
     {
-        if (solution.ToUpper() == "GENiUS")
+        if (solution.ToUpper() == "GENIUS")
         {
             periodicTableComplete = true;
             RpcPeriodicTableSuccess();
