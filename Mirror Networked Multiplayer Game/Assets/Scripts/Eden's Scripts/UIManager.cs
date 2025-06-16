@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour
     public GameObject StoryPanel; //Eden: Panel to explain our narrative once written
     public TMP_Text StoryText; //D: For displaying story dialogue
     public GameObject FlashbackPanel; //D: For flashback sequences
-    public TMP_Text FlashbackText; //D: Text for flashback dialogue
+    public Text FlashbackText; //D: Text for flashback dialogue
     public GameObject ActDisplay; //D: Shows current act
     public TMP_Text ActText; //D: Text for current act
 
@@ -36,6 +36,10 @@ public class UIManager : MonoBehaviour
     public GameObject BombFinalPanel; //Eden: The panel for the actual game play of the bomb player
     public GameObject endofGamePanel;
     public TMP_Text TimerText; // Timer display
+    public GameObject calendarBtn;
+    public GameObject drawerBtn;
+    public GameObject backtoWallBtn;
+    public TMP_Text chalkclueTxt;
 
     [Header("Puzzle 1 UI")]
     public GameObject puzzle1Container;
@@ -67,6 +71,9 @@ public class UIManager : MonoBehaviour
     [Header("Error Flash UI")]
     public GameObject errorFlashPanel;
     //public TMP_Text errorFlashText;
+    [Header("Thoughts Sections")]
+    public GameObject speechbubblePanel;
+    public TMP_Text speechbubbleText;
 
     [Header("Story Integration UI")]//Dumi: I added the Ui for the stiry integration that contains story momenbts reveal at each puzzle solving moment
     public GameObject StoryMomentPanel; //D: For story revelations
@@ -94,6 +101,8 @@ public class UIManager : MonoBehaviour
     public GameObject StoryContextPanel;
     public TMP_Text StoryContextText;
     public TMP_Text scrambledTxt;
+
+
     [Header("Periodic Table Puzzle UI")] //Dumi: Eden's Periodic table UI logic. Can change based on how she's implementing her logic.
     public GameObject PeriodicTablePanel;
     public TMP_Text ElementNumbersText;
@@ -177,6 +186,7 @@ public class UIManager : MonoBehaviour
 
         //Dumi :  Hide all new panels when the game starts
         if (StoryMomentPanel != null) StoryMomentPanel.SetActive(false);
+        if (speechbubblePanel != null) speechbubblePanel.SetActive(false);
         if (InstructionPanel != null) InstructionPanel.SetActive(false);
         if (SuccessPanel != null) SuccessPanel.SetActive(false);
         if (FailurePanel != null) FailurePanel.SetActive(false);
@@ -205,12 +215,28 @@ public class UIManager : MonoBehaviour
             StartCoroutine(HideStoryTextAfterDelay(duration));
         }
     }
-
     IEnumerator HideStoryTextAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         if (StoryPanel != null) StoryPanel.SetActive(false);
     }
+
+    public void DisplaySpeechBubble(string dialogue, float duration)
+    {
+        if(speechbubbleText != null)
+        {
+            speechbubblePanel.SetActive(true);
+            speechbubbleText.text = dialogue;
+            StartCoroutine(HideSpeechBubble(duration));
+        }
+    }
+
+    IEnumerator HideSpeechBubble(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (speechbubblePanel != null) speechbubblePanel.SetActive(false);
+    }
+
 
     public void StartFlashbackEffect() //Dumi: this is responsible for the flash back effect in Act 2 of the stiry and gameplay
     {
@@ -779,6 +805,7 @@ public class UIManager : MonoBehaviour
                     DeactivationText.gameObject.SetActive(true);
                     countdownTimer.PauseTimer(); //Sibahle: Calling method from Timer script to pause the countdown
                     Debug.Log("Timer reference: " + countdownTimer);
+                  
                     GameSessionManager.Instance.CmdRiddleSolved(); //Dumi : ensuring that the end of game panel shows up on both screen after bomb deactivates
                     Debug.Log("Yayyyy, the end game panel is showing on both screenns!!!");
 

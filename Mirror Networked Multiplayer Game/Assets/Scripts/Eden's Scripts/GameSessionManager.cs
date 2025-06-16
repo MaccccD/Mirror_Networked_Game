@@ -35,8 +35,9 @@ public class GameSessionManager : NetworkBehaviour
 
     //Dumi: puzzle bools to validate the correct implementation of them (the new Puzzles )
     [SyncVar] public bool lightSwitchComplete = false;
-    [SyncVar] public bool anagramComplete = false;
     [SyncVar] public bool periodicTableComplete = false;
+    [SyncVar] public bool anagramComplete = false;
+    [SyncVar] public bool bombdifuseComplete = false;
     [SyncVar] public bool moralChoiceComplete = false;
 
     [Header("Story Integration")] //dumi: story intergration tracking
@@ -95,8 +96,7 @@ public class GameSessionManager : NetworkBehaviour
         }
         else
         {
-            //Eden: Second click, tell everyone to enter the story
-            RpcBeginStory();
+            uiManager.RolePanel.SetActive(true);
         }
     }
 
@@ -269,7 +269,7 @@ public class GameSessionManager : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdSubmitAnagram(string playerAnswer, NetworkConnectionToClient sender = null)
     {
-        if (playerAnswer.ToUpper().Trim() == "FUELEDBYHATE")
+        if (playerAnswer.ToUpper().Trim() == "notsmartenough")
         {
             anagramComplete = true;
             RpcAnagramSuccess();
@@ -300,16 +300,20 @@ public class GameSessionManager : NetworkBehaviour
         if (role == PlayerRole.OfficePlayer) //Dumi: the office player will type in the correct answer to this puzzle as discussed
         {
             uiManager.OfficeFinalPanel.SetActive(true);
+            uiManager.calendarBtn.SetActive(false);
+            uiManager.drawerBtn.SetActive(false);
             uiManager.BombFinalPanel.SetActive(false);
             uiManager.ShowStoryContext("The numbers on the computer have something to do with chemistry.");
         }
         else if (role == PlayerRole.BombPlayer) // dumi: the bomb player will the periodic table and needs to communicate with the O.P.
         {
             uiManager.OfficeFinalPanel.SetActive(false);
+            uiManager.backtoWallBtn.SetActive(false);
             uiManager.BombFinalPanel.SetActive(true);
             uiManager.ShowStoryContext("Cross-reference these numbers with the periodic table.");
         }
     }
+
 
     [Command(requiresAuthority = false)]
     public void CmdSubmitPeriodicSolution(string solution, NetworkConnectionToClient sender = null)
@@ -327,10 +331,60 @@ public class GameSessionManager : NetworkBehaviour
             ModifyBombTimer(-15f);
         }
     }
-
     #endregion
 
-    #region Act 3 Puzzles (Wire Cutting)
+    #region Act 3 Puzzzles
+    [Server]
+    public void StartWireCutRepresentation( string representation)
+    {
+        RpcRevealWireStory(representation);
+    }
+
+
+    [ClientRpc]
+    void RpcRevealWireStory(string wireColor)
+    {
+        switch (wireColor.ToLower())
+        {
+            case "red":
+                uiManager.ShowStoryReveal("Red wire cut... Represents Zipho's anger from the humiliation.");
+                break;
+            case "blue":
+                uiManager.ShowStoryReveal("Blue wire cut... Represents the sadness from the lost confidence.");
+                break;
+            case "yellow":
+                uiManager.ShowStoryReveal("Yellow wire cut... Represents the fear of failure that followed him.");
+                break;
+            case "green":
+                uiManager.ShowStoryReveal("Green wire cut... Represents the envy of students who had supportive teachers.");
+                break;
+        }
+    }
+
+    [Server]
+    public void StartWireCutPuzzle()
+    {
+        RpcInitializeWireCutPuzzle();
+    }
+
+    [ClientRpc]
+    void RpcInitializeWireCutPuzzle()
+    {
+        PlayerRole role = GetClientRole();
+
+        if (role == PlayerRole.OfficePlayer) //Dumi: the office player will type in the correct answer to this puzzle as discussed
+        {
+            uiManager.OfficeFinalPanel.SetActive(true);
+            uiManager.BombFinalPanel.SetActive(false);
+            
+        }
+        else if (role == PlayerRole.BombPlayer) 
+        {
+            uiManager.OfficeFinalPanel.SetActive(false);
+            uiManager.BombFinalPanel.SetActive(true);
+            
+        }
+    }
 
     [Command(requiresAuthority = false)]
     public void CmdAttemptCut(string wireColor)
@@ -341,47 +395,84 @@ public class GameSessionManager : NetworkBehaviour
         if (wireColor == "Red")
         {
             puzzle2Solved = true;
-            RpcRevealWireStory(wireColor);
             RpcShowWin();
             Debug.Log("[Server] Wire cutting puzzle solved!");
         }
         else
         {
-            RpcRevealWireStory(wireColor);
             RpcScreenShake();
             ModifyBombTimer(-20f); //Dumi: Heavy penalty for wrong wire
             Debug.Log($"[Server] Wrong wire '{wireColor}'");
         }
     }
 
-    [ClientRpc]
-    void RpcRevealWireStory(string wireColor)
+
+    [Server]
+    public void StartChalkPuzzle ()
     {
-        switch (wireColor.ToLower())
+        RpcInitializeChalkPuzzle();
+    }
+
+
+    [ClientRpc]
+
+    void RpcInitializeChalkPuzzle()
+    {
+        PlayerRole role = GetClientRole();
+
+        if (role == PlayerRole.OfficePlayer) //Dumi: the office player will type in the correct answer to this puzzle as discussed
         {
-            case "red":
-                uiManager.ShowStoryReveal("Red wire cut... Zipho's anger begins to fade.");
-                break;
-            case "blue":
-                uiManager.ShowStoryReveal("Blue wire cut... The tears of his family are acknowledged.");
-                break;
-            case "yellow":
-                uiManager.ShowStoryReveal("Yellow wire cut... The fear of inadequacy loses its power.");
-                break;
-            case "green":
-                uiManager.ShowStoryReveal("Green wire cut... Hope can still exist for everyone.");
-                break;
+            uiManager.OfficeFinalPanel.SetActive(true);
+            uiManager.chalkclueTxt.gameObject.SetActive(true);
+            uiManager.BombFinalPanel.SetActive(false);
+
+        }
+        else if (role == PlayerRole.BombPlayer) 
+        {
+            uiManager.OfficeFinalPanel.SetActive(false);
+            uiManager.BombFinalPanel.SetActive(true);
+
         }
     }
 
     #endregion
 
+
     #region Act 4 - Final Puzzles
+    [Server]
+    public void StartBombDisablePuzzle()
+    {
+        RpcInitializeBombDisablePuzzle();
+    }
+
+
+    [ClientRpc]
+    void RpcInitializeBombDisablePuzzle()
+    {
+        PlayerRole role = GetClientRole();
+
+        if (role == PlayerRole.OfficePlayer) 
+        {
+            uiManager.OfficeFinalPanel.SetActive(true);
+            uiManager.chalkclueTxt.gameObject.SetActive(false);
+            uiManager.BombFinalPanel.SetActive(false);
+
+        }
+        else if (role == PlayerRole.BombPlayer) 
+        {
+            uiManager.OfficeFinalPanel.SetActive(false);
+            uiManager.BombFinalPanel.SetActive(true);
+
+        }
+    }
+
+
 
     [Command(requiresAuthority = false)]
     public void CmdRiddleSolved()
     {
-        EndGameLogic();
+        bombdifuseComplete = true;
+
     }
 
     [Server]
@@ -427,32 +518,6 @@ public class GameSessionManager : NetworkBehaviour
 
     #endregion
 
-    #region Dumi : (Extra) Communication Tracking
-
-    [Command(requiresAuthority = false)]
-    public void CmdLogCommunication(string messageType, NetworkConnectionToClient sender = null)
-    {
-        switch (messageType.ToLower())
-        {
-            case "helpful":
-                communicationStyle += 1;
-                AddStoryPoints(1);
-                break;
-            case "frustrated":
-                communicationStyle -= 1;
-                break;
-            case "encouraging":
-                communicationStyle += 2;
-                AddStoryPoints(1);
-                break;
-            case "harsh":
-                communicationStyle -= 2;
-                AddStoryPoints(-1);
-                break;
-        }
-    }
-
-    #endregion
 
     #region Story Management
 
@@ -490,11 +555,16 @@ public class GameSessionManager : NetworkBehaviour
     #region Public Getters for StoryManager
 
     public bool IsLightSwitchComplete() => lightSwitchComplete;
-    public bool IsAnagramComplete() => anagramComplete;
     public bool IsPeriodicTableComplete() => periodicTableComplete;
-    public bool IsMoralChoiceComplete() => moralChoiceComplete;
-    public bool IsPuzzle2Solved => puzzle2Solved; // For wire cutting puzzle
+    public bool IsAnagramComplete() => anagramComplete;
+    public bool IsWireCutComplete() => puzzle2Solved;
 
+    public bool IsChalkPuzzleComplete () => puzzle1Solved;
+
+    public bool isBombDiffuseComplete() => bombdifuseComplete;
+
+    public bool IsMoralChoiceComplete() => moralChoiceComplete;
+    
     #endregion
 
     #region Network Callbacks and Hooks
@@ -624,4 +694,6 @@ public class GameSessionManager : NetworkBehaviour
     }
 
     #endregion
+
+    
 }

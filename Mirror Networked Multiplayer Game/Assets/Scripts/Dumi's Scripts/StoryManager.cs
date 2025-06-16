@@ -87,14 +87,18 @@ public class StoryManager : NetworkBehaviour
         //Dumi:  Story Introduction like we discussed
         storyState = StoryState.IntroDialogue;
       
-
-        RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You must work together to defuse the bomb before the timer runs out. before time runs out.", PlayerRole.OfficePlayer, 15f);
-        RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You must work together to defuse the bomb before the timer runs out. before time runs out.", PlayerRole.BombPlayer, 15f);
+   
+        RpcShowThoughtBubble("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You guys are both on different rooms but you will be able to see each other's thoughts as you work via the text chat together to defuse the bomb before the timer runs out.", PlayerRole.OfficePlayer, 8f);
+        RpcShowThoughtBubble("A bomb has been planted at St Francis College. Both you and the office player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You guys are both on different rooms but you will be able to see each other's thoughts as you work via the text chat together to defuse the bomb before the timer runs out.", PlayerRole.BombPlayer, 8f);
         yield return new WaitForSeconds(4f);
 
         // Dumi : Sibahle's Light Switch Memory Puzzle with Story Context
         storyState = StoryState.PuzzleSolving;
-        RpcShowStoryBeat("The security system  of the school has been tampered with. Restore power to see the bomb clearly.", PlayerRole.OfficePlayer, 2f);
+
+        RpcShowThoughtBubble("The security system  of the school has been tampered with. Restore the power back by turning on the light switch to see the bomb set up clearly.", PlayerRole.OfficePlayer, 8f);
+        RpcShowThoughtBubble("The security system  of the school has been tampered with. Restore the power back by turning on the light switch to see the bomb set up clearly.", PlayerRole.BombPlayer, 8f);
+        RpcShowThoughtBubble("Let me ask my partner what they see on their screen via the text chat", PlayerRole.OfficePlayer, 4f);
+        RpcShowThoughtBubble("Let me ask my partner what they see on their screen via the text chat", PlayerRole.BombPlayer, 4f);
 
         // Dumi : Start Sibahle's  Light Switch Puzzle
         sessionManager.StartLightSwitchPuzzle();
@@ -102,16 +106,27 @@ public class StoryManager : NetworkBehaviour
 
         //Dumi :  Story Reveal: First glimpse of Zipho's motivation
         storyState = StoryState.StoryReveal;
-        RpcShowStoryBeat("Security footage shows a figure entering the building... someone familiar with the layout.", PlayerRole.OfficePlayer, 4f);
+    
+        RpcShowThoughtBubble("The lights are now on and the bomb player can now see the bomb display. By tampering with the security system to cause darkness, someone was trying to plant a bomb i the dark. But why ?", PlayerRole.OfficePlayer, 6f);
+        RpcShowThoughtBubble("The lights are now on and I can see the bomb display. By tampering with the security system to cause darkness, someone was trying to plant a bomb in the dark. But why ?", PlayerRole.BombPlayer, 6f);
 
-        //Dumi:  Anagram Puzzle Introduction
-        RpcShowStoryBeat("There's a message on the bomb... 'HATEBYFUELED'. What could this mean ???", PlayerRole.BombPlayer, 3f);
-        sessionManager.StartAnagramPuzzle("HAETBEYFUDEL", "FUELEDBYHATE");//Dumi: the scambled verison >>> the corrrect answer to be typed in
-        yield return new WaitUntil(() => sessionManager.IsAnagramComplete());
+        //Dumi: Periodic Table Puzzle Introdcution.
+        RpcShowThoughtBubble("To find out the reason why a bomb has been planted, we need to access any computer files that might gives us information.", PlayerRole.BombPlayer, 6f);
+        RpcShowThoughtBubble("To find out the reason why a bomb has been planted, we need to access any computer files that might gives us information.", PlayerRole.OfficePlayer, 6f);
+       
+        //Dumi: Now start periodic table puzzle
+        storyState = StoryState.PuzzleSolving;
+        RpcShowThoughtBubble("Let me ask my partner what they see on their screen via the text chat", PlayerRole.OfficePlayer, 3f);
+        RpcShowThoughtBubble("Let me ask my partner what they see on their screen via the text chat", PlayerRole.BombPlayer, 3f);
+
+        sessionManager.StartPeriodicTablePuzzle(new int[] { 32, 28, 92, 16 }, "GeNiUS");
+        yield return new WaitUntil(() => sessionManager.IsPeriodicTableComplete());
 
         //Dumi :  Act 1 Story Conclusion
         ziphoMotivationKnown = true;
-        RpcShowStoryBeat("FUELED BY HATE... This isn't random. Someone has a personal vendetta.", PlayerRole.OfficePlayer, 4f);
+        
+        RpcShowThoughtBubble("The computer belongs to Mr. Du Plessis, Head of IT at St Francis College. But why would someone target him specifically?", PlayerRole.OfficePlayer, 4f);
+        RpcShowThoughtBubble("The computer belongs to Mr. Du Plessis, Head of IT at St Francis College. But why would someone target him specifically?", PlayerRole.BombPlayer, 4f);
         RpcTriggerAudioCue("suspense_build");
     }
 
@@ -122,20 +137,20 @@ public class StoryManager : NetworkBehaviour
         //Dumi :  10-Year Flashback Setup
         storyState = StoryState.StoryReveal;
         RpcShowFlashback();//Dumi: showing the flashback
-        yield return new WaitForSeconds(8f);
-
-        //Dumi : Eden's Periodic Table Puzzle with Story Integration
-        storyState = StoryState.PuzzleSolving;
-        RpcShowStoryBeat("The bomb is connected to Mr. Du Plessis's classroom computer. You need his access code. Is there anything you see, eisther numbers of anyting that could imply an acccess code of some sort?", PlayerRole.OfficePlayer, 3f);
-        RpcShowStoryBeat("I see numbers on the bomb display: 32, 28, 92, 16", PlayerRole.BombPlayer, 2f);
-
-        sessionManager.StartPeriodicTablePuzzle(new int[] { 32, 28, 92, 16 }, "GeNiUS");
-        yield return new WaitUntil(() => sessionManager.IsPeriodicTableComplete());
-
-        //D: Story Revelation
         flashbackRevealed = true;
-        RpcShowStoryBeat("GeNiUS... That's the same word that destroyed a young student's confidence years ago.", PlayerRole.OfficePlayer, 4f);
-        RpcShowStoryBeat("This is about Zipho... Mr. Du Plessis's former student. He is on a mission to avenge himself to Mr Du Plessi's for the used he used to 'curse' him.", PlayerRole.OfficePlayer, 3f);
+        yield return new WaitForSeconds(10f);
+
+        //Dumi: @sibahle you can trigger the page flip anim here :
+        RpcShowStoryBeat("Mr. Du Plessis is a Computer Science teacher... that explains the technical sophistication of this bomb. Zipho must have spent years mastering the very skills Du Plessis said he'd never have.", PlayerRole.OfficePlayer, 8f);
+        RpcShowStoryBeat("Mr. Du Plessis is a Computer Science teacher... that explains the technical sophistication of this bomb. Zipho must have spent years mastering the very skills Du Plessis said he'd never have.", PlayerRole.BombPlayer, 8f);
+
+        storyState = StoryState.PuzzleSolving;
+        sessionManager.StartAnagramPuzzle("hguonetramston", "notsmartenough");
+        yield return new WaitUntil(() => sessionManager.IsAnagramComplete());
+
+        //Dumi: @sibahle you can trigger the page flip anim here :
+        RpcShowStoryBeat("Zipho's personal vendetta against Mr Du Plessi's was not random. It was caused by the teacher's words to him", PlayerRole.OfficePlayer, 4f);
+        RpcShowStoryBeat("Mr Du Plessis said those words to Zipho to motivate him to take his work seriously.It was meant to build him, not destroy him confidence.", PlayerRole.BombPlayer, 3f);
 
         //D: Increase tension
         RpcTriggerAudioCue("revelation_theme");
@@ -146,17 +161,40 @@ public class StoryManager : NetworkBehaviour
     {
         currentAct = GameAct.Act3_Action;
 
-        //wait untill the correct wire is cut
-        yield return new WaitUntil(() => GameSessionManager.Instance.puzzle2Solved);
-        //to include the wire cutting puzzle validation
-
-        // Peak Tension - Zipho's Plan Unfolds
+        //Dumi Peak Tension - Zipho's Plan Unfolds
         storyState = StoryState.StoryReveal;
-        RpcShowStoryBeat("The bomb is more complex than I  initially thought. Zipho planned this meticulously.", PlayerRole.OfficePlayer, 3f);
-        RpcShowStoryBeat("There are multiple wire sequences... each one seems to represent something personal. Maybe we can try figure out what each wire represents as a starting point", PlayerRole.BombPlayer, 3f);
+        //Dumi: @sibahle you can trigger the page flip anim here :
+        RpcShowStoryBeat("The bomb is more complex than I  initially thought. Zipho planned this strategically.", PlayerRole.OfficePlayer, 5f);
+        RpcShowStoryBeat("There are multiple wire sequences... each one seems to represent something personal about  Zipho's motives.Each wire color represents a different emotion from that day. Find out what each wire represents as a starting point", PlayerRole.BombPlayer, 8f);
 
-        // Transition to Resolution
-        finalChoiceUnlocked = true;
+
+        //Dumi: @sibahle you can trigger the page flip anim here :
+        sessionManager.StartWireCutRepresentation("red");
+        sessionManager.StartWireCutRepresentation("blue");
+        sessionManager.StartWireCutRepresentation("yellow");
+        sessionManager.StartWireCutRepresentation("green");
+
+
+
+        //Dumi" start the wire cut puzzle:
+        sessionManager.StartWireCutPuzzle();
+        yield return new WaitUntil(() => sessionManager.puzzle2Solved);
+
+        //Dumi: @sibahle you can trigger the page flip anim here :
+        RpcShowStoryBeat("The wires have been cut but the timer on the bomb has not stopped. Zipho also used AI to further encyrpt this bomb", PlayerRole.OfficePlayer, 7f);
+        RpcShowStoryBeat("If AI was used to further encrypt the bomb, then Zipho must have made a mistake somewhere. Look for something digital that Zipho may have used to get the AI encryption system", PlayerRole.BombPlayer, 7f);
+
+
+        sessionManager.StartChalkPuzzle();
+        yield return new WaitUntil(() => sessionManager.puzzle1Solved);
+
+        //Dumi: @sibahle you can trigger the page flip anim here :
+        RpcShowStoryBeat("This level of AI integration... Zipho didn't just learn programming, he became an expert. After 10 years of proving himself, something must have triggered this revenge plot.", PlayerRole.BombPlayer, 10f);
+        RpcShowStoryBeat("This level of AI integration... Zipho didn't just learn programming, he became an expert. After 10 years of proving himself, something must have triggered this revenge plot.", PlayerRole.OfficePlayer, 10f);
+        RpcShowStoryBeat("The password to get extra information from the AI assitant that Zipho  used to further encrypt the bomb has been retrieved. However, the bomb timer is still on. There is something else he used to set up the bomb detonation.", PlayerRole.OfficePlayer, 9f); 
+        RpcShowStoryBeat("Some bombs have  button(s) that need to be pressed in a specific order to switch it off. Zipho had this in mind while planting this bomb threat. Find the buttons that need to be disabled in the bomb. ", PlayerRole.OfficePlayer, 9f);
+      
+
         RpcTriggerAudioCue("climax_resolution");
     }
 
@@ -164,12 +202,20 @@ public class StoryManager : NetworkBehaviour
     {
         currentAct = GameAct.Act4_Resolution;
 
+        sessionManager.StartBombDisablePuzzle();
+        yield return new WaitUntil(() => sessionManager.bombdifuseComplete);
+
+        // //Dumi: @sibahle you can trigger the page flip anim here :
+        RpcShowStoryBeat("Du Plessis probably doesn't even remember that day 10 years ago. But Zipho never forgot. The question is - does destroying a man's life over forgotten words solve anything?", PlayerRole.OfficePlayer, 8f);
+        RpcShowStoryBeat("Du Plessis probably doesn't even remember that day 10 years ago. But Zipho never forgot. The question is - does destroying a man's life over forgotten words solve anything?", PlayerRole.BombPlayer, 9f);
+
         //Dumi :  Moral Choice Setup
         storyState = StoryState.StoryReveal;
+        //Dumi: @sibahle you can trigger the page flip anim here :
         RpcShowStoryBeat("The bomb has been successfully defused... but Zipho left one final choice.", PlayerRole.OfficePlayer, 4f);
         RpcShowStoryBeat("You can either:", PlayerRole.BombPlayer, 2f);
-        RpcShowStoryBeat("1. Completely neutralize everything, or", PlayerRole.OfficePlayer, 2f);
-        RpcShowStoryBeat("2. Leave a harmless but symbolic message for Mr. Du Plessis", PlayerRole.BombPlayer, 3f);
+        RpcShowStoryBeat("1. Completely neutralize everything. Meaning ; erase everything, let  Mr Du Plessis never know how much damage his words caused", PlayerRole.OfficePlayer, 2f);
+        RpcShowStoryBeat("2. Leave a message. Meaning; a clear reminder that words have consequences", PlayerRole.BombPlayer, 3f);
 
         // Dumi : Final Moral Choice Puzzle
         storyState = StoryState.PuzzleSolving;
@@ -210,6 +256,19 @@ public class StoryManager : NetworkBehaviour
             uiManager.UpdateActDisplay(currentAct);
         }
     }
+
+    [ClientRpc]
+    void RpcShowThoughtBubble(string dialogue, PlayerRole targetPlayer, float duration) // Dumi: Each story beat is role specific and thus I need to obtain the player's role first before the relevant story beat shows
+    {
+        PlayerRole clientRole = GetClientRole();
+        Debug.Log($"Client role: {clientRole}, Target: {targetPlayer}, Should show: {targetPlayer == clientRole || targetPlayer == PlayerRole.None}");
+
+        if (targetPlayer == clientRole || targetPlayer == PlayerRole.None)
+        {
+            uiManager.DisplaySpeechBubble(dialogue, duration);
+        }
+    }
+
 
     [ClientRpc]
     void RpcShowFlashback()
