@@ -605,25 +605,24 @@ public class UIManager : MonoBehaviour
     public void OnBothPlayersChosen()
     {
         Debug.Log("[UI] OnBothPlayersChosen()");
+       // WaitingPanel.SetActive(false);
+       // RolePanel.SetActive(false);
 
-        WaitingPanel.SetActive(false);
-        RolePanel.SetActive(false);
-
-        puzzle1Container.SetActive(true);
-        foreach (var f in letterFields)
-        {
-            f.text = "";
-            var bg = f.GetComponent<Image>();
-            if (bg != null)
-                bg.color = new Color(1, 1, 1, 0); // transparent
-        }
+      //  puzzle1Container.SetActive(true);
+       // foreach (var f in letterFields)
+       // {
+       //     f.text = "";
+          //  var bg = f.GetComponent<Image>();
+       //     if (bg != null)
+           //     bg.color = new Color(1, 1, 1, 0); // transparent
+       // }
 
         //Eden: Determine this client's role by which button ended up disabled first
-        bool isOffice = !OfficeButton.interactable && BombButton.interactable;
-        puzzleRoleIsOffice = isOffice;
-
-        OfficeFinalPanel.SetActive(isOffice);
-        BombFinalPanel.SetActive(!isOffice);
+      //  bool isOffice = !OfficeButton.interactable && BombButton.interactable;
+       // puzzleRoleIsOffice = isOffice;
+       // Dumi: these panels already trigger and are taken cared of in the periodic table  puzzle logic and thus do not need to trigger here immediately after the players chosen their roles.
+      //  OfficeFinalPanel.SetActive(isOffice);
+      //  BombFinalPanel.SetActive(!isOffice);
 
     }
 

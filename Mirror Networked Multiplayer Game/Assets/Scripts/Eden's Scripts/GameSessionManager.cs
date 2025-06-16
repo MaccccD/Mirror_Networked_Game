@@ -582,6 +582,9 @@ public class GameSessionManager : NetworkBehaviour
     void RpcBothPlayersChosen()
     {
         UIManager.Instance.OnBothPlayersChosen();
+        //Dumi: after players have chosen roles , begin the story flow:
+        RpcBeginStory();
+        Debug.Log("Story beats are now showing for each player based on their chosen roles");
     }
     [Command(requiresAuthority = false)]
     public void CmdPuzzle1Complete()
