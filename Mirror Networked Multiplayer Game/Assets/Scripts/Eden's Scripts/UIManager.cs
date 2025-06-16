@@ -104,9 +104,9 @@ public class UIManager : MonoBehaviour
 
 
     [Header("Periodic Table Puzzle UI")] //Dumi: Eden's Periodic table UI logic. Can change based on how she's implementing her logic.
-    public GameObject PeriodicTablePanel;
-    public TMP_Text ElementNumbersText;
-    public GameObject PeriodicTableGrid; // Visual periodic table
+    //public GameObject PeriodicTablePanel;
+    //public TMP_Text ElementNumbersText;
+    //public GameObject PeriodicTableGrid; // Visual periodic table
     public TMP_InputField PeriodicSolutionInput;
     public Button PeriodicSubmitButton;
 
@@ -126,9 +126,6 @@ public class UIManager : MonoBehaviour
 
     bool puzzleRoleIsOffice;
     string selectedWire;
-
-    [Header("Game session Mnanager Reference")]
-    private GameSessionManager sessionManager;
 
     private List<string> playerInput = new List<string>(); // Sibahle: refers to what button the player selects in the list
     public Timer countdownTimer;
@@ -195,7 +192,7 @@ public class UIManager : MonoBehaviour
         if (PatternDisplayPanel != null) PatternDisplayPanel.SetActive(false);
         if (AnagramPanel != null) AnagramPanel.SetActive(false);
         if (StoryContextPanel != null) StoryContextPanel.SetActive(false);
-        if (PeriodicTablePanel != null) PeriodicTablePanel.SetActive(false);
+        //if (PeriodicTablePanel != null) PeriodicTablePanel.SetActive(false);
         if (MoralChoicePanel != null) MoralChoicePanel.SetActive(false);
         if (ChoiceResultPanel != null) ChoiceResultPanel.SetActive(false);
         if (ConflictPanel != null) ConflictPanel.SetActive(false);
@@ -377,19 +374,37 @@ public class UIManager : MonoBehaviour
         if (AnagramInputField != null)
         {
             string answer = AnagramInputField.text.Trim();
-            GameSessionManager.Instance.CmdSubmitAnagram(answer);
-            Debug.Log("Answer submitted bc the button was pressed : " + answer);
+            //Dumi:  Send to PuzzleManager
+            FindObjectOfType<GameSessionManager>()?.CmdSubmitAnagram(answer);
         }
     }
 
-  
-    void SubmitPeriodicSolution()
+    // Periodic Table Puzzle Methods NB: Eden you can change the code here if that's not how you envision the logic to work for the UI.
+    /*public void ShowElementNumbers(int[] elements)
+    {
+        if (PeriodicTablePanel != null && ElementNumbersText != null)
+        {
+            PeriodicTablePanel.SetActive(true);
+            string elementText = "Elements: " + string.Join(", ", elements);
+            ElementNumbersText.text = elementText;
+        }
+    }*/
+
+    /*public void ShowPeriodicTable()
+    {
+        if (PeriodicTableGrid != null)
+        {
+            PeriodicTableGrid.SetActive(true);
+        }
+    }*/
+
+   public  void SubmitPeriodicSolution()
     {
         if (PeriodicSolutionInput != null)
         {
             string solution = PeriodicSolutionInput.text.Trim();
             GameSessionManager.Instance.CmdSubmitPeriodicSolution(solution);
-            Debug.Log("Answer submitted: " + solution);
+            Debug.Log("Answer submitted bc button has been pressed: " + solution);
         }
     }
 

@@ -290,6 +290,7 @@ public class GameSessionManager : NetworkBehaviour
     public void StartPeriodicTablePuzzle(int[] elements, string solution)
     {
         RpcInitializePeriodicTablePuzzle(elements, solution);
+        Debug.Log("Periodic table puzzle  has started!");
     }
 
     [ClientRpc]
@@ -318,7 +319,7 @@ public class GameSessionManager : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdSubmitPeriodicSolution(string solution, NetworkConnectionToClient sender = null)
     {
-        if (solution.ToUpper() == "GENiUS")
+        if (solution.ToUpper() == "GENIUS")
         {
             periodicTableComplete = true;
             RpcPeriodicTableSuccess();
