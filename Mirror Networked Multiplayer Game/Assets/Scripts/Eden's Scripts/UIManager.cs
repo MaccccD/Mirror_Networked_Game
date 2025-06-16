@@ -202,20 +202,33 @@ public class UIManager : MonoBehaviour
     }
 
     #region Dumi: Newly Added Story Game Manager Methods
-
+    private Coroutine currentStoryCoroutine; // Track the current hide coroutine
     public void DisplayStoryText(string dialogue, float duration)//Dumi:// this is responsible for displaying the actual text/story beats at each act during gameplay.
     {
         if (StoryText != null)
         {
+            // Fumi : Stop any existing hide coroutine
+            if (currentStoryCoroutine != null)
+            {
+                StopCoroutine(currentStoryCoroutine);
+            }
+
             StoryPanel.SetActive(true);
             StoryText.text = dialogue;
-            StartCoroutine(HideStoryTextAfterDelay(duration));
+
+            //Dumi:  Start new hide coroutine and store reference
+            currentStoryCoroutine = StartCoroutine(HideStoryTextAfterDelay(duration));
         }
+    
     }
     IEnumerator HideStoryTextAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        if (StoryPanel != null) StoryPanel.SetActive(false);
+        if (StoryPanel != null)
+        {
+            StoryPanel.SetActive(false);
+            currentStoryCoroutine = null; 
+        }
     }
 
     public void DisplaySpeechBubble(string dialogue, float duration)
@@ -264,7 +277,7 @@ public class UIManager : MonoBehaviour
     {
         if (ActDisplay != null && ActText != null)
         {
-            ActDisplay.SetActive(true);
+            ActDisplay.SetActive(false);
             ActText.text = "ACT " + ((int)newAct + 1).ToString();
         }
     }
@@ -565,7 +578,7 @@ public class UIManager : MonoBehaviour
     {
         //Eden: Once both pressed, the players go to the story panel 
         WaitingPanel.SetActive(false);
-        StoryPanel.SetActive(true);
+        StoryPanel.SetActive(false);
         
 
     }

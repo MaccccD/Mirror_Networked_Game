@@ -96,10 +96,18 @@ public class GameSessionManager : NetworkBehaviour
         }
         else
         {
-            uiManager.RolePanel.SetActive(true);
+            //Dumi:  Instead of accessing uiManager directly on server, use ClientRpc so that the client has access to the ui and not the server
+            RpcShowRolePanel();
         }
     }
 
+
+    //Dumi: New ClientRpc to show role panel on all clients
+    [ClientRpc]
+    void RpcShowRolePanel()
+    {
+        uiManager.RolePanel.SetActive(true);
+    }
     //Eden: Rpc to all clients to hide the waiting UI and show the story panel
     [ClientRpc]
     void RpcBeginStory()
@@ -186,6 +194,7 @@ public class GameSessionManager : NetworkBehaviour
     public void StartLightSwitchPuzzle()
     {
         RpcInitializeLightSwitchPuzzle();
+        Debug.Log("Light switch puzzle is supposed to on r.n but its balnk bc there's nothing for it in the inspector, yet");
     }
 
     [ClientRpc]
