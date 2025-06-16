@@ -262,7 +262,7 @@ public class GameSessionManager : NetworkBehaviour
         }
         else
         {
-            uiManager.ShowStoryContext("This message seems personal... help your partner decode it.");//Dumi: what the bomb player sees
+            uiManager.ShowStoryContext("These letters mean something about Zipho. What could they mean ? Try help the office player figure what they mean");//Dumi: what the bomb player sees
         }
     }
 
@@ -299,13 +299,15 @@ public class GameSessionManager : NetworkBehaviour
 
         if (role == PlayerRole.OfficePlayer) //Dumi: the office player will type in the correct answer to this puzzle as discussed
         {
-            uiManager.ShowElementNumbers(elements);
-            uiManager.ShowStoryContext("These numbers appeared after accessing Mr. Du Plessis's computer...");
+            uiManager.OfficeFinalPanel.SetActive(true);
+            uiManager.BombFinalPanel.SetActive(false);
+            uiManager.ShowStoryContext("The numbers on the computer have something to do with chemistry.");
         }
         else if (role == PlayerRole.BombPlayer) // dumi: the bomb player will the periodic table and needs to communicate with the O.P.
         {
-            uiManager.ShowPeriodicTable();
-            uiManager.ShowStoryContext("Cross-reference these numbers with the periodic table to find the hidden message.");
+            uiManager.OfficeFinalPanel.SetActive(false);
+            uiManager.BombFinalPanel.SetActive(true);
+            uiManager.ShowStoryContext("Cross-reference these numbers with the periodic table.");
         }
     }
 

@@ -93,7 +93,7 @@ public class UIManager : MonoBehaviour
     public Button AnagramSubmitButton;
     public GameObject StoryContextPanel;
     public TMP_Text StoryContextText;
-
+    public TMP_Text scrambledTxt;
     [Header("Periodic Table Puzzle UI")] //Dumi: Eden's Periodic table UI logic. Can change based on how she's implementing her logic.
     public GameObject PeriodicTablePanel;
     public TMP_Text ElementNumbersText;
@@ -341,45 +341,29 @@ public class UIManager : MonoBehaviour
         if (StoryContextPanel != null && StoryContextText != null)
         {
             StoryContextPanel.SetActive(true);
+            scrambledTxt.gameObject.SetActive(true);
             StoryContextText.text = context;
         }
     }
 
-  public  void SubmitAnagram()
+   void SubmitAnagram()
     {
         if (AnagramInputField != null)
         {
             string answer = AnagramInputField.text.Trim();
-            //Dumi:  Send to PuzzleManager
-            FindObjectOfType<GameSessionManager>()?.CmdSubmitAnagram(answer);
+            GameSessionManager.Instance.CmdSubmitAnagram(answer);
+            Debug.Log("Answer submitted bc the button was pressed : " + answer);
         }
     }
 
-    // Periodic Table Puzzle Methods NB: Eden you can change the code here if that's not how you envision the logic to work for the UI.
-    public void ShowElementNumbers(int[] elements)
-    {
-        if (PeriodicTablePanel != null && ElementNumbersText != null)
-        {
-            PeriodicTablePanel.SetActive(true);
-            string elementText = "Elements: " + string.Join(", ", elements);
-            ElementNumbersText.text = elementText;
-        }
-    }
-
-    public void ShowPeriodicTable()
-    {
-        if (PeriodicTableGrid != null)
-        {
-            PeriodicTableGrid.SetActive(true);
-        }
-    }
-
+  
     void SubmitPeriodicSolution()
     {
         if (PeriodicSolutionInput != null)
         {
             string solution = PeriodicSolutionInput.text.Trim();
-            // FindObjectOfType<PuzzleManager>()?.CmdSubmitPeriodicSolution(solution);
+            GameSessionManager.Instance.CmdSubmitPeriodicSolution(solution);
+            Debug.Log("Answer submitted: " + solution);
         }
     }
 
@@ -541,6 +525,7 @@ public class UIManager : MonoBehaviour
         //Eden: Once both pressed, the players go to the story panel 
         WaitingPanel.SetActive(false);
         StoryPanel.SetActive(true);
+        
 
     }
 

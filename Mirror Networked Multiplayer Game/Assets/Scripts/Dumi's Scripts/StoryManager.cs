@@ -84,13 +84,13 @@ public class StoryManager : NetworkBehaviour
     IEnumerator ExecuteAct1()
     {
         currentAct = GameAct.Act1_Setup;
-
         //Dumi:  Story Introduction like we discussed
         storyState = StoryState.IntroDialogue;
+      
 
-         RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You must work together to defuse the bomb before the timer runs out. before time runs out.", PlayerRole.OfficePlayer, 15f);
-         RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You must work together to defuse the bomb before the timer runs out. before time runs out.", PlayerRole.BombPlayer, 15f);
-         yield return new WaitForSeconds(4f);
+        RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You must work together to defuse the bomb before the timer runs out. before time runs out.", PlayerRole.OfficePlayer, 15f);
+        RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You must work together to defuse the bomb before the timer runs out. before time runs out.", PlayerRole.BombPlayer, 15f);
+        yield return new WaitForSeconds(4f);
 
         // Dumi : Sibahle's Light Switch Memory Puzzle with Story Context
         storyState = StoryState.PuzzleSolving;
