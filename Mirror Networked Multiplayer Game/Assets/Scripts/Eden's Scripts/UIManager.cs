@@ -131,6 +131,14 @@ public class UIManager : MonoBehaviour
     private List<string> playerInput = new List<string>(); // Sibahle: refers to what button the player selects in the list
     public Timer countdownTimer;
 
+
+    private void Start()
+    {
+        // Add this debug to verify UI elements exist
+        if (OfficeDarkPanel == null) Debug.LogError("OfficeDarkPanel not assigned!");
+        if (BombDarkPanel == null) Debug.LogError("BombDarkPanel not assigned!");
+        if (PatternDisplay == null) Debug.LogError("PatternDisplay not assigned!");
+    }
     void Awake()
     {
         //Eden: Singleton setup ensures only one UIManager exists at any time
@@ -306,16 +314,49 @@ public class UIManager : MonoBehaviour
     #region Dumi :Newly added   Puzzle Manager Methods
 
     //D: Light Switch Puzzle Methods NB: Sibahle you can changed the logic here if that's not how it works according to how you envisioned it for the UI.
-    public void ShowSecurityFootage(string footageText)
+    public void ShowLightPuzzleForOfficePlayer()
     {
-        if (OfficeDarkPanel != null && BombDarkPanel != null)
+        Debug.Log($"OfficeDarkPanel exists: {OfficeDarkPanel != null}");
+        Debug.Log($"PatternDisplay exists: {PatternDisplay != null}");
+
+        if (OfficeDarkPanel != null)
         {
             OfficeDarkPanel.SetActive(true);
-            BombDarkPanel.SetActive(true);
-            
+            Debug.Log("Activated OfficeDarkPanel");
+        }
+        // Enable any office player specific controls
+        if (CorrectButtons != null)
+        {
+            foreach (Button btn in CorrectButtons)
+            {
+                btn.gameObject.SetActive(true);
+            }
         }
     }
 
+    public void ShowLightPuzzleForBombPlayer()
+    {
+        Debug.Log("Showing Bomb Player light puzzle UI");
+
+
+        Debug.Log($"BombDarkPanel exists: {BombDarkPanel != null}");
+
+        if (BombDarkPanel != null)
+        {
+            BombDarkPanel.SetActive(true);
+            Debug.Log("Activated BombDarkPanel");
+        }
+        // Enable any bomb player specific controls
+        if (IncorrectButtons != null)
+        {
+            foreach (Button btn in IncorrectButtons)
+            {
+                btn.gameObject.SetActive(true);
+            }
+        }
+
+        ShowInstructionText("Wait for your partner to communicate the pattern");
+    }
     public void DisplayPattern(float duration)
     {
         if (PatternDisplay != null)

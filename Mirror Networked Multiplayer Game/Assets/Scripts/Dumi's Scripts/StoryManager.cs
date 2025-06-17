@@ -98,7 +98,6 @@ public class StoryManager : NetworkBehaviour
          Debug.Log("I am also showing hence you can see the debug here");
 
 
-
         // Dumi : Start Sibahle's  Light Switch Puzzle
         storyState = StoryState.PuzzleSolving;
         sessionManager.StartLightSwitchPuzzle();

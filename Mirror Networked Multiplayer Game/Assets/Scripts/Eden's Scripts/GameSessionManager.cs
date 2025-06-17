@@ -193,37 +193,44 @@ public class GameSessionManager : NetworkBehaviour
     [Server]
     public void StartLightSwitchPuzzle()
     {
+        Debug.Log("[Server] Starting light switch puzzle");
         RpcInitializeLightSwitchPuzzle();
-        Debug.Log("Light switch puzzle is supposed to on r.n but its balnk bc there's nothing for it in the inspector, yet");
+        
     }
 
     [ClientRpc]
     void RpcInitializeLightSwitchPuzzle()
     {
+        Debug.Log("[Client] Initializing Light Switch Puzzle");
+
         PlayerRole role = GetClientRole();
 
         if (role == PlayerRole.OfficePlayer)
         {
-            //Dumi:  Office player sees the pattern and story context
-            uiManager.ShowSecurityFootage("Zipho is moving through the electrical room...");
+            Debug.Log("[Client] Office Player - Showing light puzzle");
+            uiManager.ShowLightPuzzleForOfficePlayer();
             StartCoroutine(ShowLightSwitchPatternCoroutine());
         }
         else if (role == PlayerRole.BombPlayer)
         {
-            // Dumi: Bomb player sees the grid they need to manipulate and they put in the answer
-            //uiManager.ButtonOrder();
+            Debug.Log("[Client] Bomb Player - Showing light puzzle");
+            uiManager.ShowLightPuzzleForBombPlayer();
         }
     }
 
     private System.Collections.IEnumerator ShowLightSwitchPatternCoroutine()
     {
-        //Dumi: Generate and show pattern for 3 seconds.@sibahle you can change the logic if this is not how you envision it to work
-        
+        Debug.Log("[Client] Showing light pattern");
+
+        // Show pattern
         uiManager.DisplayPattern(3f);
         yield return new WaitForSeconds(3f);
-        uiManager.HidePattern();
 
+        // Hide pattern and show instructions
+        uiManager.HidePattern();
         uiManager.ShowInstructionText("Communicate the pattern to your partner!");
+
+        Debug.Log("[Client] Pattern shown and hidden");
     }
 
     [Command(requiresAuthority = false)]

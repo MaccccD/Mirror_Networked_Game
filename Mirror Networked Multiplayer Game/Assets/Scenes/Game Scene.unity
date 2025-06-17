@@ -1543,8 +1543,8 @@ MonoBehaviour:
   shakeDuration: 0.5
   shakeMagnitude: 0.2
   errorFlashPanel: {fileID: 1448325966}
-  speechbubblePanel: {fileID: 0}
-  speechbubbleText: {fileID: 0}
+  speechbubblePanel: {fileID: 548063792}
+  speechbubbleText: {fileID: 1900573559}
   StoryMomentPanel: {fileID: 1234567168}
   StoryMomentText: {fileID: 1494409535}
   InstructionPanel: {fileID: 986256494}
@@ -2911,8 +2911,7 @@ Transform:
   m_LocalPosition: {x: 960, y: 540, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1015945141}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &192174163
@@ -3980,13 +3979,12 @@ RectTransform:
   - {fileID: 377784779}
   - {fileID: 1232609895}
   - {fileID: 833052567}
-  - {fileID: 920777124}
   - {fileID: 535589241}
   m_Father: {fileID: 372600191}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2080, y: -21.033}
+  m_AnchoredPosition: {x: 2080, y: -21.032959}
   m_SizeDelta: {x: 0, y: 42.066}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &230119821
@@ -5248,7 +5246,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &335488131
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5263,11 +5261,11 @@ RectTransform:
   m_Children:
   - {fileID: 1994399831}
   - {fileID: 741979532}
-  m_Father: {fileID: 1902413649}
+  m_Father: {fileID: 372600191}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -1, y: -21.032959}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &335488132
@@ -6108,6 +6106,8 @@ RectTransform:
   - {fileID: 1439291139}
   - {fileID: 226464393}
   - {fileID: 548063793}
+  - {fileID: 335488131}
+  - {fileID: 920777124}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -13146,7 +13146,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &920777124
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13161,12 +13161,12 @@ RectTransform:
   m_Children:
   - {fileID: 1238308798}
   - {fileID: 527510062}
-  m_Father: {fileID: 230119820}
+  m_Father: {fileID: 372600191}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -16.02295}
-  m_SizeDelta: {x: 0, y: -22.113}
+  m_AnchoredPosition: {x: 1, y: -37.05591}
+  m_SizeDelta: {x: 0, y: 19.95304}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &920777125
 MonoBehaviour:
@@ -13413,6 +13413,7 @@ Transform:
   - {fileID: 92538735}
   - {fileID: 327518716}
   - {fileID: 1185727047}
+  - {fileID: 1015945141}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &923369023
@@ -14542,11 +14543,11 @@ Transform:
   m_GameObject: {fileID: 1015945138}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 301.98035, y: -93.28201, z: -282.93512}
+  m_LocalPosition: {x: 120.69849, y: -85.664154, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 192174162}
+  m_Father: {fileID: 921649751}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1022749553
 GameObject:
@@ -25381,12 +25382,11 @@ RectTransform:
   - {fileID: 315647502}
   - {fileID: 1160353461}
   - {fileID: 200174058}
-  - {fileID: 335488131}
   m_Father: {fileID: 372600191}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1, y: -21.033}
+  m_AnchoredPosition: {x: -1, y: -21.032959}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1902413650
@@ -27709,10 +27709,10 @@ SceneRoots:
   - {fileID: 609136346}
   - {fileID: 730673630}
   - {fileID: 372600191}
-  - {fileID: 823614280}
   - {fileID: 994640736}
   - {fileID: 192174162}
   - {fileID: 67881606}
   - {fileID: 538730530}
   - {fileID: 921649751}
   - {fileID: 276731118}
+  - {fileID: 823614280}
