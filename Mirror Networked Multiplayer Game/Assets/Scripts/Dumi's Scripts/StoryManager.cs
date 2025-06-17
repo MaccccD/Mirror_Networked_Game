@@ -36,15 +36,13 @@ public class StoryManager : NetworkBehaviour
     // Component References
     private GameSessionManager sessionManager;
     private UIManager uiManager;
-    private AudioManager audioManager;
+    public AudioManager audioManager;
 
     void Start()
     {
         sessionManager = GameSessionManager.Instance;
         uiManager = FindObjectOfType<UIManager>();
-        audioManager = GetComponent<AudioManager>();
-
- 
+        audioManager = FindObjectOfType<AudioManager>();
     }
 
     void Update()
@@ -93,12 +91,11 @@ public class StoryManager : NetworkBehaviour
         RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You guys are both on different rooms but you will be able to see each other's thoughts as you work via the text chat together to defuse the bomb before the timer runs out.", PlayerRole.OfficePlayer, 10f);
         RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the office player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You guys are both on different rooms but you will be able to see each other's thoughts as you work via the text chat together to defuse the bomb before the timer runs out.", PlayerRole.BombPlayer, 10f);
         yield return new WaitForSeconds(10f);
-        RpcTriggerAudioCue("suspense_build");
-
-   //     RpcShowThoughtBubble("The security system  of the school has been tampered with. Restore the power back by turning on the light switch to see the bomb set up clearly.", PlayerRole.OfficePlayer, 10f);
-    //    RpcShowThoughtBubble("The security system  of the school has been tampered with. Restore the power back by turning on the light switch to see the bomb set up clearly.", PlayerRole.BombPlayer, 10f);
-     //   yield return new WaitForSeconds(10f);
-       // Debug.Log("I am also showing hence you can see the debug here");
+       
+         RpcShowThoughtBubble("The security system  of the school has been tampered with. Restore the power back by turning on the light switch to see the bomb set up clearly.", PlayerRole.OfficePlayer, 10f);
+         RpcShowThoughtBubble("The security system  of the school has been tampered with. Restore the power back by turning on the light switch to see the bomb set up clearly.", PlayerRole.BombPlayer, 10f);
+         yield return new WaitForSeconds(10f);
+         Debug.Log("I am also showing hence you can see the debug here");
 
 
 
@@ -130,7 +127,9 @@ public class StoryManager : NetworkBehaviour
         
         RpcShowThoughtBubble("The computer belongs to Mr. Du Plessis, Head of IT at St Francis College. But why would someone target him specifically?", PlayerRole.OfficePlayer, 4f);
         RpcShowThoughtBubble("The computer belongs to Mr. Du Plessis, Head of IT at St Francis College. But why would someone target him specifically?", PlayerRole.BombPlayer, 4f);
-       // RpcTriggerAudioCue("suspense_build");
+        RpcTriggerAudioCue("suspense_build");
+        Debug.Log("Suspense build audio is playing that's why you see me");
+
     }
 
     IEnumerator ExecuteAct2()
@@ -159,6 +158,7 @@ public class StoryManager : NetworkBehaviour
 
         //D: Increase tension
         RpcTriggerAudioCue("revelation_theme");
+        Debug.Log("revelation theme build audio is playing that's why you see me");
         ModifyBombTimer(-30f); // Lose 30 seconds for dramatic effect
     }
 
@@ -208,6 +208,8 @@ public class StoryManager : NetworkBehaviour
       
 
         RpcTriggerAudioCue("climax_resolution");
+        Debug.Log("climax build audio is playing that's why you see me");
+
     }
 
     IEnumerator ExecuteAct4()
