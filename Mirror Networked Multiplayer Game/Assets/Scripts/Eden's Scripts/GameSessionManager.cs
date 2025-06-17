@@ -211,30 +211,25 @@ public class GameSessionManager : NetworkBehaviour
         else if (role == PlayerRole.BombPlayer)
         {
             // Dumi: Bomb player sees the grid they need to manipulate and they put in the answer
-            uiManager.ShowLightSwitchGrid();
+            //uiManager.ButtonOrder();
         }
     }
 
     private System.Collections.IEnumerator ShowLightSwitchPatternCoroutine()
     {
         //Dumi: Generate and show pattern for 3 seconds.@sibahle you can change the logic if this is not how you envision it to work
-       // int[] pattern = GenerateLightSwitchPattern();
-      ///  uiManager.DisplayPattern(30f);
-        yield return new WaitForSeconds(30f);
+        
+        uiManager.DisplayPattern(3f);
+        yield return new WaitForSeconds(3f);
         uiManager.HidePattern();
 
         uiManager.ShowInstructionText("Communicate the pattern to your partner!");
     }
 
-    private int[] GenerateLightSwitchPattern()
-    {
-        return new int[] { 1, 3, 5, 2, 4 }; //Dumi: Example pattern. Sibahle you can chang this if this is not hw you want this to work.
-    }
-
     [Command(requiresAuthority = false)]
-    public void CmdLightSwitchInput(int gridPosition, NetworkConnectionToClient sender = null)
+    public void CmdLightSwitchInput(NetworkConnectionToClient sender = null)
     {
-        bool isCorrect = ValidateLightSwitchInput(gridPosition);
+        bool isCorrect = ValidateLightSwitchInput();
 
         if (isCorrect)
         {
@@ -548,9 +543,9 @@ public class GameSessionManager : NetworkBehaviour
 
     #region Utility Methods
 
-    bool ValidateLightSwitchInput(int position)
+    bool ValidateLightSwitchInput()
     {
-        // D: @sibahle you can add your validation logic here
+        Debug.Log("Light switch puzzle solved successfully"); //Sibahle: double-checking that execution of light switch puzzle is successful
         return true; // Simplified for example
     }
 

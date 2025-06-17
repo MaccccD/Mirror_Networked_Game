@@ -86,13 +86,14 @@ public class UIManager : MonoBehaviour
     public GameObject failureImage;
 
     [Header("Light Switch Puzzle UI")] //Sibahle's Switch on the Light puzzel ui/ Can change based on how she's implementing the logic 
-    public GameObject LightSwitchPanel;
-    public GameObject SecurityFootagePanel; //Dumi: Sibahle you can change this name if its confusing. I just named it like this bc the pattern the other player will see mimicks a security footage esp bc the panel will be dark like you envisoned it. 
-    public TMP_Text SecurityFootageText;
-    public GameObject PatternDisplayPanel;
-    public Button[] LightSwitchButtons; // Grid of buttons for bomb player
-    public GameObject LightGridPanel;
-
+    public GameObject OfficeDarkPanel; //Panel that will disappear once order is correct for office player
+    public GameObject BombDarkPanel; //Panel that will disappear once order is correct for office player
+    public GameObject PatternDisplay; //Sibahle: image that will activate & deactivate after every few seconds
+    public Button[] CorrectButtons; // Sibahle: Buttons player must click in order
+    public Button[] IncorrectButtons; // Sibahle: Wrong buttons that player shouldn't click
+    public GameObject warningText;
+    //public Animation DarkPanelAnimator;
+   
     [Header("Anagram Puzzle UI")]//Dumi Anagram puzzle ui logic
     public GameObject AnagramPanel;
     public TMP_Text AnagramDisplayText;
@@ -187,9 +188,9 @@ public class UIManager : MonoBehaviour
         if (InstructionPanel != null) InstructionPanel.SetActive(false);
         if (SuccessPanel != null) SuccessPanel.SetActive(false);
         if (FailurePanel != null) FailurePanel.SetActive(false);
-        if (LightSwitchPanel != null) LightSwitchPanel.SetActive(false);
-        if (SecurityFootagePanel != null) SecurityFootagePanel.SetActive(false);
-        if (PatternDisplayPanel != null) PatternDisplayPanel.SetActive(false);
+        if (OfficeDarkPanel != null) OfficeDarkPanel.SetActive(false);//Sibahle: changes in name
+        if (BombDarkPanel != null) BombDarkPanel.SetActive(false); //Sibahle: changes in name
+        if (PatternDisplay != null) PatternDisplay.SetActive(false);
         if (AnagramPanel != null) AnagramPanel.SetActive(false);
         if (StoryContextPanel != null) StoryContextPanel.SetActive(false);
         //if (PeriodicTablePanel != null) PeriodicTablePanel.SetActive(false);
@@ -307,19 +308,19 @@ public class UIManager : MonoBehaviour
     //D: Light Switch Puzzle Methods NB: Sibahle you can changed the logic here if that's not how it works according to how you envisioned it for the UI.
     public void ShowSecurityFootage(string footageText)
     {
-        if (SecurityFootagePanel != null && SecurityFootageText != null)
+        if (OfficeDarkPanel != null && BombDarkPanel != null)
         {
-            SecurityFootagePanel.SetActive(true);
-            SecurityFootageText.text = footageText;
+            OfficeDarkPanel.SetActive(true);
+            BombDarkPanel.SetActive(true);
+            
         }
     }
 
-    public void DisplayPattern(int[] pattern, float duration)
+    public void DisplayPattern(float duration)
     {
-        if (PatternDisplayPanel != null)
+        if (PatternDisplay != null)
         {
-            PatternDisplayPanel.SetActive(true);
-            // Implement pattern display logic here
+            PatternDisplay.SetActive(true);
             StartCoroutine(HidePatternAfterDelay(duration));
         }
     }
@@ -332,16 +333,55 @@ public class UIManager : MonoBehaviour
 
     public void HidePattern()
     {
-        if (PatternDisplayPanel != null)
-            PatternDisplayPanel.SetActive(false);
+        if (PatternDisplay != null)
+            PatternDisplay.SetActive(false);
     }
 
-    public void ShowLightSwitchGrid()
+    private int currentCorrectIndex = 0;
+    public void ButtonOrder(Button clickedButton)
     {
-        if (LightGridPanel != null)
+        if (currentCorrectIndex < CorrectButtons.Length && clickedButton == CorrectButtons[currentCorrectIndex]) //Sibahle: checking if player is complete/not and clicking buttons in the correct order
         {
-            LightGridPanel.SetActive(true);
+            currentCorrectIndex++;
+
+            if (currentCorrectIndex >= CorrectButtons.Length)
+            {
+                //DarkPanelAnimator.Play("Bomb_DPanel");
+                OfficeDarkPanel.SetActive(false);
+                BombDarkPanel.SetActive(false);
+                PatternDisplay.SetActive(false);
+            }
         }
+        else
+
+        {
+            foreach (Button btn in CorrectButtons) //Sibahle: For when correct buttons are clicked but in the wrong order
+            {
+                if (btn == clickedButton)
+                {
+                    StartCoroutine(WarningTextFlash());
+                    return;
+                }
+            }
+
+
+            foreach (Button btn in IncorrectButtons) //Sibahle: For when incorrect buttons are clicked
+            {
+                if (btn == clickedButton)
+                {
+                    StartCoroutine(FlashandReset());
+                    break;
+                }
+            }
+        }
+    }
+
+    IEnumerator WarningTextFlash()
+    {
+        warningText.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        warningText.SetActive(false);
+
     }
 
     public void ShowInstructionText(string instruction)
