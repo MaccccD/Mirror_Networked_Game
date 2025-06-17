@@ -218,9 +218,9 @@ public class GameSessionManager : NetworkBehaviour
     private System.Collections.IEnumerator ShowLightSwitchPatternCoroutine()
     {
         //Dumi: Generate and show pattern for 3 seconds.@sibahle you can change the logic if this is not how you envision it to work
-        int[] pattern = GenerateLightSwitchPattern();
-        uiManager.DisplayPattern(pattern, 3f);
-        yield return new WaitForSeconds(3f);
+       // int[] pattern = GenerateLightSwitchPattern();
+        uiManager.DisplayPattern(30f);
+        yield return new WaitForSeconds(30f);
         uiManager.HidePattern();
 
         uiManager.ShowInstructionText("Communicate the pattern to your partner!");
