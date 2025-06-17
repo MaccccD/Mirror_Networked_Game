@@ -22,6 +22,9 @@ public class StoryManager : NetworkBehaviour
 
     public FlashbackManager flashbackManager;
 
+    [Header("Animations")]
+    public Animator pageFlip;
+
   //  [Header("Audio Management")]
   //  public AudioSource storyAudioSource;
    // public AudioClip[] actTransitionSounds;
@@ -141,6 +144,7 @@ public class StoryManager : NetworkBehaviour
         yield return new WaitForSeconds(10f);
 
         //Dumi: @sibahle you can trigger the page flip anim here :
+        RpcTriggerPageAnimation();//Sibahle: page flip animation
         RpcShowStoryBeat("Mr. Du Plessis is a Computer Science teacher... that explains the technical sophistication of this bomb. Zipho must have spent years mastering the very skills Du Plessis said he'd never have.", PlayerRole.OfficePlayer, 8f);
         RpcShowStoryBeat("Mr. Du Plessis is a Computer Science teacher... that explains the technical sophistication of this bomb. Zipho must have spent years mastering the very skills Du Plessis said he'd never have.", PlayerRole.BombPlayer, 8f);
 
@@ -149,6 +153,7 @@ public class StoryManager : NetworkBehaviour
         yield return new WaitUntil(() => sessionManager.IsAnagramComplete());
 
         //Dumi: @sibahle you can trigger the page flip anim here :
+        RpcTriggerPageAnimation();//Sibahle: page flip animation
         RpcShowStoryBeat("Zipho's personal vendetta against Mr Du Plessi's was not random. It was caused by the teacher's words to him", PlayerRole.OfficePlayer, 4f);
         RpcShowStoryBeat("Mr Du Plessis said those words to Zipho to motivate him to take his work seriously.It was meant to build him, not destroy him confidence.", PlayerRole.BombPlayer, 3f);
 
@@ -164,11 +169,13 @@ public class StoryManager : NetworkBehaviour
         //Dumi Peak Tension - Zipho's Plan Unfolds
         storyState = StoryState.StoryReveal;
         //Dumi: @sibahle you can trigger the page flip anim here :
+        RpcTriggerPageAnimation();//Sibahle: page flip animation
         RpcShowStoryBeat("The bomb is more complex than I  initially thought. Zipho planned this strategically.", PlayerRole.OfficePlayer, 5f);
         RpcShowStoryBeat("There are multiple wire sequences... each one seems to represent something personal about  Zipho's motives.Each wire color represents a different emotion from that day. Find out what each wire represents as a starting point", PlayerRole.BombPlayer, 8f);
 
 
         //Dumi: @sibahle you can trigger the page flip anim here :
+        RpcTriggerPageAnimation();//Sibahle: page flip animation
         sessionManager.StartWireCutRepresentation("red");
         sessionManager.StartWireCutRepresentation("blue");
         sessionManager.StartWireCutRepresentation("yellow");
@@ -181,6 +188,7 @@ public class StoryManager : NetworkBehaviour
         yield return new WaitUntil(() => sessionManager.puzzle2Solved);
 
         //Dumi: @sibahle you can trigger the page flip anim here :
+        RpcTriggerPageAnimation();//Sibahle: page flip animation
         RpcShowStoryBeat("The wires have been cut but the timer on the bomb has not stopped. Zipho also used AI to further encyrpt this bomb", PlayerRole.OfficePlayer, 7f);
         RpcShowStoryBeat("If AI was used to further encrypt the bomb, then Zipho must have made a mistake somewhere. Look for something digital that Zipho may have used to get the AI encryption system", PlayerRole.BombPlayer, 7f);
 
@@ -189,6 +197,7 @@ public class StoryManager : NetworkBehaviour
         yield return new WaitUntil(() => sessionManager.puzzle1Solved);
 
         //Dumi: @sibahle you can trigger the page flip anim here :
+        RpcTriggerPageAnimation();//Sibahle: page flip animation
         RpcShowStoryBeat("This level of AI integration... Zipho didn't just learn programming, he became an expert. After 10 years of proving himself, something must have triggered this revenge plot.", PlayerRole.BombPlayer, 10f);
         RpcShowStoryBeat("This level of AI integration... Zipho didn't just learn programming, he became an expert. After 10 years of proving himself, something must have triggered this revenge plot.", PlayerRole.OfficePlayer, 10f);
         RpcShowStoryBeat("The password to get extra information from the AI assitant that Zipho  used to further encrypt the bomb has been retrieved. However, the bomb timer is still on. There is something else he used to set up the bomb detonation.", PlayerRole.OfficePlayer, 9f); 
@@ -206,12 +215,14 @@ public class StoryManager : NetworkBehaviour
         yield return new WaitUntil(() => sessionManager.bombdifuseComplete);
 
         // //Dumi: @sibahle you can trigger the page flip anim here :
+        RpcTriggerPageAnimation();//Sibahle: page flip animation
         RpcShowStoryBeat("Du Plessis probably doesn't even remember that day 10 years ago. But Zipho never forgot. The question is - does destroying a man's life over forgotten words solve anything?", PlayerRole.OfficePlayer, 8f);
         RpcShowStoryBeat("Du Plessis probably doesn't even remember that day 10 years ago. But Zipho never forgot. The question is - does destroying a man's life over forgotten words solve anything?", PlayerRole.BombPlayer, 9f);
 
         //Dumi :  Moral Choice Setup
         storyState = StoryState.StoryReveal;
         //Dumi: @sibahle you can trigger the page flip anim here :
+        RpcTriggerPageAnimation();//Sibahle: page flip animation
         RpcShowStoryBeat("The bomb has been successfully defused... but Zipho left one final choice.", PlayerRole.OfficePlayer, 4f);
         RpcShowStoryBeat("You can either:", PlayerRole.BombPlayer, 2f);
         RpcShowStoryBeat("1. Completely neutralize everything. Meaning ; erase everything, let  Mr Du Plessis never know how much damage his words caused", PlayerRole.OfficePlayer, 2f);
@@ -320,6 +331,14 @@ public class StoryManager : NetworkBehaviour
        // audioManager.PlayStoryAudio(audioKey);
     }
 
+    [ClientRpc]
+    void RpcTriggerPageAnimation()
+    {
+        if (pageFlip != null)
+        {
+            pageFlip.SetTrigger("PageFlip");
+        }
+    }
     #endregion
 
     #region SyncVar Hooks
