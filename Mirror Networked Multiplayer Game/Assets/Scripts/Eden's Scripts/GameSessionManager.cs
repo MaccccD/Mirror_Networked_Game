@@ -219,7 +219,7 @@ public class GameSessionManager : NetworkBehaviour
     {
         //Dumi: Generate and show pattern for 3 seconds.@sibahle you can change the logic if this is not how you envision it to work
        // int[] pattern = GenerateLightSwitchPattern();
-        uiManager.DisplayPattern(30f);
+      ///  uiManager.DisplayPattern(30f);
         yield return new WaitForSeconds(30f);
         uiManager.HidePattern();
 
