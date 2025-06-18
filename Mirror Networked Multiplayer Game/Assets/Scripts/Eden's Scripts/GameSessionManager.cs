@@ -51,7 +51,7 @@ public class GameSessionManager : NetworkBehaviour
     [Header("Story Integration")] //dumi: story intergration tracking
     [SyncVar] public int storyPoints = 0; // Tracks moral choices
     [SyncVar] public int communicationStyle = 0; // Tracks how players communicate
-    [SyncVar] public float bombTimer = 600f; // 10 minutes
+    [SyncVar] public float bombTimer = 900f; // 10 minutes
 
     //Eden: Exposed for UI logic
     public bool HasFirstPressedStart => firstPressedStart;

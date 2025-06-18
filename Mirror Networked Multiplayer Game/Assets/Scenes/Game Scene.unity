@@ -2940,7 +2940,7 @@ MonoBehaviour:
   bombdifuseComplete: 0
   storyPoints: 0
   communicationStyle: 0
-  bombTimer: 600
+  bombTimer: 900
 --- !u!114 &192174164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14439,7 +14439,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1004489394
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16791,7 +16791,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   remainingTime: 0
   currentTime: 900
-  timerText: {fileID: 2141982301}
+  timerText: {fileID: 1004489395}
   isPaused: 0
 --- !u!4 &1150040336
 Transform:
@@ -27899,7 +27899,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2141982301
 MonoBehaviour:
   m_ObjectHideFlags: 0
