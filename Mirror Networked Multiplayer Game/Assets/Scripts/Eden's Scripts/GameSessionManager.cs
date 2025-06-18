@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using Mirror;
 using System.Collections.Generic;
+using System.Linq;
+
 
 /*Eden: This script coordinates multiplayer session flow and ALL puzzle logic:
  *1.Tracks the first start click
@@ -24,6 +26,8 @@ public class GameSessionManager : NetworkBehaviour
 
     //Dumi: Dictionary to track each player's role
     private Dictionary<NetworkConnection, PlayerRole> playerRoles = new Dictionary<NetworkConnection, PlayerRole>();
+    [SyncVar(hook = nameof(OnPlayerRoleChanged))]
+    public PlayerRole localPlayerRole = PlayerRole.None;
 
     [Header("All Puzzle States")]
     [SyncVar(hook = nameof(OnPuzzle1SolvedChanged))]
@@ -32,9 +36,12 @@ public class GameSessionManager : NetworkBehaviour
     [SyncVar(hook = nameof(OnPuzzle2SolvedChanged))]
     public bool puzzle2Solved = false; //D: Wire Cutting Puzzle w the electricity due date logic
 
+    [SyncVar(hook = nameof(OnLightSwitchCompleteChanged))]
+    public bool lightSwitchComplete = false;
+
 
     //Dumi: puzzle bools to validate the correct implementation of them (the new Puzzles )
-    [SyncVar] public bool lightSwitchComplete = false;
+
     [SyncVar] public bool periodicTableComplete = false;
     [SyncVar] public bool anagramComplete = false;
     [SyncVar] public bool bombdifuseComplete = false;
@@ -135,27 +142,52 @@ public class GameSessionManager : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdSelectRole(string role, NetworkConnectionToClient sender = null)
     {
-        //Dumi: Convert string to PlayerRole enum
         PlayerRole selectedRole = role == "BombPlayer" ? PlayerRole.BombPlayer : PlayerRole.OfficePlayer;
 
         if (string.IsNullOrEmpty(firstRoleChoice))
         {
-            //D: record the first choice
+            // First player chooses
             firstRoleChoice = role;
-            //D: Store this player's role
             playerRoles[sender] = selectedRole;
+
+            // 🎯 THIS IS THE IMPORTANT PART - Call TargetRPC
+            Debug.Log($"[Server] Calling TargetSetPlayerRole for first player: {selectedRole}");
+            TargetSetPlayerRole(sender, selectedRole);
+
             Debug.Log($"[Server] firstRoleChoice set to '{role}' for connection {sender.connectionId}");
         }
         else if (role != firstRoleChoice)
         {
-            // Store second player's role (the opposite role)
+            // Second player chooses different role
             playerRoles[sender] = selectedRole;
-            // second pick → notify both clients that selection is done
+
+            // 🎯 THIS IS THE IMPORTANT PART - Call TargetRPC  
+            Debug.Log($"[Server] Calling TargetSetPlayerRole for second player: {selectedRole}");
+            TargetSetPlayerRole(sender, selectedRole);
+
             Debug.Log($"[Server] second pick = '{role}' for connection {sender.connectionId}, both chosen");
             RpcBothPlayersChosen();
         }
-        //Eden: If same role twice, ignore
+        // If same role twice, ignore (no change needed)
     }
+    // Target RPC to set role for specific client
+    [TargetRpc]
+    public void TargetSetPlayerRole(NetworkConnection target, PlayerRole role)
+    {
+        Debug.Log($"🎯 [TargetRPC] Setting role to: {role} for this client");
+        Debug.Log($"🎯 [TargetRPC] Before: localPlayerRole = {localPlayerRole}");
+
+        localPlayerRole = role;
+
+        Debug.Log($"🎯 [TargetRPC] After: localPlayerRole = {localPlayerRole}");
+        Debug.Log($"🎯 [TargetRPC] Role assignment complete!");
+    }
+    // Hook for when role changes
+    public void OnPlayerRoleChanged(PlayerRole oldRole, PlayerRole newRole)
+    {
+        Debug.Log($"[Client] Role changed from {oldRole} to {newRole}");
+    }
+
 
     #endregion
 
@@ -183,7 +215,7 @@ public class GameSessionManager : NetworkBehaviour
 
     private PlayerRole GetClientRole()
     {
-        return GetLocalPlayerRole();
+        return localPlayerRole;
     }
 
     #endregion
@@ -201,20 +233,44 @@ public class GameSessionManager : NetworkBehaviour
     [ClientRpc]
     void RpcInitializeLightSwitchPuzzle()
     {
-        Debug.Log("[Client] Initializing Light Switch Puzzle");
+        // TEMPORARY: Manually assign roles for testing
+        if (isServer)
+        {
+            localPlayerRole = PlayerRole.OfficePlayer; // Host gets office
+           // Debug.Log("🧪 [TEST] Host assigned OfficePlayer role");
+        }
+        else
+        {
+            localPlayerRole = PlayerRole.BombPlayer; // Client gets bomb
+           // Debug.Log("🧪 [TEST] Client assigned BombPlayer role");
+        }
+
+
+        // DEBUG: Verify network connection
+        Debug.Log($"[ROLE DEBUG] Local connection: {NetworkClient.connection != null}");
 
         PlayerRole role = GetClientRole();
+        Debug.Log($"[ROLE DEBUG] Final role: {role}"); // Add this
+
+        if (uiManager == null)
+        {
+            uiManager = UIManager.Instance;
+        }
 
         if (role == PlayerRole.OfficePlayer)
         {
-            Debug.Log("[Client] Office Player - Showing light puzzle");
+            Debug.Log("Activating OFFICE player UI");
             uiManager.ShowLightPuzzleForOfficePlayer();
             StartCoroutine(ShowLightSwitchPatternCoroutine());
         }
-        else if (role == PlayerRole.BombPlayer)
+        else if (role == PlayerRole.BombPlayer) // Explicit 'else if' for clarity
         {
-            Debug.Log("[Client] Bomb Player - Showing light puzzle");
+            Debug.Log("Activating BOMB player UI");
             uiManager.ShowLightPuzzleForBombPlayer();
+        }
+        else
+        {
+            Debug.LogError($"Invalid role detected: {role}");
         }
     }
 
@@ -223,7 +279,7 @@ public class GameSessionManager : NetworkBehaviour
         Debug.Log("[Client] Showing light pattern");
 
         // Show pattern
-        uiManager.DisplayPattern(3f);
+        uiManager.DisplayPattern(15f);
         yield return new WaitForSeconds(3f);
 
         // Hide pattern and show instructions
@@ -236,6 +292,10 @@ public class GameSessionManager : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdLightSwitchInput(NetworkConnectionToClient sender = null)
     {
+        if (!isServer) return;
+
+        if (lightSwitchComplete) return; // Add this guard clause
+
         bool isCorrect = ValidateLightSwitchInput();
 
         if (isCorrect)
@@ -626,6 +686,23 @@ public class GameSessionManager : NetworkBehaviour
         {
             UIManager.Instance.DisableWireButtons();
             UIManager.Instance.riddleContainer.gameObject.SetActive(true);
+        }
+    }
+    void OnLightSwitchCompleteChanged(bool oldVal, bool newVal)
+    {
+        if (newVal)
+        {
+            RpcLightSwitchComplete();
+        }
+    }
+
+    [ClientRpc]
+    void RpcLightSwitchComplete()
+    {
+        if (uiManager != null)
+        {
+            uiManager.OnLightSwitchComplete();
+            // Any other UI updates needed
         }
     }
 

@@ -318,42 +318,41 @@ public class UIManager : MonoBehaviour
     {
         Debug.Log($"OfficeDarkPanel exists: {OfficeDarkPanel != null}");
         Debug.Log($"PatternDisplay exists: {PatternDisplay != null}");
+        Debug.Log("Showing Office Player UI");
+        // Force disable bomb UI first
+        if (BombDarkPanel != null)
+        {
+            BombDarkPanel.SetActive(false);
+            Debug.Log("Bomb panel disabled");
+        }
 
         if (OfficeDarkPanel != null)
         {
             OfficeDarkPanel.SetActive(true);
-            Debug.Log("Activated OfficeDarkPanel");
+            Debug.Log("Office panel enabled");
         }
-        // Enable any office player specific controls
-        if (CorrectButtons != null)
-        {
-            foreach (Button btn in CorrectButtons)
-            {
-                btn.gameObject.SetActive(true);
-            }
-        }
+
+
     }
 
     public void ShowLightPuzzleForBombPlayer()
     {
         Debug.Log("Showing Bomb Player light puzzle UI");
-
-
         Debug.Log($"BombDarkPanel exists: {BombDarkPanel != null}");
 
-        if (BombDarkPanel != null)
-        {
-            BombDarkPanel.SetActive(true);
-            Debug.Log("Activated BombDarkPanel");
-        }
-        // Enable any bomb player specific controls
-        if (IncorrectButtons != null)
-        {
-            foreach (Button btn in IncorrectButtons)
-            {
-                btn.gameObject.SetActive(true);
-            }
-        }
+       Debug.Log("Showing Bomb Player UI");
+    // Force disable office UI first
+    if (OfficeDarkPanel != null)
+    {
+        OfficeDarkPanel.SetActive(false);
+        Debug.Log("Office panel disabled");
+    }
+    
+    if (BombDarkPanel != null)
+    {
+        BombDarkPanel.SetActive(true);
+        Debug.Log("Bomb panel enabled");
+    }
 
         ShowInstructionText("Wait for your partner to communicate the pattern");
     }
@@ -765,6 +764,17 @@ public class UIManager : MonoBehaviour
         //riddleContainer.SetActive(true); //Sibahle: Supposed to set active after Password Puzzle deactivates
     }
 
+    public void OnLightSwitchComplete()
+    {
+        // 1. Clean up puzzle-specific UI
+        if (OfficeDarkPanel != null) OfficeDarkPanel.SetActive(false);
+        if (BombDarkPanel != null) BombDarkPanel.SetActive(false);
+        if (PatternDisplay != null) PatternDisplay.SetActive(false);
+        Debug.Log($"[UI] Light switch UI cleaned. OfficePanel: {OfficeDarkPanel.activeSelf}, BombPanel: {BombDarkPanel.activeSelf}");
+        // 2. Show immediate visual feedback
+        ShowSuccess("Light switch puzzle completed!");
+
+    }
     IEnumerator Puzzle1WinSequence()
     {
         yield return new WaitForSeconds(5f);

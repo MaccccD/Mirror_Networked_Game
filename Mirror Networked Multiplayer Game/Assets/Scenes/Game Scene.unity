@@ -1512,9 +1512,9 @@ MonoBehaviour:
   BombFinalPanel: {fileID: 230119819}
   endofGamePanel: {fileID: 497090524}
   TimerText: {fileID: 920865078}
-  calendarBtn: {fileID: 0}
-  drawerBtn: {fileID: 0}
-  backtoWallBtn: {fileID: 0}
+  calendarBtn: {fileID: 1943998225}
+  drawerBtn: {fileID: 577408984}
+  backtoWallBtn: {fileID: 62177435}
   chalkclueTxt: {fileID: 0}
   puzzle1Container: {fileID: 567981315}
   letterFields:
@@ -2929,6 +2929,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  localPlayerRole: 0
   puzzle1Solved: 0
   puzzle2Solved: 0
   lightSwitchComplete: 0
@@ -5259,14 +5260,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1994399831}
   - {fileID: 741979532}
   m_Father: {fileID: 372600191}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1, y: -21.032959}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 25.3432, y: 62.653015}
+  m_SizeDelta: {x: -482.7943, y: -125.31}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &335488132
 MonoBehaviour:
@@ -13165,8 +13165,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1, y: -37.05591}
-  m_SizeDelta: {x: 0, y: 19.95304}
+  m_AnchoredPosition: {x: -29.221924, y: 29.75}
+  m_SizeDelta: {x: -685.9448, y: 59.492}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &920777125
 MonoBehaviour:
@@ -17889,7 +17889,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 59, y: -55}
+  m_AnchoredPosition: {x: 9, y: -55}
   m_SizeDelta: {x: 680.9, y: 762.03}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1238308799
@@ -21390,7 +21390,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1609750113
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26227,90 +26227,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1982711375}
-  m_CullTransparentMesh: 1
---- !u!222 &1983239759
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994399830}
-  m_CullTransparentMesh: 1
---- !u!1 &1994399830
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1994399831}
-  - component: {fileID: 1983239759}
-  - component: {fileID: 1994399833}
-  - component: {fileID: 1994399832}
-  m_Layer: 5
-  m_Name: Chalk Puzzle Clue
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1994399831
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994399830}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 335488131}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000011444, y: -0.000022888}
-  m_SizeDelta: {x: 680.9, y: 762.03}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1994399832
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994399830}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1994399833
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994399830}
   m_CullTransparentMesh: 1
 --- !u!1 &1999649598
 GameObject:
