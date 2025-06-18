@@ -350,6 +350,7 @@ public class UIManager : MonoBehaviour
     
     if (BombDarkPanel != null)
     {
+
         BombDarkPanel.SetActive(true);
         Debug.Log("Bomb panel enabled");
     }
@@ -366,7 +367,7 @@ public class UIManager : MonoBehaviour
 
     IEnumerator HidePatternAfterDelay(float delay)
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(1.5f); //Sibahle: changed from "delay" to "1.5f"
         HidePattern();
     }
 
