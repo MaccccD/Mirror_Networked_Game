@@ -32,20 +32,21 @@ public class GameSessionManager : NetworkBehaviour
     [Header("All Puzzle States")]
     [SyncVar(hook = nameof(OnPuzzle1SolvedChanged))]
     public bool puzzle1Solved = false; //D: Code Input puzzle with the word chalk and the animals
-
     [SyncVar(hook = nameof(OnPuzzle2SolvedChanged))]
     public bool puzzle2Solved = false; //D: Wire Cutting Puzzle w the electricity due date logic
-
     [SyncVar(hook = nameof(OnLightSwitchCompleteChanged))]
-    public bool lightSwitchComplete = false;
+    public bool lightSwitchComplete = false; //Light switch puzzle
+    [SyncVar(hook = nameof(OnPeriodicTableCompleteChanged))]
+    public bool periodicTableComplete = false; //periodic table puzzle
+    [SyncVar(hook = nameof(OnAnagramCompleteChanged))]
+    public bool anagramComplete = false;// anagram puzzle logic 
+    [SyncVar(hook = nameof(OnMoralChoiceCompleteChanged))]
+    public bool moralChoiceComplete = false;
+
 
 
     //Dumi: puzzle bools to validate the correct implementation of them (the new Puzzles )
-
-    [SyncVar] public bool periodicTableComplete = false;
-    [SyncVar] public bool anagramComplete = false;
     [SyncVar] public bool bombdifuseComplete = false;
-    [SyncVar] public bool moralChoiceComplete = false;
 
     [Header("Story Integration")] //dumi: story intergration tracking
     [SyncVar] public int storyPoints = 0; // Tracks moral choices
@@ -250,7 +251,7 @@ public class GameSessionManager : NetworkBehaviour
         Debug.Log($"[ROLE DEBUG] Local connection: {NetworkClient.connection != null}");
 
         PlayerRole role = GetClientRole();
-        Debug.Log($"[ROLE DEBUG] Final role: {role}"); // Add this
+        Debug.Log($"[ROLE DEBUG] Final role: {role}");
 
         if (uiManager == null)
         {
@@ -263,7 +264,7 @@ public class GameSessionManager : NetworkBehaviour
             uiManager.ShowLightPuzzleForOfficePlayer();
             StartCoroutine(ShowLightSwitchPatternCoroutine());
         }
-        else if (role == PlayerRole.BombPlayer) // Explicit 'else if' for clarity
+        else if (role == PlayerRole.BombPlayer) 
         {
             Debug.Log("Activating BOMB player UI");
             uiManager.ShowLightPuzzleForBombPlayer();
@@ -318,6 +319,7 @@ public class GameSessionManager : NetworkBehaviour
     [Server]
     public void StartAnagramPuzzle(string scrambled, string solution)
     {
+        Debug.Log("[Server] Starting anagram puzzle");
         RpcInitializeAnagramPuzzle(scrambled, solution);
     }
 
@@ -325,26 +327,32 @@ public class GameSessionManager : NetworkBehaviour
     void RpcInitializeAnagramPuzzle(string scrambled, string solution)
     {
         PlayerRole role = GetClientRole();
+        if (uiManager != null)
+        {
+            if (role == PlayerRole.OfficePlayer)
+            {
+                uiManager.ShowAnagramForOfficePlayer(scrambled);
+            }
+            else
+            {
+                uiManager.ShowAnagramForBombPlayer();
+            }
+        }
 
-        if (role == PlayerRole.OfficePlayer) //Dumi: The office player gets to do this puzzle so henc the role is the office player
-        {
-            uiManager.ShowAnagramDisplay($"Message on bomb: {scrambled}");
-            uiManager.ShowAnagramInput();
-        }
-        else
-        {
-            uiManager.ShowStoryContext("These letters mean something about Zipho. What could they mean ? Try help the office player figure what they mean");//Dumi: what the bomb player sees
-        }
     }
 
     [Command(requiresAuthority = false)]
     public void CmdSubmitAnagram(string playerAnswer, NetworkConnectionToClient sender = null)
     {
-        if (playerAnswer.ToUpper().Trim() == "notsmartenough")
+        if (anagramComplete) return;
+
+        bool isCorrect = playerAnswer.ToUpper().Trim() == "NOTSMARTENOUGH";
+        if (isCorrect)
         {
             anagramComplete = true;
+            Debug.Log("[Server] Anagram puzzle complete!");
             RpcAnagramSuccess();
-            AddStoryPoints(1); //Dumi: gain one story point for solving the puzzle correctly.
+            AddStoryPoints(1);
         }
         else
         {
@@ -352,6 +360,23 @@ public class GameSessionManager : NetworkBehaviour
             ModifyBombTimer(-5f);
         }
     }
+    void OnAnagramCompleteChanged(bool oldVal, bool newVal)
+    {
+        if (newVal)
+        {
+            RpcCleanupAnagramUI();
+        }
+    }
+
+    [ClientRpc]
+    void RpcCleanupAnagramUI()
+    {
+        if (uiManager != null)
+        {
+            uiManager.OnAnagramComplete();
+        }
+    }
+
 
     #endregion
 
@@ -361,7 +386,7 @@ public class GameSessionManager : NetworkBehaviour
     public void StartPeriodicTablePuzzle(int[] elements, string solution)
     {
         RpcInitializePeriodicTablePuzzle(elements, solution);
-        Debug.Log("Periodic table puzzle  has started!");
+        Debug.Log("[Server] Periodic table puzzle  has started!");
     }
 
     [ClientRpc]
@@ -369,20 +394,18 @@ public class GameSessionManager : NetworkBehaviour
     {
         PlayerRole role = GetClientRole();
 
-        if (role == PlayerRole.OfficePlayer) //Dumi: the office player will type in the correct answer to this puzzle as discussed
+        if (uiManager != null)
         {
-            uiManager.OfficeFinalPanel.SetActive(true);
-            uiManager.calendarBtn.SetActive(false);
-            uiManager.drawerBtn.SetActive(false);
-            uiManager.BombFinalPanel.SetActive(false);
-            uiManager.ShowStoryContext("The numbers on the computer have something to do with chemistry.");
-        }
-        else if (role == PlayerRole.BombPlayer) // dumi: the bomb player will the periodic table and needs to communicate with the O.P.
-        {
-            uiManager.OfficeFinalPanel.SetActive(false);
-            uiManager.backtoWallBtn.SetActive(false);
-            uiManager.BombFinalPanel.SetActive(true);
-            uiManager.ShowStoryContext("Cross-reference these numbers with the periodic table.");
+            if (role == PlayerRole.OfficePlayer)
+            {
+                uiManager.ShowPeriodicTableForOfficePlayer(elements);
+                uiManager.ShowStoryContext("The numbers on the computer have something to do with chemistry.");
+            }
+            else
+            {
+                uiManager.ShowPeriodicTableForBombPlayer();
+                uiManager.ShowStoryContext("Cross-reference these numbers with the periodic table.");
+            }
         }
     }
 
@@ -390,11 +413,13 @@ public class GameSessionManager : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdSubmitPeriodicSolution(string solution, NetworkConnectionToClient sender = null)
     {
-        if (solution.ToUpper() == "GENIUS")
+        if (periodicTableComplete) return;
+        bool isCorrrect = solution.ToUpper() == "GENIUS";
+        if (isCorrrect)
         {
             periodicTableComplete = true;
+            Debug.Log("[Server] Periodic table puzzle complete!");
             RpcPeriodicTableSuccess();
-            RpcTriggerStoryMoment("The word that started it all... 'You're just not a GENIUS, Zipho.' from the flashback!");
             AddStoryPoints(1);
         }
         else
@@ -403,6 +428,25 @@ public class GameSessionManager : NetworkBehaviour
             ModifyBombTimer(-15f);
         }
     }
+
+
+    void OnPeriodicTableCompleteChanged(bool oldVal, bool newVal)
+    {
+        if (newVal)
+        {
+            RpcCleanupPeriodicTableUI();
+        }
+    }
+
+    [ClientRpc]
+    void RpcCleanupPeriodicTableUI()
+    {
+        if (uiManager != null)
+        {
+            uiManager.OnPeriodicTableComplete();
+        }
+    }
+
     #endregion
 
     #region Act 3 Puzzzles
@@ -550,23 +594,27 @@ public class GameSessionManager : NetworkBehaviour
     [Server]
     public void StartMoralChoicePuzzle()
     {
+        Debug.Log("[SERVER] starting moral choice puzzle");
         RpcInitializeMoralChoicePuzzle();
+
     }
 
     [ClientRpc]
     void RpcInitializeMoralChoicePuzzle() //D: both players  see this
     {
-        uiManager.ShowMoralChoiceInterface();
-        uiManager.ShowChoiceOptions(new string[]
+        Debug.Log("[Client] Initializing moral choice");
+        if (uiManager != null)
         {
-            "Completely neutralize - No message left",
-            "Leave symbolic message - 'Words have power. Choose them wisely. - A former student'"
-        });
+            uiManager.ShowMoralChoiceInterface();
+        }
     }
 
     [Command(requiresAuthority = false)]
     public void CmdMakeMoralChoice(int choiceIndex, NetworkConnectionToClient sender = null)
     {
+        if (moralChoiceComplete) return;
+
+
         if (ValidateBothPlayersChoice(choiceIndex))
         {
             moralChoiceComplete = true;
@@ -585,6 +633,22 @@ public class GameSessionManager : NetworkBehaviour
         else
         {
             RpcShowChoiceConflict("You and your partner have different views on justice...");
+        }
+    }
+    void OnMoralChoiceCompleteChanged(bool oldVal, bool newVal)
+    {
+        if (newVal)
+        {
+            RpcCleanupMoralChoiceUI();
+        }
+    }
+
+    [ClientRpc]
+    void RpcCleanupMoralChoiceUI()
+    {
+        if (uiManager != null)
+        {
+            uiManager.OnMoralChoiceComplete();
         }
     }
 

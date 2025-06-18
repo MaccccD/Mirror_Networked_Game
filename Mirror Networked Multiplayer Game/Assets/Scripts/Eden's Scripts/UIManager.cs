@@ -354,7 +354,6 @@ public class UIManager : MonoBehaviour
         Debug.Log("Bomb panel enabled");
     }
 
-        ShowInstructionText("Wait for your partner to communicate the pattern");
     }
     public void DisplayPattern(float duration)
     {
@@ -416,6 +415,63 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void ShowPeriodicTableForOfficePlayer(int[] elements)
+    {
+        //D: Disable other UIs first
+        BombFinalPanel.SetActive(false);
+        calendarBtn.SetActive(false);
+        drawerBtn.SetActive(false);
+        //D: Enable office UI
+        OfficeFinalPanel.SetActive(true);
+        
+    }
+
+    public void ShowPeriodicTableForBombPlayer()
+    {
+        //D: Disable other UIs first
+        OfficeFinalPanel.SetActive(false);
+        backtoWallBtn.SetActive(false);
+
+        // D:Enable bomb UI
+        BombFinalPanel.SetActive(true);
+        
+    }
+
+    public void OnPeriodicTableComplete()
+    {
+        PeriodicSolutionInput.gameObject.SetActive(false);
+        ShowSuccess("Code cracked: GENIUS");
+    }
+    public void ShowAnagramForOfficePlayer(string scrambled)
+{
+      // Clean up other UIs
+      BombFinalPanel.SetActive(false);
+    
+      // Setup office player UI
+      OfficeFinalPanel.SetActive(true);
+      ShowAnagramDisplay($"Message on bomb: {scrambled}");
+      ShowAnagramInput();
+      Debug.Log("Showing anagram UI for office player");
+}
+
+public void ShowAnagramForBombPlayer()
+{
+    // Clean up other UIs
+    OfficeFinalPanel.SetActive(false);
+    
+    // Setup bomb player UI
+    BombFinalPanel.SetActive(true);
+    ShowStoryContext("Your partner sees a scrambled message. Help them solve it!");
+    Debug.Log("Showing anagram context for bomb player");
+}
+
+public void OnAnagramComplete()
+{
+    // Clean up
+    AnagramPanel.SetActive(false);
+    ShowSuccess("Message decoded!");
+    Debug.Log("Anagram puzzle UI cleaned up");
+}
     IEnumerator WarningTextFlash()
     {
         warningText.SetActive(true);
@@ -423,6 +479,45 @@ public class UIManager : MonoBehaviour
         warningText.SetActive(false);
 
     }
+
+    public void ShowMoralChoiceInterface()
+    {
+        // Clean up other UIs
+        OfficeFinalPanel.SetActive(false);
+        BombFinalPanel.SetActive(false);
+
+        // Setup moral choice UI
+         MoralChoicePanel.SetActive(true);
+
+        string[] options = {
+        "Completely neutralize - No message left",
+        "Leave symbolic message"
+    };
+
+        for (int i = 0; i < MoralChoiceButtons.Length && i < options.Length; i++)
+        {
+            MoralChoiceTexts[i].text = options[i];
+            int choiceIndex = i; 
+            MoralChoiceButtons[i].onClick.RemoveAllListeners();
+            MoralChoiceButtons[i].onClick.AddListener(() => MakeMoralChoice(choiceIndex));
+        }
+
+        Debug.Log("Showing moral choice interface");
+    }
+
+    public void OnMoralChoiceComplete()
+    {
+       
+        MoralChoicePanel.SetActive(false);
+        Debug.Log("Moral choice UI cleaned up");
+    }
+
+    public void MakeMoralChoice(int choiceIndex)
+    {
+        GameSessionManager.Instance.CmdMakeMoralChoice(choiceIndex);
+    }
+
+  
 
     public void ShowInstructionText(string instruction)
     {
@@ -506,14 +601,6 @@ public class UIManager : MonoBehaviour
         ShowStoryMoment(revealText, 3f);
     }
 
-    //Dumi :  Moral Choice Methods
-    public void ShowMoralChoiceInterface()
-    {
-        if (MoralChoicePanel != null)
-        {
-            MoralChoicePanel.SetActive(true);
-        }
-    }
 
     public void ShowChoiceOptions(string[] options)
     {
@@ -525,12 +612,12 @@ public class UIManager : MonoBehaviour
                 MoralChoiceTexts[i].text = options[i];
                 int choiceIndex = i;
                 MoralChoiceButtons[i].onClick.RemoveAllListeners();
-                MoralChoiceButtons[i].onClick.AddListener(() => MakeMoralChoice(choiceIndex));
+                MoralChoiceButtons[i].onClick.AddListener(() => MakeMoralChoices(choiceIndex));
             }
         }
     }
 
-    void MakeMoralChoice(int choiceIndex)
+    void MakeMoralChoices(int choiceIndex)
     {
         FindObjectOfType<GameSessionManager>()?.CmdMakeMoralChoice(choiceIndex);
     }
