@@ -391,9 +391,11 @@ public class GameSessionManager : NetworkBehaviour
         Debug.Log($"RPC received! isServer: {isServer}, isClient: {isClient}");
 
         // TEMPORARY: Manually assign roles for testing
-        if (isServer)
+        /*if (isServer)
         {
-            localPlayerRole = PlayerRole.OfficePlayer; // Host gets office player role
+            //localPlayerRole = PlayerRole.OfficePlayer; // Host gets office player role
+            PlayerRole role = GetClientRole(); //e
+
             Debug.Log("Setting role to OfficePlayer");
             if (uiManager != null)
             {
@@ -410,6 +412,17 @@ public class GameSessionManager : NetworkBehaviour
             {
                 uiManager.ShowPeriodicTableForBombPlayer();
             }
+        }*/
+        PlayerRole role = GetClientRole();
+        if (uiManager == null) uiManager = UIManager.Instance;
+
+        if (role == PlayerRole.OfficePlayer)
+        {
+            uiManager.ShowPeriodicTableForOfficePlayer(elements);
+        }
+        else if (role == PlayerRole.BombPlayer)
+        {
+            uiManager.ShowPeriodicTableForBombPlayer();
         }
     }
 
