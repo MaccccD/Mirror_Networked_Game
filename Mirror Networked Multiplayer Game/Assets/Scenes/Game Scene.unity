@@ -1496,6 +1496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 875c70bc8f25e1d43af2cef821d7b003, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TimerPanel: {fileID: 1515859098}
   StartPanel: {fileID: 1982711375}
   StartButton: {fileID: 1896395330}
   WaitingPanel: {fileID: 285644452}
