@@ -4,7 +4,7 @@ using TMPro;
 public class Timer : MonoBehaviour
 {
     public float remainingTime;
-    public float currentTime = 600f; //Sibahle: setting countdown timer for 10 minutes
+    public float currentTime = 900f; //Sibahle: setting countdown timer for 10 minutes //E ive changed it to 15
     public TMP_Text timerText;
 
     public bool isPaused = false; //Sibahle: this is for the end of the game
