@@ -848,11 +848,11 @@ public class GameSessionManager : NetworkBehaviour
         UIManager.Instance.ShowBombDeactivationWin();
     }
 
-    /*[ClientRpc] E i have commented this out works in storymanager
+    [ClientRpc]
     void RpcGameOver(bool success)
     {
         uiManager.ShowGameOverScreen(success, bombTimer);
-    }*/
+    }
 
     #endregion
 
