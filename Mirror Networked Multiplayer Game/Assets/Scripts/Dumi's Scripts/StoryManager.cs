@@ -109,7 +109,7 @@ public class StoryManager : NetworkBehaviour
 
         //Dumi :  Story Reveal: First glimpse of Zipho's motivation
         storyState = StoryState.StoryReveal;
-        yield return new WaitForSeconds(5f); //delay for seconds
+        yield return new WaitForSeconds(5f); //delay for 5 seconds
         Debug.Log("The delay is working!");
         RpcShowThoughtBubble("The lights are now on and the bomb player can now see the bomb display. By tampering with the security system to cause darkness, someone was trying to plant a bomb in the dark. But why ?", PlayerRole.OfficePlayer, 6f);
         RpcShowThoughtBubble("The lights are now on and I can see the bomb display. By tampering with the security system to cause darkness, someone was trying to plant a bomb in the dark. But why ?", PlayerRole.BombPlayer, 6f);
@@ -121,69 +121,66 @@ public class StoryManager : NetworkBehaviour
         //Sraer periodic tabe puzzle
         storyState = StoryState.PuzzleSolving;
         sessionManager.StartPeriodicTablePuzzle(new int[] { 32, 28, 92, 16 }, "GeNiUS");
-        yield return new WaitUntil(() => sessionManager.IsPeriodicTableComplete());
-
+        yield return new WaitUntil(() => sessionManager.periodicTableComplete);
         //Dumi :  Act 1 Story Conclusion
         ziphoMotivationKnown = true;
-        
-        RpcShowThoughtBubble("The computer belongs to Mr. Du Plessis, Head of IT at St Francis College. But why would someone target him specifically?", PlayerRole.OfficePlayer, 4f);
-        RpcShowThoughtBubble("The computer belongs to Mr. Du Plessis, Head of IT at St Francis College. But why would someone target him specifically?", PlayerRole.BombPlayer, 4f);
+        yield return new WaitForSeconds(5f); //delay for 5  seconds
+        RpcShowThoughtBubble("The computer belongs to Mr. Du Plessis, Head of IT at St Francis College. But why would someone target him specifically?", PlayerRole.OfficePlayer, 6f);
+        RpcShowThoughtBubble("The computer belongs to Mr. Du Plessis, Head of IT at St Francis College. But why would someone target him specifically?", PlayerRole.BombPlayer, 6f);
         RpcTriggerAudioCue("suspense_build");
         Debug.Log("Suspense build audio is playing that's why you see me");
-
+        yield return new WaitForSeconds(6f); //delay for seconds
     }
 
     IEnumerator ExecuteAct2()
     {
         currentAct = GameAct.Act2_Reaction;
-
         //Dumi :  10-Year Flashback Setup
         storyState = StoryState.StoryReveal;
         RpcShowFlashback();//Dumi: showing the flashback
-        flashbackRevealed = true;
-        yield return new WaitForSeconds(10f);
-
+        flashbackRevealed = true; 
+        yield return new WaitForSeconds(25f); //testing this now
         //Dumi: @sibahle you can trigger the page flip anim here :
         RpcTriggerPageAnimation();//Sibahle: page flip animation
         RpcShowStoryBeat("Mr. Du Plessis is a Computer Science teacher... that explains the technical sophistication of this bomb. Zipho must have spent years mastering the very skills Du Plessis said he'd never have.", PlayerRole.OfficePlayer, 8f);
         RpcShowStoryBeat("Mr. Du Plessis is a Computer Science teacher... that explains the technical sophistication of this bomb. Zipho must have spent years mastering the very skills Du Plessis said he'd never have.", PlayerRole.BombPlayer, 8f);
+        yield return new WaitForSeconds(8f); //delay for seconds
 
         storyState = StoryState.PuzzleSolving;
         sessionManager.StartAnagramPuzzle("hguonetramston", "notsmartenough");
-        yield return new WaitUntil(() => sessionManager.IsAnagramComplete());
+        yield return new WaitUntil(() => sessionManager.anagramComplete);
 
         //Dumi: @sibahle you can trigger the page flip anim here :
         RpcTriggerPageAnimation();//Sibahle: page flip animation
-        RpcShowStoryBeat("Zipho's personal vendetta against Mr Du Plessi's was not random. It was caused by the teacher's words to him", PlayerRole.OfficePlayer, 4f);
-        RpcShowStoryBeat("Mr Du Plessis said those words to Zipho to motivate him to take his work seriously.It was meant to build him, not destroy him confidence.", PlayerRole.BombPlayer, 3f);
-
-        //D: Increase tension
+        yield return new WaitForSeconds(5f); //delay for 5 seconds
+        RpcShowStoryBeat("Zipho's personal vendetta against Mr Du Plessi's was not random. It was caused by the teacher's words to him", PlayerRole.OfficePlayer, 5f);
+        RpcShowStoryBeat("Mr Du Plessis said those words to Zipho to motivate him to take his work seriously.It was meant to build him, not destroy him confidence.", PlayerRole.BombPlayer, 5f);
+        yield return new WaitForSeconds(5f); //delay for 5 seconds
         RpcTriggerAudioCue("revelation_theme");
         Debug.Log("revelation theme build audio is playing that's why you see me");
         ModifyBombTimer(-30f); // Lose 30 seconds for dramatic effect
+        yield return new WaitForSeconds(5f); //delay for seconds
     }
 
     IEnumerator ExecuteAct3()
     {
         currentAct = GameAct.Act3_Action;
-
         //Dumi Peak Tension - Zipho's Plan Unfolds
         storyState = StoryState.StoryReveal;
         //Dumi: @sibahle you can trigger the page flip anim here :
         RpcTriggerPageAnimation();//Sibahle: page flip animation
-        RpcShowStoryBeat("The bomb is more complex than I  initially thought. Zipho planned this strategically.", PlayerRole.OfficePlayer, 5f);
+        yield return new WaitForSeconds(5f); //delay for 5 seconds
+        RpcShowStoryBeat("The bomb is more complex than I  initially thought. Zipho planned this strategically.", PlayerRole.OfficePlayer, 8f);
         RpcShowStoryBeat("There are multiple wire sequences... each one seems to represent something personal about  Zipho's motives.Each wire color represents a different emotion from that day. Find out what each wire represents as a starting point", PlayerRole.BombPlayer, 8f);
-
-
+        yield return new WaitForSeconds(8f); //delay for 5 seconds
         //Dumi: @sibahle you can trigger the page flip anim here :
         RpcTriggerPageAnimation();//Sibahle: page flip animation
+        yield return new WaitForSeconds(5f); //delay for 5 seconds
         sessionManager.StartWireCutRepresentation("red");
         sessionManager.StartWireCutRepresentation("blue");
         sessionManager.StartWireCutRepresentation("yellow");
         sessionManager.StartWireCutRepresentation("green");
-
-
-
+        yield return new WaitForSeconds(5f); //delay for 5 seconds
         //Dumi" start the wire cut puzzle:
         // Dumi : Sibahle's Light Switch Memory Puzzle with Story Context
         storyState = StoryState.PuzzleSolving;
@@ -192,9 +189,10 @@ public class StoryManager : NetworkBehaviour
 
         //Dumi: @sibahle you can trigger the page flip anim here :
         RpcTriggerPageAnimation();//Sibahle: page flip animation
+        yield return new WaitForSeconds(5f); //delay for 5 seconds
         RpcShowStoryBeat("The wires have been cut but the timer on the bomb has not stopped. Zipho also used AI to further encyrpt this bomb", PlayerRole.OfficePlayer, 7f);
         RpcShowStoryBeat("If AI was used to further encrypt the bomb, then Zipho must have made a mistake somewhere. Look for something digital that Zipho may have used to get the AI encryption system", PlayerRole.BombPlayer, 7f);
-
+        yield return new WaitForSeconds(7f); //delay for 5 seconds
         // Dumi : Sibahle's Light Switch Memory Puzzle with Story Context
         storyState = StoryState.PuzzleSolving;
         sessionManager.StartChalkPuzzle();
@@ -202,40 +200,40 @@ public class StoryManager : NetworkBehaviour
 
         //Dumi: @sibahle you can trigger the page flip anim here :
         RpcTriggerPageAnimation();//Sibahle: page flip animation
+        yield return new WaitForSeconds(5f); //delay for 5 seconds
         RpcShowStoryBeat("This level of AI integration... Zipho didn't just learn programming, he became an expert. After 10 years of proving himself, something must have triggered this revenge plot.", PlayerRole.BombPlayer, 10f);
         RpcShowStoryBeat("This level of AI integration... Zipho didn't just learn programming, he became an expert. After 10 years of proving himself, something must have triggered this revenge plot.", PlayerRole.OfficePlayer, 10f);
         RpcShowStoryBeat("The password to get extra information from the AI assitant that Zipho  used to further encrypt the bomb has been retrieved. However, the bomb timer is still on. There is something else he used to set up the bomb detonation.", PlayerRole.OfficePlayer, 9f); 
         RpcShowStoryBeat("Some bombs have  button(s) that need to be pressed in a specific order to switch it off. Zipho had this in mind while planting this bomb threat. Find the buttons that need to be disabled in the bomb. ", PlayerRole.OfficePlayer, 9f);
-      
-
+        yield return new WaitForSeconds(10f); //delay for 5 seconds
         RpcTriggerAudioCue("climax_resolution");
         Debug.Log("climax build audio is playing that's why you see me");
-
+        yield return new WaitForSeconds(6f); //delay for seconds
     }
 
     IEnumerator ExecuteAct4()
     {
         currentAct = GameAct.Act4_Resolution;
-
-       
         storyState = StoryState.PuzzleSolving;
         sessionManager.StartBombDisablePuzzle();
         yield return new WaitUntil(() => sessionManager.bombdifuseComplete);
 
         // //Dumi: @sibahle you can trigger the page flip anim here :
         RpcTriggerPageAnimation();//Sibahle: page flip animation
+        yield return new WaitForSeconds(5f); //delay for 5 seconds
         RpcShowStoryBeat("Du Plessis probably doesn't even remember that day 10 years ago. But Zipho never forgot. The question is - does destroying a man's life over forgotten words solve anything?", PlayerRole.OfficePlayer, 8f);
         RpcShowStoryBeat("Du Plessis probably doesn't even remember that day 10 years ago. But Zipho never forgot. The question is - does destroying a man's life over forgotten words solve anything?", PlayerRole.BombPlayer, 9f);
-
+        yield return new WaitForSeconds(8f); //delay for seconds
         //Dumi :  Moral Choice Setup
         storyState = StoryState.StoryReveal;
         //Dumi: @sibahle you can trigger the page flip anim here :
         RpcTriggerPageAnimation();//Sibahle: page flip animation
-        RpcShowStoryBeat("The bomb has been successfully defused... but Zipho left one final choice.", PlayerRole.OfficePlayer, 4f);
-        RpcShowStoryBeat("You can either:", PlayerRole.BombPlayer, 2f);
-        RpcShowStoryBeat("1. Completely neutralize everything. Meaning ; erase everything, let  Mr Du Plessis never know how much damage his words caused", PlayerRole.OfficePlayer, 2f);
-        RpcShowStoryBeat("2. Leave a message. Meaning; a clear reminder that words have consequences", PlayerRole.BombPlayer, 3f);
-
+        yield return new WaitForSeconds(6f); //delay for seconds
+        RpcShowStoryBeat("The bomb has been successfully defused... but Zipho left one final choice.", PlayerRole.OfficePlayer, 8f);
+        RpcShowStoryBeat("You can either:", PlayerRole.BombPlayer, 5f);
+        RpcShowStoryBeat("1. Completely neutralize everything. Meaning ; erase everything, let  Mr Du Plessis never know how much damage his words caused", PlayerRole.OfficePlayer, 8f);
+        RpcShowStoryBeat("2. Leave a message. Meaning; a clear reminder that words have consequences", PlayerRole.BombPlayer, 8f);
+        yield return new WaitForSeconds(8f); //delay for seconds
         // Dumi : Final Moral Choice Puzzle
         storyState = StoryState.PuzzleSolving;
         sessionManager.StartMoralChoicePuzzle();
@@ -243,6 +241,7 @@ public class StoryManager : NetworkBehaviour
 
         // Game Resolution Based on Choices
         storyState = StoryState.GameEnd;
+        yield return new WaitForSeconds(5f); //delay for seconds
         if (storyPoints >= 5) //D Compassionate choices throughout
         {
             RpcShowEnding("redemption");
