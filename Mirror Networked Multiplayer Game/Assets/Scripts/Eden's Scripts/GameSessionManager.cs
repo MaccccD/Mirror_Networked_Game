@@ -243,7 +243,9 @@ public class GameSessionManager : NetworkBehaviour
         else
         {
             localPlayerRole = PlayerRole.BombPlayer; // Client gets bomb
-           // Debug.Log("🧪 [TEST] Client assigned BombPlayer role");
+            Debug.Log("Activating BOMB player UI");
+            uiManager.ShowLightPuzzleForBombPlayer();
+            // Debug.Log("🧪 [TEST] Client assigned BombPlayer role");
         }
 
 
@@ -280,8 +282,8 @@ public class GameSessionManager : NetworkBehaviour
         Debug.Log("[Client] Showing light pattern");
 
         // Show pattern
-        uiManager.DisplayPattern(15f);
-        yield return new WaitForSeconds(3f);
+        uiManager.DisplayPattern(5f);
+        yield return new WaitForSeconds(5f);
 
         // Hide pattern and show instructions
         uiManager.HidePattern();
@@ -766,7 +768,8 @@ public class GameSessionManager : NetworkBehaviour
         if (uiManager != null)
         {
             uiManager.OnLightSwitchComplete();
-            // Any other UI updates needed
+            uiManager.OfficeFinalPanel.SetActive(true);
+            uiManager.BombFinalPanel.SetActive(true);
         }
     }
 

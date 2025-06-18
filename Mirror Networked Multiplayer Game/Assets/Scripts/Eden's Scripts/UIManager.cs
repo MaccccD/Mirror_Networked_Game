@@ -331,6 +331,16 @@ public class UIManager : MonoBehaviour
             OfficeDarkPanel.SetActive(true);
             Debug.Log("Office panel enabled");
         }
+        // Enable all the buttons for interaction
+        foreach (Button btn in CorrectButtons)
+        {
+            btn.interactable = true;
+        }
+
+        foreach (Button btn in IncorrectButtons)
+        {
+            btn.interactable = true;
+        }
 
 
     }
@@ -353,6 +363,16 @@ public class UIManager : MonoBehaviour
         BombDarkPanel.SetActive(true);
         Debug.Log("Bomb panel enabled");
     }
+        // Enable all the buttons for interaction
+        foreach (Button btn in CorrectButtons)
+        {
+            btn.interactable = true;
+        }
+
+        foreach (Button btn in IncorrectButtons)
+        {
+            btn.interactable = true;
+        }
 
     }
     public void DisplayPattern(float duration)
@@ -385,11 +405,24 @@ public class UIManager : MonoBehaviour
 
             if (currentCorrectIndex >= CorrectButtons.Length)
             {
+
+                // Notify the server
+                GameSessionManager.Instance.CmdLightSwitchInput();
                 //DarkPanelAnimator.Play("Bomb_DPanel");
                 OfficeDarkPanel.SetActive(false);
                 BombDarkPanel.SetActive(false);
                 PatternDisplay.SetActive(false);
-            }
+
+                // Disable buttons
+                foreach (Button btn in CorrectButtons)
+                {
+                    btn.interactable = false;
+                }
+                foreach (Button btn in IncorrectButtons)
+                {
+                    btn.interactable = false;
+                }
+        }
         }
         else
 
@@ -398,17 +431,18 @@ public class UIManager : MonoBehaviour
             {
                 if (btn == clickedButton)
                 {
+
                     StartCoroutine(WarningTextFlash());
                     return;
                 }
             }
-
 
             foreach (Button btn in IncorrectButtons) //Sibahle: For when incorrect buttons are clicked
             {
                 if (btn == clickedButton)
                 {
                     StartCoroutine(FlashandReset());
+                    GameSessionManager.Instance.CmdLightSwitchInput(); //d: triggers the failure case:
                     break;
                 }
             }
@@ -526,6 +560,13 @@ public void OnAnagramComplete()
             InstructionPanel.SetActive(true);
             InstructionText.text = instruction;
         }
+    }
+
+    private IEnumerator HideInstructionPanel()
+    {
+        yield return new WaitForSeconds(8f);
+        InstructionPanel.SetActive(false);
+        Debug.Log("Instruction panel has been hidden !");
     }
 
     // Dumi: Anagram Puzzle Methods
@@ -857,6 +898,7 @@ public void OnAnagramComplete()
         if (OfficeDarkPanel != null) OfficeDarkPanel.SetActive(false);
         if (BombDarkPanel != null) BombDarkPanel.SetActive(false);
         if (PatternDisplay != null) PatternDisplay.SetActive(false);
+        StartCoroutine(HideInstructionPanel());
         Debug.Log($"[UI] Light switch UI cleaned. OfficePanel: {OfficeDarkPanel.activeSelf}, BombPanel: {BombDarkPanel.activeSelf}");
         // 2. Show immediate visual feedback
         ShowSuccess("Light switch puzzle completed!");
