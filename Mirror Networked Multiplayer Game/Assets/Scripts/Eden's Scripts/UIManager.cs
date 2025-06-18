@@ -870,6 +870,7 @@ public void OnAnagramComplete()
         }
         else
         {
+            GameSessionManager.Instance.CmdReduceTimeForChalkPuzzle();
             StartCoroutine(FlashWrong());
         }
     }

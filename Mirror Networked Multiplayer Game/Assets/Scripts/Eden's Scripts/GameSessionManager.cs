@@ -658,6 +658,11 @@ public class GameSessionManager : NetworkBehaviour
 
     #endregion
 
+    [Command(requiresAuthority = false)] //Eden: manages timer going down for chalk puzzle
+    public void CmdReduceTimeForChalkPuzzle()
+    {
+        ModifyBombTimer(-10f); 
+    }
 
     #region Story Management
 
