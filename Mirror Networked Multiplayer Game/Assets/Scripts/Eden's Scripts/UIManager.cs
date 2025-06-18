@@ -564,7 +564,7 @@ public void OnAnagramComplete()
 
     private IEnumerator HideInstructionPanel()
     {
-        yield return new WaitForSeconds(8f);
+        yield return new WaitForSeconds(0f);
         InstructionPanel.SetActive(false);
         Debug.Log("Instruction panel has been hidden !");
     }
@@ -684,11 +684,11 @@ public void OnAnagramComplete()
     //Dumi:  General Feedback Methods
     public void ShowSuccess(string message)
     {
-        if (SuccessPanel != null && SuccessText != null)
+        if (SuccessPanel != null)
         {
             SuccessPanel.SetActive(true);
-            SuccessText.text = message;
-            StartCoroutine(HideSuccessAfterDelay(2f));
+          ///  SuccessText.text = message;
+            StartCoroutine(HideSuccessAfterDelay(5f));
         }
     }
 
@@ -894,14 +894,14 @@ public void OnAnagramComplete()
 
     public void OnLightSwitchComplete()
     {
-        // 1. Clean up puzzle-specific UI
-        if (OfficeDarkPanel != null) OfficeDarkPanel.SetActive(false);
-        if (BombDarkPanel != null) BombDarkPanel.SetActive(false);
-        if (PatternDisplay != null) PatternDisplay.SetActive(false);
+        OfficeDarkPanel.SetActive(false);
+        BombDarkPanel.SetActive(false);
+        PatternDisplay.SetActive(false);
         StartCoroutine(HideInstructionPanel());
-        Debug.Log($"[UI] Light switch UI cleaned. OfficePanel: {OfficeDarkPanel.activeSelf}, BombPanel: {BombDarkPanel.activeSelf}");
         // 2. Show immediate visual feedback
         ShowSuccess("Light switch puzzle completed!");
+        Debug.Log($"[UI] Light switch UI cleaned. OfficePanel: {OfficeDarkPanel.activeSelf}, BombPanel: {BombDarkPanel.activeSelf}");
+      
 
     }
     IEnumerator Puzzle1WinSequence()

@@ -297,19 +297,13 @@ public class GameSessionManager : NetworkBehaviour
     {
         if (!isServer) return;
 
-        if (lightSwitchComplete) return; // Add this guard clause
-
-        bool isCorrect = ValidateLightSwitchInput();
-
-        if (isCorrect)
+        if (!lightSwitchComplete)
         {
-            if (!lightSwitchComplete)
-            {
-                lightSwitchComplete = true;
-                AddStoryPoints(1);
-                Debug.Log("[Server] Light Switch Puzzle complete!");
-            }
+            lightSwitchComplete = true;
+            AddStoryPoints(1);
+            Debug.Log("[Server] Light Switch Puzzle complete!");
         }
+
         else
         {
             RpcLightSwitchFailure();
@@ -394,19 +388,27 @@ public class GameSessionManager : NetworkBehaviour
     [ClientRpc]
     void RpcInitializePeriodicTablePuzzle(int[] elements, string solution)
     {
-        PlayerRole role = GetClientRole();
+        Debug.Log($"RPC received! isServer: {isServer}, isClient: {isClient}");
 
-        if (uiManager != null)
+        // TEMPORARY: Manually assign roles for testing
+        if (isServer)
         {
-            if (role == PlayerRole.OfficePlayer)
+            localPlayerRole = PlayerRole.OfficePlayer; // Host gets office player role
+            Debug.Log("Setting role to OfficePlayer");
+            if (uiManager != null)
             {
                 uiManager.ShowPeriodicTableForOfficePlayer(elements);
-                uiManager.ShowStoryContext("The numbers on the computer have something to do with chemistry.");
             }
-            else
+
+        }
+        else
+        {
+            localPlayerRole = PlayerRole.BombPlayer; //sever/client gets the bomb player role
+            Debug.Log("Setting role to BombPlayer - Activating BOMB player UI");
+            Debug.Log("Activating BOMB player UI");
+            if (uiManager != null)
             {
                 uiManager.ShowPeriodicTableForBombPlayer();
-                uiManager.ShowStoryContext("Cross-reference these numbers with the periodic table.");
             }
         }
     }
@@ -767,9 +769,9 @@ public class GameSessionManager : NetworkBehaviour
     {
         if (uiManager != null)
         {
+            lightSwitchComplete = true;
             uiManager.OnLightSwitchComplete();
-            uiManager.OfficeFinalPanel.SetActive(true);
-            uiManager.BombFinalPanel.SetActive(true);
+           
         }
     }
 

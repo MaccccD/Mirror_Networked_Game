@@ -87,33 +87,34 @@ public class StoryManager : NetworkBehaviour
         currentAct = GameAct.Act1_Setup;
         //Dumi:  Story Introduction like we discussed
         storyState = StoryState.IntroDialogue;
-     
-        RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You guys are both on different rooms but you will be able to see each other's thoughts as you work via the text chat together to defuse the bomb before the timer runs out.", PlayerRole.OfficePlayer, 10f);
-        RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the office player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You guys are both on different rooms but you will be able to see each other's thoughts as you work via the text chat together to defuse the bomb before the timer runs out.", PlayerRole.BombPlayer, 10f);
-        yield return new WaitForSeconds(10f);
-       
-         RpcShowStoryBeat("The security system  of the school has been tampered with. Restore the power back by turning on the light switch to see the bomb set up clearly.", PlayerRole.OfficePlayer, 10f);
-         RpcShowStoryBeat("The security system  of the school has been tampered with. Restore the power back by turning on the light switch to see the bomb set up clearly.", PlayerRole.BombPlayer, 10f);
+        RpcTriggerPageAnimation();
+         RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You guys are both on different rooms but you will be able to see each other's thoughts as you work via the text chat together to defuse the bomb before the timer runs out.", PlayerRole.OfficePlayer, 10f);
+         RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the office player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You guys are both on different rooms but you will be able to see each other's thoughts as you work via the text chat together to defuse the bomb before the timer runs out.", PlayerRole.BombPlayer, 10f);
          yield return new WaitForSeconds(10f);
+       
+         RpcShowStoryBeat("The security system  of the school has been tampered with. Restore the power back by turning on the light switch to see the bomb set up clearly.", PlayerRole.OfficePlayer, 7f);
+         RpcShowStoryBeat("The security system  of the school has been tampered with. Restore the power back by turning on the light switch to see the bomb set up clearly.", PlayerRole.BombPlayer, 7f);
+         yield return new WaitForSeconds(7f);
          Debug.Log("I am also showing hence you can see the debug here");
 
 
         // Dumi : Start Sibahle's  Light Switch Puzzle
         storyState = StoryState.PuzzleSolving;
         sessionManager.StartLightSwitchPuzzle();
-        yield return new WaitUntil(() => sessionManager.IsLightSwitchComplete());
+        yield return new WaitUntil(() => sessionManager.lightSwitchComplete);
 
         //Dumi :  Story Reveal: First glimpse of Zipho's motivation
         storyState = StoryState.StoryReveal;
+        yield return new WaitForSeconds(5f); //delay for seconds
+        Debug.Log("The delay is working!");
         RpcShowThoughtBubble("The lights are now on and the bomb player can now see the bomb display. By tampering with the security system to cause darkness, someone was trying to plant a bomb in the dark. But why ?", PlayerRole.OfficePlayer, 6f);
         RpcShowThoughtBubble("The lights are now on and I can see the bomb display. By tampering with the security system to cause darkness, someone was trying to plant a bomb in the dark. But why ?", PlayerRole.BombPlayer, 6f);
-
+        yield return new WaitForSeconds(6f); //delay for seconds
         //Dumi: Periodic Table Puzzle Introdcution.
         RpcShowThoughtBubble("To find out the reason why a bomb has been planted, we need to access any computer files that might gives us information.", PlayerRole.BombPlayer, 6f);
         RpcShowThoughtBubble("To find out the reason why a bomb has been planted, we need to access any computer files that might gives us information.", PlayerRole.OfficePlayer, 6f);
-        RpcShowThoughtBubble("Let me ask my partner what they see on their screen via the text chat", PlayerRole.OfficePlayer, 3f);
-        RpcShowThoughtBubble("Let me ask my partner what they see on their screen via the text chat", PlayerRole.BombPlayer, 3f);
-        //Dumi: Now start periodic table puzzle
+        yield return new WaitForSeconds(6f); //delay for seconds
+        //Sraer periodic tabe puzzle
         storyState = StoryState.PuzzleSolving;
         sessionManager.StartPeriodicTablePuzzle(new int[] { 32, 28, 92, 16 }, "GeNiUS");
         yield return new WaitUntil(() => sessionManager.IsPeriodicTableComplete());
