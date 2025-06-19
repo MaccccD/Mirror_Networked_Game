@@ -3202,7 +3202,7 @@ MonoBehaviour:
   syncInterval: 0
   currentAct: 0
   storyState: 0
-  bombTimer: 900
+  bombTimer: 600
   storyPoints: 0
   flashbackRevealed: 0
   ziphoMotivationKnown: 0
