@@ -512,6 +512,7 @@ public class UIManager : MonoBehaviour
         calendarBtn.interactable = true;
         periodicPasswordsContainer.gameObject.SetActive(false);
         chalkclueTxt.gameObject.SetActive(true);
+
     }
 
     public void ShowWireCutForBombPlayer()
@@ -524,7 +525,7 @@ public class UIManager : MonoBehaviour
         {
             btn.interactable = true;
         }
-      
+        errorFlashPanel.SetActive(false);   
     }
 
     public void ShowBombDisableForOfficePlayer()
@@ -796,7 +797,7 @@ public void OnAnagramComplete()
         if (FailurePanel != null && failureImage != null)
         {
             FailurePanel.SetActive(true);
-            failureImage.gameObject.SetActive(true);
+          //  failureImage.gameObject.SetActive(true);
             StartCoroutine(HideFailureAfterDelay(2f));
         }
     }
@@ -829,15 +830,13 @@ public void OnAnagramComplete()
 
     IEnumerator FlashErrorPanel()
     {
-     //   errorFlashPanel.SetActive(true);
+        errorFlashPanel.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
         //errorFlashText.gameObject.SetActive(true);
-
-        for (int i = 0; i < 3; i++)
+         for (int i = 0; i < 3; i++)
         {
-            yield return new WaitForSeconds(0.5f);
-            errorFlashPanel.SetActive(!errorFlashPanel.activeSelf);
+           errorFlashPanel.SetActive(!errorFlashPanel.activeSelf);
         }
-
         errorFlashPanel.SetActive(false);
         //errorFlashText.gameObject.SetActive(false);
     }
@@ -958,7 +957,7 @@ public void OnAnagramComplete()
         else
         {
             GameSessionManager.Instance.CmdReduceTimeForChalkPuzzle();
-            StartCoroutine(FlashWrong());
+          //  StartCoroutine(FlashWrong());
         }
     }
 
@@ -1040,7 +1039,7 @@ public void OnAnagramComplete()
         GameSessionManager.Instance.CmdAttemptCut(selectedWire);
         // riddleContainer.gameObject.SetActive(true); //Dumi: so enabling the riddle that will aid in solving the disbaling of the bomb , but this only happnes ater the cutting of the wire has been completed and solved.
 
-        if (selectedWire == "Pink" || selectedWire == "Orange")
+        if (selectedWire == "Pink" || selectedWire == "Green")
         {
             StartCoroutine(FlashErrorPanel());
         }
@@ -1123,7 +1122,7 @@ public void OnAnagramComplete()
         string[] correctOrder = { "Red Btn", "Blue Btn", "Green Btn" };
 
         DeactivationText.gameObject.SetActive(false);
-        ErrorFlash.gameObject.SetActive(false);
+    //    ErrorFlash.gameObject.SetActive(false);
 
         playerInput.Clear(); // Sibahle: refers to what button the player selects
 
@@ -1140,8 +1139,8 @@ public void OnAnagramComplete()
                 {
                     if (playerInput[i] != correctOrder[i])
                     {
-                        StartCoroutine(FlashandReset());
-
+                        //  StartCoroutine(FlashErrorPanel());
+                        ShowFailure();
                         return;
                     }
                 }
@@ -1155,10 +1154,9 @@ public void OnAnagramComplete()
                   
                     GameSessionManager.Instance.CmdRiddleSolved(); //Dumi : ensuring that the end of game panel shows up on both screen after bomb deactivates
                     Debug.Log("Yayyyy, the end game panel is showing on both screenns!!!");
-
-
-
                 }
+
+
 
             });
         }

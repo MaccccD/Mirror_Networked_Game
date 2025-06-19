@@ -527,7 +527,7 @@ public class GameSessionManager : NetworkBehaviour
     public void CmdAttemptCut(string wireColor)
     {
         if (!isServer) return;
-        if (puzzle2Solved) return;
+   //   if (puzzle2Solved) return;
 
         if (wireColor == "Red")
         {
@@ -538,6 +538,7 @@ public class GameSessionManager : NetworkBehaviour
         else
         {
             RpcScreenShake();
+            RpcWireCutFailure();
             ModifyBombTimer(-20f); //Dumi: Heavy penalty for wrong wire
             Debug.Log($"[Server] Wrong wire '{wireColor}'");
         }
@@ -851,7 +852,25 @@ public class GameSessionManager : NetworkBehaviour
         uiManager.ShowFailure();
     }
 
+
+
     [ClientRpc]
+     void RpcWireCutFailure()
+    {
+        uiManager.ShowFailure();
+    }
+
+    [ClientRpc]
+    void RpcChalkFailure()
+    {
+        uiManager.ShowFailure();
+    }
+
+    [ClientRpc]
+    void RpcBombDiffuseFailure()
+    {
+        uiManager.ShowFailure();
+    }
     void RpcScreenShake()
     {
         UIManager.Instance.ShakeUI();
