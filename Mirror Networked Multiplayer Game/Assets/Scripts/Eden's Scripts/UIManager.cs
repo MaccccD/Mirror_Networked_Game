@@ -395,26 +395,26 @@ public class UIManager : MonoBehaviour
         }
 
     }
-    public void DisplayPattern(float duration)
+    public void DisplayPattern()
     {
         if (PatternDisplay != null)
         {
             PatternDisplay.SetActive(true);
-            StartCoroutine(HidePatternAfterDelay(duration));
+          //  StartCoroutine(HidePatternAfterDelay(duration));
         }
     }
 
-    IEnumerator HidePatternAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        HidePattern();
-    }
+  //  IEnumerator HidePatternAfterDelay(float delay)
+  //  {
+  //      yield return new WaitForSeconds(delay);
+  //      HidePattern();
+  //  }
 
-    public void HidePattern()
-    {
-        if (PatternDisplay != null)
-            PatternDisplay.SetActive(false);
-    }
+   // public void HidePattern()
+   // {
+  //      if (PatternDisplay != null)
+  //          PatternDisplay.SetActive(false);
+  //  }
 
     private int currentCorrectIndex = 0;
     public void ButtonOrder(Button clickedButton)

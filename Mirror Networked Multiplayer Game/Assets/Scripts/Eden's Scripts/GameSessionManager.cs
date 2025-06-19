@@ -282,11 +282,11 @@ public class GameSessionManager : NetworkBehaviour
         Debug.Log("[Client] Showing light pattern");
 
         // Show pattern
-        uiManager.DisplayPattern(5f);
+        uiManager.DisplayPattern();
         yield return new WaitForSeconds(5f);
 
         // Hide pattern and show instructions
-        uiManager.HidePattern();
+       // uiManager.HidePattern();
         uiManager.ShowInstructionText("Communicate the pattern to your partner!");
 
         Debug.Log("[Client] Pattern shown and hidden");
