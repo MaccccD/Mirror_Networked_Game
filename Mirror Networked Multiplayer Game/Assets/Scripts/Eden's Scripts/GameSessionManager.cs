@@ -499,7 +499,7 @@ public class GameSessionManager : NetworkBehaviour
             if (uiManager != null)
             {
                 uiManager.ShowWireCutForOfficePlayer(); //Dumi: the office player will type in the correct answer to this puzzle as discussed
-                }
+              }
 
         }
         else
@@ -556,20 +556,26 @@ public class GameSessionManager : NetworkBehaviour
     void RpcInitializeChalkPuzzle()
     {
         PlayerRole role = GetClientRole();
-
-        if (role == PlayerRole.OfficePlayer) //Dumi: the office player will type in the correct answer to this puzzle as discussed
+        if (isServer)
         {
-            uiManager.OfficeFinalPanel.SetActive(true);
-            uiManager.chalkclueTxt.gameObject.SetActive(true);
-            uiManager.BombFinalPanel.SetActive(false);
+            localPlayerRole = PlayerRole.OfficePlayer; 
+            Debug.Log("Setting role to OfficePlayer for the chalk puzzle");
+            if (uiManager != null)
+            {
+                uiManager.ShowChalkForOfficePlayer();
+            }
 
         }
-        else if (role == PlayerRole.BombPlayer) 
+        else
         {
-            uiManager.OfficeFinalPanel.SetActive(false);
-            uiManager.BombFinalPanel.SetActive(true);
-
+            localPlayerRole = PlayerRole.BombPlayer; 
+            Debug.Log("Setting role to BombPlayer for the chalk puzzle");
+            if (uiManager != null)
+            {
+                uiManager.ShowChalkForBombPlayer();
+            }
         }
+
     }
 
     #endregion
@@ -587,20 +593,26 @@ public class GameSessionManager : NetworkBehaviour
     void RpcInitializeBombDisablePuzzle()
     {
         PlayerRole role = GetClientRole();
-
-        if (role == PlayerRole.OfficePlayer) 
+        if (isServer)
         {
-            uiManager.OfficeFinalPanel.SetActive(true);
-            uiManager.chalkclueTxt.gameObject.SetActive(false);
-            uiManager.BombFinalPanel.SetActive(false);
+            localPlayerRole = PlayerRole.OfficePlayer;
+            Debug.Log("Setting role to OfficePlayer for the chalk puzzle");
+            if (uiManager != null)
+            {
+                uiManager.ShowBombDisableForOfficePlayer();
+            }
 
         }
-        else if (role == PlayerRole.BombPlayer) 
+        else
         {
-            uiManager.OfficeFinalPanel.SetActive(false);
-            uiManager.BombFinalPanel.SetActive(true);
-
+            localPlayerRole = PlayerRole.BombPlayer;
+            Debug.Log("Setting role to BombPlayer for the chalk puzzle");
+            if (uiManager != null)
+            {
+                uiManager.ShowBombDisableForBombPlayer();
+            }
         }
+
     }
 
 

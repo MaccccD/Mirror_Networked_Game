@@ -39,10 +39,7 @@ public class UIManager : MonoBehaviour
     public GameObject BombFinalPanel; //Eden: The panel for the actual game play of the bomb player
     public GameObject endofGamePanel;
     public TMP_Text TimerText; // Timer display
-    public GameObject calendarBtn;
-    public GameObject drawerBtn;
-    public GameObject backtoWallBtn;
-    public TMP_Text chalkclueTxt;
+   
 
     [Header("Puzzle 1 UI")]
     public GameObject puzzle1Container;
@@ -92,7 +89,6 @@ public class UIManager : MonoBehaviour
     public GameObject OfficeDarkPanel; //Panel that will disappear once order is correct for office player
     public GameObject BombDarkPanel; //Panel that will disappear once order is correct for office player
     public GameObject PatternDisplay; //Sibahle: image that will activate & deactivate after every few seconds
-    public TMP_Text patternDisplayText;
     public Button[] CorrectButtons; // Sibahle: Buttons player must click in order
     public Button[] IncorrectButtons; // Sibahle: Wrong buttons that player shouldn't click
     public GameObject warningText;
@@ -128,6 +124,24 @@ public class UIManager : MonoBehaviour
     public GameObject EndingPanel;
     public TMP_Text EndingText;
     public TMP_Text EndingTitle;
+
+    [Header("Puzzle Activation Containers")]
+    public GameObject periodicPasswordsContainer;
+    public Button calendarBtn;
+    public Button drawerBtn;
+    public Button wireWallContainer;
+    public Button animalsBtn;
+    public Button phoneUnlockBtn;
+    public Button[] cutWireBtns;
+    public Button[] bombBtns;
+    public GameObject chalkPasswordsContainer;
+    public GameObject riddleText;
+    public GameObject chalkclueTxt;
+    public GameObject phoneLocked;
+   
+
+
+
 
     bool puzzleRoleIsOffice;
     string selectedWire;
@@ -386,7 +400,6 @@ public class UIManager : MonoBehaviour
         if (PatternDisplay != null)
         {
             PatternDisplay.SetActive(true);
-            patternDisplayText.gameObject.SetActive(true);
             StartCoroutine(HidePatternAfterDelay(duration));
         }
     }
@@ -394,7 +407,6 @@ public class UIManager : MonoBehaviour
     IEnumerator HidePatternAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        patternDisplayText.gameObject.SetActive(false);
         HidePattern();
     }
 
@@ -461,8 +473,8 @@ public class UIManager : MonoBehaviour
     {
         //D: Disable other UIs first
         BombFinalPanel.SetActive(false);
-        calendarBtn.SetActive(false);
-        drawerBtn.SetActive(false);
+        calendarBtn.interactable = false;
+        drawerBtn.interactable = false;
         //D: Enable office UI
         OfficeFinalPanel.SetActive(true);
         
@@ -472,26 +484,12 @@ public class UIManager : MonoBehaviour
     {
         //D: Disable other UIs first
         OfficeFinalPanel.SetActive(false);
-        backtoWallBtn.SetActive(false);
-
+        wireWallContainer.interactable = false;
         // D:Enable bomb UI
         BombFinalPanel.SetActive(true);
         
     }
 
-    public void ShowWireCutForOfficePlayer()
-    {
-        //D: enabled office panel, disable bomb panel for this player
-        OfficeFinalPanel.SetActive(true);
-        BombFinalPanel.SetActive(false);
-    }
-
-    public void ShowWireCutForBombPlayer()
-    {
-        //D: enable bomb panel , disable desk for this player 
-        OfficeFinalPanel.SetActive(false);
-        BombFinalPanel.SetActive(true);
-    }
 
     public void OnPeriodicTableComplete()
     {
@@ -502,18 +500,85 @@ public class UIManager : MonoBehaviour
         ShowSuccess("Code cracked yayyyy!");
     }
 
+    public void ShowWireCutForOfficePlayer()
+    {
+        //D: enabled office panel, disable bomb panel for this player
+        OfficeFinalPanel.SetActive(true);
+        BombFinalPanel.SetActive(false);
+        drawerBtn.interactable = true;
+        phoneUnlockBtn.interactable = false;
+        calendarBtn.interactable = true;
+        periodicPasswordsContainer.gameObject.SetActive(false);
+        chalkclueTxt.gameObject.SetActive(true);
+    }
+
+    public void ShowWireCutForBombPlayer()
+    {
+        //D: enable bomb panel , disable desk for this player 
+        OfficeFinalPanel.SetActive(false);
+        BombFinalPanel.SetActive(true);
+        wireWallContainer.interactable = true;
+        foreach(Button btn in cutWireBtns)
+        {
+            btn.interactable = true;
+        }
+      
+    }
+
+    public void ShowBombDisableForOfficePlayer()
+    {
+        OfficeFinalPanel.SetActive(true);
+        chalkclueTxt.gameObject.SetActive(false);
+        BombFinalPanel.SetActive(false);
+        chalkPasswordsContainer.gameObject.SetActive(false);
+        riddleText.gameObject.SetActive(true);
+        phoneLocked.gameObject.SetActive(false);
+    }
+
+    public void ShowBombDisableForBombPlayer()
+    {
+        OfficeFinalPanel.SetActive(false);
+        BombFinalPanel.SetActive(true);
+        foreach(Button  btns in bombBtns)
+        {
+            btns.interactable = true;
+        }
+        wireWallContainer.gameObject.SetActive(false);
+    }
 
     public void ShowAnagramForOfficePlayer()
 {
       // Clean up other UIs
       BombFinalPanel.SetActive(false);
-    
       // Setup office player UI
       AnagramPanel.SetActive(true);
       ShowAnagramDisplay("To further find out the motive for this bomb threat,there is a message on the bomb that needs to be unscrambled. Ask your partner to give you context on this message.");
       ShowAnagramInput();
       Debug.Log("Showing anagram UI for office player");
 }
+
+
+    public void ShowChalkForOfficePlayer()
+    {
+        OfficeFinalPanel.SetActive(true);
+        chalkclueTxt.gameObject.SetActive(true);
+        BombFinalPanel.SetActive(false);
+        drawerBtn.interactable = true;
+        phoneUnlockBtn.interactable = true;
+        chalkPasswordsContainer.gameObject.SetActive(true);
+    }
+
+    public void  ShowChalkForBombPlayer()
+    {
+        OfficeFinalPanel.SetActive(false);
+        BombFinalPanel.SetActive(true);
+        animalsBtn.interactable = true;
+        foreach(Button btn in cutWireBtns)
+        {
+            btn.interactable = false;
+        }
+        wireWallContainer.gameObject.SetActive(false);
+    }
 
 public void ShowAnagramForBombPlayer(string scrambled)
 {
