@@ -327,11 +327,11 @@ public class GameSessionManager : NetworkBehaviour
         {
             if (role == PlayerRole.OfficePlayer)
             {
-                uiManager.ShowAnagramForOfficePlayer(scrambled);
+                uiManager.ShowAnagramForOfficePlayer();
             }
             else
             {
-                uiManager.ShowAnagramForBombPlayer();
+                uiManager.ShowAnagramForBombPlayer(scrambled);
             }
         }
 

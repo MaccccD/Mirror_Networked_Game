@@ -234,7 +234,7 @@ public class StoryManager : NetworkBehaviour
         yield return new WaitForSeconds(6f); //delay for seconds
         RpcShowStoryBeat("The bomb has been successfully defused... but Zipho left one final choice.", PlayerRole.OfficePlayer, 8f);
         RpcShowStoryBeat("You can either:", PlayerRole.BombPlayer, 5f);
-        RpcShowStoryBeat("1. Completely neutralize everything. Meaning ; erase everything, let  Mr Du Plessis never know how much damage his words caused", PlayerRole.OfficePlayer, 8f);
+        RpcShowStoryBeat("1. Completely neutralize everything. Meaning; erase everything, let  Mr Du Plessis never know how much damage his words caused", PlayerRole.OfficePlayer, 8f);
         RpcShowStoryBeat("2. Leave a message. Meaning; a clear reminder that words have consequences", PlayerRole.BombPlayer, 8f);
         yield return new WaitForSeconds(8f); //delay for seconds
         // Dumi : Final Moral Choice Puzzle

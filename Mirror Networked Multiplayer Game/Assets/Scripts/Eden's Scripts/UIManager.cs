@@ -105,7 +105,7 @@ public class UIManager : MonoBehaviour
     public Button AnagramSubmitButton;
     public GameObject StoryContextPanel;
     public TMP_Text StoryContextText;
-    public TMP_Text scrambledTxt;
+   // public TMP_Text scrambledTxt;
 
 
     [Header("Periodic Table Puzzle UI")] //Dumi: Eden's Periodic table UI logic. Can change based on how she's implementing her logic.
@@ -489,23 +489,23 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public void ShowAnagramForOfficePlayer(string scrambled)
+    public void ShowAnagramForOfficePlayer()
 {
       // Clean up other UIs
       BombFinalPanel.SetActive(false);
     
       // Setup office player UI
       AnagramPanel.SetActive(true);
-      ShowAnagramDisplay($" The message on the bomb is scrambled as seen : {scrambled}. To further find out the motive for this bomb threat,the message needs to be unscrambled. Ask your partner to give you context on this message.");
+      ShowAnagramDisplay("To further find out the motive for this bomb threat,there is a message on the bomb that needs to be unscrambled. Ask your partner to give you context on this message.");
       ShowAnagramInput();
       Debug.Log("Showing anagram UI for office player");
 }
 
-public void ShowAnagramForBombPlayer()
+public void ShowAnagramForBombPlayer(string scrambled)
 {
     // Clean up other UIs
     OfficeFinalPanel.SetActive(false);
-    ShowStoryContext("In the flashback, Mr. Du Plessis made a comment about Zipho using a specific phrase that suggests she wasn't quite clever enough for something. What exact words did he use to describe her intelligence level?");
+    ShowStoryContext($"The message on the bomb is scrambled as seen :{scrambled}.In the flashback, Mr. Du Plessis made a comment about Zipho using a specific phrase that suggests she wasn't quite clever enough for something. What exact words did he use to describe her intelligence level?");
     Debug.Log("Showing anagram context for bomb player");
         
 }
@@ -604,7 +604,7 @@ public void OnAnagramComplete()
         if (StoryContextPanel != null && StoryContextText != null)
         {
             StoryContextPanel.SetActive(true);
-            scrambledTxt.gameObject.SetActive(true);
+          //  scrambledTxt.gameObject.SetActive(true);
             StoryContextText.text = context;
         }
     }
