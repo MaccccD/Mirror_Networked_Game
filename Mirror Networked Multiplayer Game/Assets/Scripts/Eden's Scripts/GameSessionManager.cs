@@ -490,7 +490,7 @@ public class GameSessionManager : NetworkBehaviour
     [ClientRpc]
     void RpcInitializeWireCutPuzzle()
     {
-        PlayerRole role = GetClientRole();
+        /*PlayerRole role = GetClientRole();
 
         if (role == PlayerRole.OfficePlayer) //Dumi: the office player will type in the correct answer to this puzzle as discussed
         {
@@ -503,6 +503,29 @@ public class GameSessionManager : NetworkBehaviour
             uiManager.OfficeFinalPanel.SetActive(false);
             uiManager.BombFinalPanel.SetActive(true);
             
+        }
+        */
+        if (isServer)
+        {
+            localPlayerRole = PlayerRole.OfficePlayer; // Host gets office player role
+            Debug.Log("Setting role to OfficePlayer");
+            if (uiManager != null)
+            {
+                uiManager.BombFinalPanel.SetActive(false);
+                uiManager.OfficeFinalPanel.SetActive(true);
+            }
+
+        }
+        else
+        {
+            localPlayerRole = PlayerRole.BombPlayer; //sever/client gets the bomb player role
+            Debug.Log("Setting role to BombPlayer - Activating BOMB player UI");
+            Debug.Log("Activating BOMB player UI");
+            if (uiManager != null)
+            {
+                uiManager.OfficeFinalPanel.SetActive(false);
+                uiManager.BombFinalPanel.SetActive(true);
+            }
         }
     }
 
@@ -538,7 +561,7 @@ public class GameSessionManager : NetworkBehaviour
 
     void RpcInitializeChalkPuzzle()
     {
-        PlayerRole role = GetClientRole();
+        /*PlayerRole role = GetClientRole();
 
         if (role == PlayerRole.OfficePlayer) //Dumi: the office player will type in the correct answer to this puzzle as discussed
         {
@@ -552,7 +575,31 @@ public class GameSessionManager : NetworkBehaviour
             uiManager.OfficeFinalPanel.SetActive(false);
             uiManager.BombFinalPanel.SetActive(true);
 
+        }*/
+
+        if (isServer)
+        {
+            localPlayerRole = PlayerRole.OfficePlayer; // Host gets office player role
+            Debug.Log("Setting role to OfficePlayer");
+            if (uiManager != null)
+            {
+                uiManager.BombFinalPanel.SetActive(false);
+                uiManager.OfficeFinalPanel.SetActive(true);
+            }
+
         }
+        else
+        {
+            localPlayerRole = PlayerRole.BombPlayer; //sever/client gets the bomb player role
+            Debug.Log("Setting role to BombPlayer - Activating BOMB player UI");
+            Debug.Log("Activating BOMB player UI");
+            if (uiManager != null)
+            {
+                uiManager.OfficeFinalPanel.SetActive(false);
+                uiManager.BombFinalPanel.SetActive(true);
+            }
+        }
+    
     }
 
     #endregion
@@ -569,7 +616,7 @@ public class GameSessionManager : NetworkBehaviour
     [ClientRpc]
     void RpcInitializeBombDisablePuzzle()
     {
-        PlayerRole role = GetClientRole();
+        /*PlayerRole role = GetClientRole();
 
         if (role == PlayerRole.OfficePlayer) 
         {
@@ -583,6 +630,29 @@ public class GameSessionManager : NetworkBehaviour
             uiManager.OfficeFinalPanel.SetActive(false);
             uiManager.BombFinalPanel.SetActive(true);
 
+        }*/
+
+        if (isServer)
+        {
+            localPlayerRole = PlayerRole.OfficePlayer; // Host gets office player role
+            Debug.Log("Setting role to OfficePlayer");
+            if (uiManager != null)
+            {
+                uiManager.BombFinalPanel.SetActive(false);
+                uiManager.OfficeFinalPanel.SetActive(true);
+            }
+
+        }
+        else
+        {
+            localPlayerRole = PlayerRole.BombPlayer; //sever/client gets the bomb player role
+            Debug.Log("Setting role to BombPlayer - Activating BOMB player UI");
+            Debug.Log("Activating BOMB player UI");
+            if (uiManager != null)
+            {
+                uiManager.OfficeFinalPanel.SetActive(false);
+                uiManager.BombFinalPanel.SetActive(true);
+            }
         }
     }
 
