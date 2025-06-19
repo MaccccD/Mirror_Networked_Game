@@ -204,7 +204,7 @@ public class FlashbackManager : MonoBehaviour
         }
     }
 
-    private IEnumerator TypeText(string fullText, bool clearFirst = false)//Dumi: For immersion purposes, the text will display as if its being typed on type write with a typewrite sound playing in the background.
+    private IEnumerator TypeText(string fullText, bool clearFirst = false)//Dumi: For immersion purposes, the text will display as if its being typoed on type write with a typewrite sound playing in the background.
     {
         if (clearFirst)
             flashbackText.text = "";

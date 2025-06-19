@@ -38,7 +38,7 @@ public class UIManager : MonoBehaviour
     public GameObject OfficeFinalPanel; //Eden: The panel for the actual game play of the office player
     public GameObject BombFinalPanel; //Eden: The panel for the actual game play of the bomb player
     public GameObject endofGamePanel;
-  
+    public TMP_Text TimerText; // Timer display
    
 
     [Header("Puzzle 1 UI")]
@@ -138,8 +138,6 @@ public class UIManager : MonoBehaviour
     public GameObject riddleText;
     public GameObject chalkclueTxt;
     public GameObject phoneLocked;
-
-   
    
 
 
@@ -158,7 +156,6 @@ public class UIManager : MonoBehaviour
         if (OfficeDarkPanel == null) Debug.LogError("OfficeDarkPanel not assigned!");
         if (BombDarkPanel == null) Debug.LogError("BombDarkPanel not assigned!");
         if (PatternDisplay == null) Debug.LogError("PatternDisplay not assigned!");
-        
     }
     void Awake()
     {
@@ -827,7 +824,7 @@ public void OnAnagramComplete()
 
     #region Original Methods (Preserved like we had)
 
-    /*IEnumerator FlashErrorPanel()
+    IEnumerator FlashErrorPanel()
     {
         errorFlashPanel.SetActive(true);
         //errorFlashText.gameObject.SetActive(true);
@@ -840,7 +837,7 @@ public void OnAnagramComplete()
 
         errorFlashPanel.SetActive(false);
         //errorFlashText.gameObject.SetActive(false);
-    }*/
+    }
 
     //Eden: Called by PlayerNetwork.OnStartLocalPlayer() on each client
     //and activates the UI 
@@ -921,7 +918,7 @@ public void OnAnagramComplete()
         Debug.Log("[UI] OnBothPlayersChosen()");
 
         if (TimerPanel != null) TimerPanel.SetActive(true);//e
-        if (countdownTimer.timerText != null) countdownTimer.timerText.gameObject.SetActive(true);//e
+        if (TimerText != null) TimerText.gameObject.SetActive(true);//e
 
         // WaitingPanel.SetActive(false);
         // RolePanel.SetActive(false);
@@ -1042,7 +1039,7 @@ public void OnAnagramComplete()
 
         if (selectedWire == "Pink" || selectedWire == "Orange")
         {
-         //   StartCoroutine(FlashErrorPanel());
+            StartCoroutine(FlashErrorPanel());
         }
 
         foreach (Button riddleBtn in RiddleButtons) //Dumi: so im ensuring that players only get access to the btns in the bomb after the 2nd puzzle has been solved and completed.

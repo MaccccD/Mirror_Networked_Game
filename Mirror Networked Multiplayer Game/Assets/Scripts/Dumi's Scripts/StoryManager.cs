@@ -38,7 +38,6 @@ public class StoryManager : NetworkBehaviour
    
     // Component References
     private GameSessionManager sessionManager;
-    private Timer timerScriptRef;
     private UIManager uiManager;
     public AudioManager audioManager;
 
@@ -57,7 +56,7 @@ public class StoryManager : NetworkBehaviour
             //uiManager.TimerText.text = bombTimer.ToString("F0"); //Dumi: Show the actual timer for both players to see
             int minutes = Mathf.FloorToInt(bombTimer / 60);
             int seconds = Mathf.FloorToInt(bombTimer % 60);
-           timerScriptRef.timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds); //e: added these 3 lines for consistency
+            uiManager.TimerText.text = string.Format("{0:00}:{1:00}", minutes, seconds); //e: added these 3 lines for consistency
 
             if (bombTimer <= 0)
             {

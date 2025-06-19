@@ -59,8 +59,6 @@ public class GameSessionManager : NetworkBehaviour
 
     // Component References
     private UIManager uiManager;
-    private Timer timerScriptRef;
-
 
     void Awake()
     {
@@ -82,7 +80,7 @@ public class GameSessionManager : NetworkBehaviour
         if (isServer && bombTimer > 0)
         {
             bombTimer -= Time.deltaTime;
-            timerScriptRef.timerText.text = bombTimer.ToString("F0"); //Dumi: Show the actual timer for both players to see
+            uiManager.TimerText.text = bombTimer.ToString("F0"); //Dumi: Show the actual timer for both players to see
             if (bombTimer <= 0)
             {
                 RpcGameOver(false);
