@@ -10,7 +10,7 @@ public class StoryManager : NetworkBehaviour
     [Header("Game State")]
     [SyncVar(hook = nameof(OnActChanged))] public GameAct currentAct = GameAct.Act1_Setup;
     [SyncVar(hook = nameof(OnStoryStateChanged))] public StoryState storyState = StoryState.IntroDialogue;
-    [SyncVar] public float bombTimer = 600f; // can be changed  10 minutes
+    [SyncVar] public float bombTimer = 900f; // can be changed  10 minutes
     [SyncVar] public int storyPoints = 0; // Dumi: Tracks moral choices wich dtermine the ending like I explained
 
     [Header("Story Progress")]

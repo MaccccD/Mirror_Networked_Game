@@ -208,10 +208,12 @@ public class UIManager : MonoBehaviour
         puzzle1Container.SetActive(false);
         errorFlashPanel.SetActive(false);
         TimerPanel.SetActive(false);
+       
 
         //Dumi :  Hide all new panels when the game starts
         if (StoryMomentPanel != null) StoryMomentPanel.SetActive(false);
         if (speechbubblePanel != null) speechbubblePanel.SetActive(false);
+        if (errorFlashPanel != null) errorFlashPanel.SetActive(false);
         if (InstructionPanel != null) InstructionPanel.SetActive(false);
         if (SuccessPanel != null) SuccessPanel.SetActive(false);
         if (FailurePanel != null) FailurePanel.SetActive(false);
@@ -544,6 +546,7 @@ public class UIManager : MonoBehaviour
             btns.interactable = true;
         }
         wireWallContainer.gameObject.SetActive(false);
+        errorFlashPanel.gameObject.SetActive(false);
     }
 
     public void ShowAnagramForOfficePlayer()
@@ -826,7 +829,7 @@ public void OnAnagramComplete()
 
     IEnumerator FlashErrorPanel()
     {
-        errorFlashPanel.SetActive(true);
+     //   errorFlashPanel.SetActive(true);
         //errorFlashText.gameObject.SetActive(true);
 
         for (int i = 0; i < 3; i++)
