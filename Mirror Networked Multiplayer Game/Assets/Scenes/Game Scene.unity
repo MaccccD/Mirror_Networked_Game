@@ -1533,11 +1533,11 @@ MonoBehaviour:
   - {fileID: 1122485602}
   - {fileID: 556337280}
   DeactivationText: {fileID: 1839368796}
-  ErrorFlash: {fileID: 0}
+  ErrorFlash: {fileID: 906304250}
   uiRoot: {fileID: 372600191}
   shakeDuration: 0.5
   shakeMagnitude: 0.2
-  errorFlashPanel: {fileID: 0}
+  errorFlashPanel: {fileID: 906304250}
   speechbubblePanel: {fileID: 548063792}
   speechbubbleText: {fileID: 1900573559}
   StoryMomentPanel: {fileID: 1234567168}
@@ -1547,7 +1547,7 @@ MonoBehaviour:
   SuccessPanel: {fileID: 2121812695}
   SuccessText: {fileID: 1830873123}
   FailurePanel: {fileID: 906304250}
-  failureImage: {fileID: 0}
+  failureImage: {fileID: 906304250}
   OfficeDarkPanel: {fileID: 335488130}
   BombDarkPanel: {fileID: 920777123}
   PatternDisplay: {fileID: 741979531}
