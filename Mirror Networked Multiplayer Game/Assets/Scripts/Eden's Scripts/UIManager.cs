@@ -13,6 +13,9 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
+    [Header("Timer UI")]
+    public GameObject TimerPanel;
+
     [Header("Startup UI")]
     public GameObject StartPanel;
     public Button StartButton;
@@ -190,6 +193,7 @@ public class UIManager : MonoBehaviour
         WinPanel.SetActive(false);
         puzzle1Container.SetActive(false);
         errorFlashPanel.SetActive(false);
+        TimerPanel.SetActive(false);
 
         //Dumi :  Hide all new panels when the game starts
         if (StoryMomentPanel != null) StoryMomentPanel.SetActive(false);
@@ -833,24 +837,29 @@ public void OnAnagramComplete()
     public void OnBothPlayersChosen()
     {
         Debug.Log("[UI] OnBothPlayersChosen()");
-       // WaitingPanel.SetActive(false);
-       // RolePanel.SetActive(false);
 
-      //  puzzle1Container.SetActive(true);
-       // foreach (var f in letterFields)
-       // {
-       //     f.text = "";
-          //  var bg = f.GetComponent<Image>();
-       //     if (bg != null)
-           //     bg.color = new Color(1, 1, 1, 0); // transparent
-       // }
+        if (TimerPanel != null) TimerPanel.SetActive(true);//e
+        if (TimerText != null) TimerText.gameObject.SetActive(true);//e
+
+        // WaitingPanel.SetActive(false);
+        // RolePanel.SetActive(false);
+
+        //  puzzle1Container.SetActive(true);
+        // foreach (var f in letterFields)
+        // {
+        //     f.text = "";
+        //  var bg = f.GetComponent<Image>();
+        //     if (bg != null)
+        //     bg.color = new Color(1, 1, 1, 0); // transparent
+        // }
 
         //Eden: Determine this client's role by which button ended up disabled first
-      //  bool isOffice = !OfficeButton.interactable && BombButton.interactable;
-       // puzzleRoleIsOffice = isOffice;
-       // Dumi: these panels already trigger and are taken cared of in the periodic table  puzzle logic and thus do not need to trigger here immediately after the players chosen their roles.
-      //  OfficeFinalPanel.SetActive(isOffice);
-      //  BombFinalPanel.SetActive(!isOffice);
+        //  bool isOffice = !OfficeButton.interactable && BombButton.interactable;
+        // puzzleRoleIsOffice = isOffice;
+        // Dumi: these panels already trigger and are taken cared of in the periodic table  puzzle logic and thus do not need to trigger here immediately after the players chosen their roles.
+        //  OfficeFinalPanel.SetActive(isOffice);
+        //  BombFinalPanel.SetActive(!isOffice);
+
 
     }
 
@@ -866,6 +875,7 @@ public void OnAnagramComplete()
         }
         else
         {
+            GameSessionManager.Instance.CmdReduceTimeForChalkPuzzle();
             StartCoroutine(FlashWrong());
         }
     }

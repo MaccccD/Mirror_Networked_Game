@@ -53,7 +53,11 @@ public class StoryManager : NetworkBehaviour
         if (isServer && isStoryStarted && bombTimer > 0)
         {
             bombTimer -= Time.deltaTime;
-            uiManager.TimerText.text = bombTimer.ToString("F0"); //Dumi: Show the actual timer for both players to see
+            //uiManager.TimerText.text = bombTimer.ToString("F0"); //Dumi: Show the actual timer for both players to see
+            int minutes = Mathf.FloorToInt(bombTimer / 60);
+            int seconds = Mathf.FloorToInt(bombTimer % 60);
+            uiManager.TimerText.text = string.Format("{0:00}:{1:00}", minutes, seconds); //e: added these 3 lines for consistency
+
             if (bombTimer <= 0)
             {
                 GameOver(false);
@@ -387,14 +391,36 @@ public class StoryManager : NetworkBehaviour
     [Server]
     void GameOver(bool success)
     {
-        RpcGameOver(success);
+        RpcGameOverSequence(success);
     }
 
+    [ClientRpc]
+    void RpcGameOverSequence(bool success) //e
+    {
+        UIManager.Instance.ShowGameOverScreen(success, bombTimer);
+        UIManager.Instance.StartCoroutine(DelayedRestart());
+    }
+
+    IEnumerator DelayedRestart() //e
+    {
+        yield return new WaitForSeconds(5f);
+
+        CustomLobbyUI lobbyUI = FindObjectOfType<CustomLobbyUI>();
+        if (lobbyUI != null)
+        {
+            lobbyUI.OnEndGame(); //resets network & shows lobby/start panel again
+        }
+        else
+        {
+            Debug.LogError("CustomLobbyUI not found. Cannot restart.");
+        }
+    }
+
+    #endregion
     [ClientRpc]
     void RpcGameOver(bool success)
     {
         uiManager.ShowGameOverScreen(success, bombTimer);
     }
-    #endregion
 
 }
