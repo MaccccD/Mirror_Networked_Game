@@ -13,6 +13,9 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
+    [Header("Timer UI")]
+    public GameObject TimerPanel;
+
     [Header("Startup UI")]
     public GameObject StartPanel;
     public Button StartButton;
@@ -102,7 +105,7 @@ public class UIManager : MonoBehaviour
     public Button AnagramSubmitButton;
     public GameObject StoryContextPanel;
     public TMP_Text StoryContextText;
-
+    public TMP_Text scrambledTxt;
 
 
     [Header("Periodic Table Puzzle UI")] //Dumi: Eden's Periodic table UI logic. Can change based on how she's implementing her logic.
@@ -190,6 +193,7 @@ public class UIManager : MonoBehaviour
         WinPanel.SetActive(false);
         puzzle1Container.SetActive(false);
         errorFlashPanel.SetActive(false);
+        TimerPanel.SetActive(false);
 
         //Dumi :  Hide all new panels when the game starts
         if (StoryMomentPanel != null) StoryMomentPanel.SetActive(false);
@@ -361,6 +365,7 @@ public class UIManager : MonoBehaviour
     
     if (BombDarkPanel != null)
     {
+
         BombDarkPanel.SetActive(true);
         Debug.Log("Bomb panel enabled");
     }
@@ -484,23 +489,23 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public void ShowAnagramForOfficePlayer()
+    public void ShowAnagramForOfficePlayer(string scrambled)
 {
       // Clean up other UIs
       BombFinalPanel.SetActive(false);
     
       // Setup office player UI
       AnagramPanel.SetActive(true);
-      ShowAnagramDisplay($"To further find out the motive for this bomb threat,there is a message on the bomb that needs to be unscrambled. Ask your partner to give you context on this message.");
+      ShowAnagramDisplay($" The message on the bomb is scrambled as seen : {scrambled}. To further find out the motive for this bomb threat,the message needs to be unscrambled. Ask your partner to give you context on this message.");
       ShowAnagramInput();
       Debug.Log("Showing anagram UI for office player");
 }
 
-public void ShowAnagramForBombPlayer(string scrambled)
+public void ShowAnagramForBombPlayer()
 {
     // Clean up other UIs
     OfficeFinalPanel.SetActive(false);
-    ShowStoryContext($"The message on the bomb is scrambled as seen :{scrambled}.In the flashback, Mr. Du Plessis made a comment about Zipho using a specific phrase that suggests she wasn't quite clever enough for something. What exact words did he use to describe her intelligence level?");
+    ShowStoryContext("In the flashback, Mr. Du Plessis made a comment about Zipho using a specific phrase that suggests she wasn't quite clever enough for something. What exact words did he use to describe her intelligence level?");
     Debug.Log("Showing anagram context for bomb player");
         
 }
@@ -599,7 +604,7 @@ public void OnAnagramComplete()
         if (StoryContextPanel != null && StoryContextText != null)
         {
             StoryContextPanel.SetActive(true);
-          //  scrambledTxt.gameObject.SetActive(true);
+            scrambledTxt.gameObject.SetActive(true);
             StoryContextText.text = context;
         }
     }
@@ -832,24 +837,29 @@ public void OnAnagramComplete()
     public void OnBothPlayersChosen()
     {
         Debug.Log("[UI] OnBothPlayersChosen()");
-       // WaitingPanel.SetActive(false);
-       // RolePanel.SetActive(false);
 
-      //  puzzle1Container.SetActive(true);
-       // foreach (var f in letterFields)
-       // {
-       //     f.text = "";
-          //  var bg = f.GetComponent<Image>();
-       //     if (bg != null)
-           //     bg.color = new Color(1, 1, 1, 0); // transparent
-       // }
+        if (TimerPanel != null) TimerPanel.SetActive(true);//e
+        if (TimerText != null) TimerText.gameObject.SetActive(true);//e
+
+        // WaitingPanel.SetActive(false);
+        // RolePanel.SetActive(false);
+
+        //  puzzle1Container.SetActive(true);
+        // foreach (var f in letterFields)
+        // {
+        //     f.text = "";
+        //  var bg = f.GetComponent<Image>();
+        //     if (bg != null)
+        //     bg.color = new Color(1, 1, 1, 0); // transparent
+        // }
 
         //Eden: Determine this client's role by which button ended up disabled first
-      //  bool isOffice = !OfficeButton.interactable && BombButton.interactable;
-       // puzzleRoleIsOffice = isOffice;
-       // Dumi: these panels already trigger and are taken cared of in the periodic table  puzzle logic and thus do not need to trigger here immediately after the players chosen their roles.
-      //  OfficeFinalPanel.SetActive(isOffice);
-      //  BombFinalPanel.SetActive(!isOffice);
+        //  bool isOffice = !OfficeButton.interactable && BombButton.interactable;
+        // puzzleRoleIsOffice = isOffice;
+        // Dumi: these panels already trigger and are taken cared of in the periodic table  puzzle logic and thus do not need to trigger here immediately after the players chosen their roles.
+        //  OfficeFinalPanel.SetActive(isOffice);
+        //  BombFinalPanel.SetActive(!isOffice);
+
 
     }
 
@@ -865,6 +875,7 @@ public void OnAnagramComplete()
         }
         else
         {
+            GameSessionManager.Instance.CmdReduceTimeForChalkPuzzle();
             StartCoroutine(FlashWrong());
         }
     }
