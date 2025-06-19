@@ -235,22 +235,22 @@ public class GameSessionManager : NetworkBehaviour
     void RpcInitializeLightSwitchPuzzle()
     {
         // TEMPORARY: Manually assign roles for testing
-      //  if (isServer)
-      //  {
-      //      localPlayerRole = PlayerRole.OfficePlayer; // Host gets office
-      //     // Debug.Log("🧪 [TEST] Host assigned OfficePlayer role");
-     //   }
-      //  else
-     //   {
-      //      localPlayerRole = PlayerRole.BombPlayer; // Client gets bomb
-       ///    Debug.Log("Activating BOMB player UI");
-        //    uiManager.ShowLightPuzzleForBombPlayer();
-      //      // Debug.Log("🧪 [TEST] Client assigned BombPlayer role");
-       // }
+      if (isServer)
+      {
+         localPlayerRole = PlayerRole.OfficePlayer; // Host gets office
+        Debug.Log("🧪 [TEST] Host assigned OfficePlayer role");
+       }
+       else
+      {
+      localPlayerRole = PlayerRole.BombPlayer; // Client gets bomb
+         Debug.Log("Activating BOMB player UI");
+         uiManager.ShowLightPuzzleForBombPlayer();
+          Debug.Log("🧪 [TEST] Client assigned BombPlayer role");
+       }
 
 
-      //  // DEBUG: Verify network connection
-      //  Debug.Log($"[ROLE DEBUG] Local connection: {NetworkClient.connection != null}");
+      // DEBUG: Verify network connection
+       Debug.Log($"[ROLE DEBUG] Local connection: {NetworkClient.connection != null}");
 
         PlayerRole role = GetClientRole();
         Debug.Log($"[ROLE DEBUG] Final role: {role}");

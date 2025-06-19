@@ -19,6 +19,9 @@ public class StoryManager : NetworkBehaviour
     [SyncVar] public bool finalChoiceUnlocked = false;
     [SyncVar] public bool isStoryStarted = false;
 
+    [Header("Trigger Buttons")]
+
+
 
     public FlashbackManager flashbackManager;
 
@@ -135,7 +138,7 @@ public class StoryManager : NetworkBehaviour
         storyState = StoryState.StoryReveal;
         RpcShowFlashback();//Dumi: showing the flashback
         flashbackRevealed = true; 
-        yield return new WaitForSeconds(25f); //testing this now
+        yield return new WaitForSeconds(50f); //testing this now
         //Dumi: @sibahle you can trigger the page flip anim here :
         RpcTriggerPageAnimation();//Sibahle: page flip animation
         RpcShowStoryBeat("Mr. Du Plessis is a Computer Science teacher... that explains the technical sophistication of this bomb. Zipho must have spent years mastering the very skills Du Plessis said he'd never have.", PlayerRole.OfficePlayer, 8f);
