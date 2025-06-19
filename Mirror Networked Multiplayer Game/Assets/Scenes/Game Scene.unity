@@ -1594,7 +1594,7 @@ MonoBehaviour:
   EndingTitle: {fileID: 1921571225}
   periodicPasswordsContainer: {fileID: 998645524}
   calendarBtn: {fileID: 1943998227}
-  drawerBtn: {fileID: 577408986}
+  drawerBtn: {fileID: 212215231}
   wireWallContainer: {fileID: 62177437}
   animalsBtn: {fileID: 958253392}
   phoneUnlockBtn: {fileID: 2612940}
@@ -2782,8 +2782,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 55
-  m_fontSizeBase: 55
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -9191,7 +9191,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &577408985
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19065,7 +19065,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1243234168
 RectTransform:
   m_ObjectHideFlags: 0
@@ -27440,8 +27440,8 @@ RectTransform:
   - {fileID: 998645525}
   - {fileID: 577408985}
   - {fileID: 1943998226}
-  - {fileID: 315647502}
   - {fileID: 177429749}
+  - {fileID: 315647502}
   m_Father: {fileID: 372600191}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
