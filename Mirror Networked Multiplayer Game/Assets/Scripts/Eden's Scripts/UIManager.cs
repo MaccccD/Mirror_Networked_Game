@@ -89,6 +89,7 @@ public class UIManager : MonoBehaviour
     public GameObject OfficeDarkPanel; //Panel that will disappear once order is correct for office player
     public GameObject BombDarkPanel; //Panel that will disappear once order is correct for office player
     public GameObject PatternDisplay; //Sibahle: image that will activate & deactivate after every few seconds
+    public TMP_Text patternDisplayText;
     public Button[] CorrectButtons; // Sibahle: Buttons player must click in order
     public Button[] IncorrectButtons; // Sibahle: Wrong buttons that player shouldn't click
     public GameObject warningText;
@@ -381,13 +382,15 @@ public class UIManager : MonoBehaviour
         if (PatternDisplay != null)
         {
             PatternDisplay.SetActive(true);
+            patternDisplayText.gameObject.SetActive(true);
             StartCoroutine(HidePatternAfterDelay(duration));
         }
     }
 
     IEnumerator HidePatternAfterDelay(float delay)
     {
-        yield return new WaitForSeconds(1.5f); //Sibahle: changed from "delay" to "1.5f"
+        yield return new WaitForSeconds(delay);
+        patternDisplayText.gameObject.SetActive(false);
         HidePattern();
     }
 
@@ -475,16 +478,21 @@ public class UIManager : MonoBehaviour
     public void OnPeriodicTableComplete()
     {
         PeriodicSolutionInput.gameObject.SetActive(false);
-        ShowSuccess("Code cracked: GENIUS");
+        PeriodicSubmitButton.gameObject.SetActive(false);
+        OfficeFinalPanel.gameObject.SetActive(false);
+        BombFinalPanel.gameObject.SetActive(false);
+        ShowSuccess("Code cracked yayyyy!");
     }
+
+
     public void ShowAnagramForOfficePlayer(string scrambled)
 {
       // Clean up other UIs
       BombFinalPanel.SetActive(false);
     
       // Setup office player UI
-      OfficeFinalPanel.SetActive(true);
-      ShowAnagramDisplay($"Message on bomb: {scrambled}");
+      AnagramPanel.SetActive(true);
+      ShowAnagramDisplay($" The message on the bomb is scrambled as seen : {scrambled}. To further find out the motive for this bomb threat,the message needs to be unscrambled. Ask your partner to give you context on this message.");
       ShowAnagramInput();
       Debug.Log("Showing anagram UI for office player");
 }
@@ -493,11 +501,9 @@ public void ShowAnagramForBombPlayer()
 {
     // Clean up other UIs
     OfficeFinalPanel.SetActive(false);
-    
-    // Setup bomb player UI
-    BombFinalPanel.SetActive(true);
-    ShowStoryContext("Your partner sees a scrambled message. Help them solve it!");
+    ShowStoryContext("In the flashback, Mr. Du Plessis made a comment about Zipho using a specific phrase that suggests she wasn't quite clever enough for something. What exact words did he use to describe her intelligence level?");
     Debug.Log("Showing anagram context for bomb player");
+        
 }
 
 public void OnAnagramComplete()
@@ -905,6 +911,7 @@ public void OnAnagramComplete()
       
 
     }
+
     IEnumerator Puzzle1WinSequence()
     {
         yield return new WaitForSeconds(5f);
