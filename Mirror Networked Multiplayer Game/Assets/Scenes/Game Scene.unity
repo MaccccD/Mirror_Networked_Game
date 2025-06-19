@@ -3167,7 +3167,6 @@ MonoBehaviour:
   storyPoints: 0
   communicationStyle: 0
   bombTimer: 900
-  timerScriptRef: {fileID: 1500746248}
 --- !u!114 &192174164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18911,7 +18910,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1243234168
 RectTransform:
   m_ObjectHideFlags: 0
