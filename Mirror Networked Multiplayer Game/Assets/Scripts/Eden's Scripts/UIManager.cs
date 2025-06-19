@@ -205,7 +205,7 @@ public class UIManager : MonoBehaviour
         BombFinalPanel.SetActive(false);
         ConfirmPanel.SetActive(false);
         WinPanel.SetActive(false);
-        puzzle1Container.SetActive(false);
+        //puzzle1Container.SetActive(false);
         errorFlashPanel.SetActive(false);
         TimerPanel.SetActive(false);
        
@@ -532,9 +532,9 @@ public class UIManager : MonoBehaviour
     {
         OfficeFinalPanel.SetActive(true);
         chalkclueTxt.gameObject.SetActive(false);
-        BombFinalPanel.SetActive(false);
-        chalkPasswordsContainer.gameObject.SetActive(false);
-        riddleText.gameObject.SetActive(true);
+        BombFinalPanel.gameObject.SetActive(false);
+        chalkPasswordsContainer.SetActive(false);
+        riddleText.SetActive(true);
         phoneLocked.gameObject.SetActive(false);
     }
 
@@ -544,6 +544,7 @@ public class UIManager : MonoBehaviour
         BombFinalPanel.SetActive(true);
         foreach(Button  btns in bombBtns)
         {
+            btns.gameObject.SetActive(true);
             btns.interactable = true;
         }
         wireWallContainer.gameObject.SetActive(false);
@@ -569,7 +570,8 @@ public class UIManager : MonoBehaviour
         BombFinalPanel.SetActive(false);
         drawerBtn.interactable = true;
         phoneUnlockBtn.interactable = true;
-        chalkPasswordsContainer.gameObject.SetActive(true);
+        chalkPasswordsContainer.SetActive(true);
+        riddleText.SetActive(false) ;
     }
 
     public void  ShowChalkForBombPlayer()
