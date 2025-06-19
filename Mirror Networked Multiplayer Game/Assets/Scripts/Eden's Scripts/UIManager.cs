@@ -479,6 +479,20 @@ public class UIManager : MonoBehaviour
         
     }
 
+    public void ShowWireCutForOfficePlayer()
+    {
+        //D: enabled office panel, disable bomb panel for this player
+        OfficeFinalPanel.SetActive(true);
+        BombFinalPanel.SetActive(false);
+    }
+
+    public void ShowWireCutForBombPlayer()
+    {
+        //D: enable bomb panel , disable desk for this player 
+        OfficeFinalPanel.SetActive(false);
+        BombFinalPanel.SetActive(true);
+    }
+
     public void OnPeriodicTableComplete()
     {
         PeriodicSolutionInput.gameObject.SetActive(false);

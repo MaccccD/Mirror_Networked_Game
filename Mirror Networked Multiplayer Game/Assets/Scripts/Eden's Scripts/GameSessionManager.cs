@@ -488,22 +488,39 @@ public class GameSessionManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    void RpcInitializeWireCutPuzzle()
+    void RpcInitializeWireCutPuzzle() //testing this
     {
         PlayerRole role = GetClientRole();
+        // TEMPORARY: Manually assign roles for testing
+        if (isServer)
+        {
+            localPlayerRole = PlayerRole.OfficePlayer; // Host gets office 
+            Debug.Log("Setting role to OfficePlayer for the wire cut puzzle");
+            if (uiManager != null)
+            {
+                uiManager.ShowWireCutForOfficePlayer(); //Dumi: the office player will type in the correct answer to this puzzle as discussed
+                }
 
-        if (role == PlayerRole.OfficePlayer) //Dumi: the office player will type in the correct answer to this puzzle as discussed
-        {
-            uiManager.OfficeFinalPanel.SetActive(true);
-            uiManager.BombFinalPanel.SetActive(false);
-            
         }
-        else if (role == PlayerRole.BombPlayer) 
+        else
         {
-            uiManager.OfficeFinalPanel.SetActive(false);
-            uiManager.BombFinalPanel.SetActive(true);
-            
+            localPlayerRole = PlayerRole.BombPlayer; //sever/client gets the bomb player role
+            Debug.Log("Setting role to BombPlayer for the wire cut puzzle");
+            if (uiManager != null)
+            {
+                uiManager.ShowWireCutForBombPlayer();
+            }
         }
+
+       // if (role == PlayerRole.OfficePlayer) //Dumi: the office player will type in the correct answer to this puzzle as discussed
+       // {
+      //      uiManager.ShowWireCutForOfficePlayer();
+            
+      //  }
+     //   else if (role == PlayerRole.BombPlayer) 
+     //   {
+       //     uiManager.ShowWireCutForBombPlayer();
+      //  }
     }
 
     [Command(requiresAuthority = false)]

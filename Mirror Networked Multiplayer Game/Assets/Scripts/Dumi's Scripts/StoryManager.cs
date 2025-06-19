@@ -98,6 +98,7 @@ public class StoryManager : NetworkBehaviour
          RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You guys are both on different rooms but you will be able to see each other's thoughts as you work via the text chat together to defuse the bomb before the timer runs out.", PlayerRole.OfficePlayer, 10f);
          RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the office player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You guys are both on different rooms but you will be able to see each other's thoughts as you work via the text chat together to defuse the bomb before the timer runs out.", PlayerRole.BombPlayer, 10f);
          yield return new WaitForSeconds(10f);
+
        
          RpcShowStoryBeat("The security system  of the school has been tampered with. Restore the power back by turning on the light switch to see the bomb set up clearly.", PlayerRole.OfficePlayer, 7f);
          RpcShowStoryBeat("The security system  of the school has been tampered with. Restore the power back by turning on the light switch to see the bomb set up clearly.", PlayerRole.BombPlayer, 7f);
@@ -178,7 +179,6 @@ public class StoryManager : NetworkBehaviour
         yield return new WaitForSeconds(8f); //delay for 5 seconds
         //Dumi: @sibahle you can trigger the page flip anim here :
         RpcTriggerPageAnimation();//Sibahle: page flip animation
-        yield return new WaitForSeconds(5f); //delay for 5 seconds
         sessionManager.StartWireCutRepresentation("red");
         sessionManager.StartWireCutRepresentation("blue");
         sessionManager.StartWireCutRepresentation("yellow");
@@ -192,7 +192,7 @@ public class StoryManager : NetworkBehaviour
 
         //Dumi: @sibahle you can trigger the page flip anim here :
         RpcTriggerPageAnimation();//Sibahle: page flip animation
-        yield return new WaitForSeconds(5f); //delay for 5 seconds
+        yield return new WaitForSeconds(2f); //delay for 2 seconds
         RpcShowStoryBeat("The wires have been cut but the timer on the bomb has not stopped. Zipho also used AI to further encyrpt this bomb", PlayerRole.OfficePlayer, 7f);
         RpcShowStoryBeat("If AI was used to further encrypt the bomb, then Zipho must have made a mistake somewhere. Look for something digital that Zipho may have used to get the AI encryption system", PlayerRole.BombPlayer, 7f);
         yield return new WaitForSeconds(7f); //delay for 5 seconds
