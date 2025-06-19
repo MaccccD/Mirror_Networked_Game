@@ -692,7 +692,10 @@ public class GameSessionManager : NetworkBehaviour
     public void CmdReduceTimeForChalkPuzzle()
     {
         ModifyBombTimer(-10f);
+        RpcChalkFailure();
     }
+
+
 
         #region Story Management
 
