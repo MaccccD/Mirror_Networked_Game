@@ -59,7 +59,7 @@ public class GameSessionManager : NetworkBehaviour
 
     // Component References
     private UIManager uiManager;
-    private Timer timerScriptRef;
+    public Timer timerScriptRef;
 
 
     void Awake()
