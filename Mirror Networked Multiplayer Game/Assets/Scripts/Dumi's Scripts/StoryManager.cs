@@ -179,10 +179,8 @@ public class StoryManager : NetworkBehaviour
         yield return new WaitForSeconds(8f); //delay for 5 seconds
         //Dumi: @sibahle you can trigger the page flip anim here :
         RpcTriggerPageAnimation();//Sibahle: page flip animation
-        sessionManager.StartWireCutRepresentation("red");
-        sessionManager.StartWireCutRepresentation("blue");
-        sessionManager.StartWireCutRepresentation("yellow");
-        sessionManager.StartWireCutRepresentation("green");
+        sessionManager.StartWireCutRepresentation();
+    
         yield return new WaitForSeconds(5f); //delay for 5 seconds
         //Dumi" start the wire cut puzzle:
         // Dumi : Sibahle's Light Switch Memory Puzzle with Story Context
@@ -397,7 +395,7 @@ public class StoryManager : NetworkBehaviour
     [ClientRpc]
     void RpcGameOverSequence(bool success) //e
     {
-        UIManager.Instance.ShowGameOverScreen(success, bombTimer);
+        UIManager.Instance.ShowGameOverScreen(success);
         UIManager.Instance.StartCoroutine(DelayedRestart());
     }
 
@@ -420,7 +418,7 @@ public class StoryManager : NetworkBehaviour
     [ClientRpc]
     void RpcGameOver(bool success)
     {
-        uiManager.ShowGameOverScreen(success, bombTimer);
+        uiManager.ShowGameOverScreen(success);
     }
 
 }

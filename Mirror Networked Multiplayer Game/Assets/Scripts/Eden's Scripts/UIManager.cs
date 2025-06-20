@@ -133,7 +133,7 @@ public class UIManager : MonoBehaviour
     public Button animalsBtn;
     public Button phoneUnlockBtn;
     public Button[] cutWireBtns;
-    public Button[] bombBtns;
+    //public Button[] bombBtns;
     public GameObject chalkPasswordsContainer;
     public GameObject riddleText;
     public GameObject chalkclueTxt;
@@ -318,15 +318,15 @@ public class UIManager : MonoBehaviour
         Debug.Log($"Story state changed to: {newState}");
     }
 
-    public void ShowGameOverScreen(bool success, float timeRemaining) //Dumi: Game ending stuff
+    public void ShowGameOverScreen(bool success) //Dumi: Game ending stuff
     {
         if (endofGamePanel != null)
         {
            
             endofGamePanel.gameObject.SetActive(true);
             Debug.Log("Win Panel and end of game panel have shown");
-            string message = success ? "Mission Accomplished!" : "Mission Failed!";
-            message += $"\nTime Remaining: {timeRemaining:F1}s";
+            //string message = success ? "Mission Accomplished!" : "Mission Failed!";
+           // message += $"\nTime Remaining: {timeRemaining:F1}s";
         }
     }
 
@@ -463,8 +463,9 @@ public class UIManager : MonoBehaviour
             {
                 if (btn == clickedButton)
                 {
-                    StartCoroutine(FlashandReset());
-                    GameSessionManager.Instance.CmdLightSwitchInput(); //d: triggers the failure case:
+                    ShowFailure();
+                    //StartCoroutine(FlashandReset());
+                    //GameSessionManager.Instance.CmdLightSwitchInput(); //d: triggers the failure case:
                     break;
                 }
             }
@@ -542,7 +543,7 @@ public class UIManager : MonoBehaviour
     {
         OfficeFinalPanel.SetActive(false);
         BombFinalPanel.SetActive(true);
-        foreach(Button  btns in bombBtns)
+        foreach(Button  btns in RiddleButtons)
         {
             btns.gameObject.SetActive(true);
             btns.interactable = true;
@@ -735,7 +736,7 @@ public void OnAnagramComplete()
 
     public void ShowStoryReveal(string revealText)
     {
-        ShowStoryMoment(revealText, 3f);
+        ShowStoryMoment(revealText, 15f);
     }
 
 
@@ -820,9 +821,9 @@ public void OnAnagramComplete()
         }
     }
 
-    IEnumerator HideStoryMomentAfterDelay(float delay)
+    IEnumerator HideStoryMomentAfterDelay(float duration)
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(10f);
         if (StoryMomentPanel != null) StoryMomentPanel.SetActive(false);
     }
 
@@ -989,6 +990,12 @@ public void OnAnagramComplete()
         puzzle1Container.SetActive(false);
         WinPanel.SetActive(true);
         StartCoroutine(Puzzle1WinSequence());
+
+        foreach (Button btn in RiddleButtons)
+        {
+            btn.gameObject.SetActive(true);
+            btn.interactable = true;
+        }
         //riddleContainer.SetActive(true); //Sibahle: Supposed to set active after Password Puzzle deactivates
     }
 
@@ -1009,7 +1016,12 @@ public void OnAnagramComplete()
     {
         yield return new WaitForSeconds(5f);
         WinPanel.SetActive(false);
-        ActivateWirePuzzle();
+        foreach (Button btn in RiddleButtons)
+        {
+            btn.gameObject.SetActive(true);
+            btn.interactable = true;
+        }
+        //ActivateWirePuzzle();
     }
 
     void ActivateWirePuzzle()
@@ -1090,7 +1102,7 @@ public void OnAnagramComplete()
     }
     IEnumerator BombWinDeactivation()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(2f);
         WinPanel.SetActive(false);
       
     }

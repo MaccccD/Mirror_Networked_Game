@@ -83,7 +83,7 @@ public class GameSessionManager : NetworkBehaviour
             uiManager.TimerText.text = bombTimer.ToString("F0"); //Dumi: Show the actual timer for both players to see
             if (bombTimer <= 0)
             {
-                RpcGameOver(false);
+                RpcGameOver(true);
                 return;
             }
         }
@@ -455,30 +455,16 @@ public class GameSessionManager : NetworkBehaviour
 
     #region Act 3 Puzzzles
     [Server]
-    public void StartWireCutRepresentation( string representation)
+    public void StartWireCutRepresentation()
     {
-        RpcRevealWireStory(representation);
+        RpcRevealWireStory();
     }
 
 
     [ClientRpc]
-    void RpcRevealWireStory(string wireColor)
+    void RpcRevealWireStory()
     {
-        switch (wireColor.ToLower())
-        {
-            case "red":
-                uiManager.ShowStoryReveal("Red wire cut... Represents Zipho's anger from the humiliation.");
-                break;
-            case "blue":
-                uiManager.ShowStoryReveal("Blue wire cut... Represents the sadness from the lost confidence.");
-                break;
-            case "yellow":
-                uiManager.ShowStoryReveal("Yellow wire cut... Represents the fear of failure that followed him.");
-                break;
-            case "green":
-                uiManager.ShowStoryReveal("Green wire cut... Represents the envy of students who had supportive teachers.");
-                break;
-        }
+        uiManager.ShowStoryReveal("Red wire cut... Represents Zipho's anger from the humiliation. Pink wire cut... Represents the fear of failure that followed him. Green wire cut... Represents the envy of students who had supportive teachers. ");
     }
 
     [Server]
@@ -683,6 +669,7 @@ public class GameSessionManager : NetworkBehaviour
         if (uiManager != null)
         {
             uiManager.OnMoralChoiceComplete();
+            uiManager.ShowGameOverScreen(true);
         }
     }
 
@@ -912,7 +899,7 @@ public class GameSessionManager : NetworkBehaviour
     [ClientRpc]
     void RpcGameOver(bool success)
     {
-        uiManager.ShowGameOverScreen(success, bombTimer);
+        uiManager.ShowGameOverScreen(success);
     }
 
     #endregion
