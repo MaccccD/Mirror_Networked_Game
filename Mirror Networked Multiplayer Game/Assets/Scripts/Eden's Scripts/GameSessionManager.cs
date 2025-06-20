@@ -337,19 +337,33 @@ public class GameSessionManager : NetworkBehaviour
     [ClientRpc]
     void RpcInitializeAnagramPuzzle(string scrambled, string solution)
     {
-        PlayerRole role = GetClientRole();
-        if (uiManager != null)
+        if (isServer)
         {
-            if (role == PlayerRole.OfficePlayer)
-            {
-                uiManager.ShowAnagramForOfficePlayer();
-            }
-            else
-            {
-                uiManager.ShowAnagramForBombPlayer(scrambled);
-            }
+            localPlayerRole = PlayerRole.OfficePlayer;
+        }
+        else
+        {
+            localPlayerRole = PlayerRole.BombPlayer;
         }
 
+        if (uiManager == null) uiManager = FindObjectOfType<UIManager>();
+        if (localPlayerRole == PlayerRole.OfficePlayer)
+            uiManager.ShowAnagramForOfficePlayer();
+        else
+            uiManager.ShowAnagramForBombPlayer(scrambled);
+        /* PlayerRole role = GetClientRole();
+         if (uiManager != null)
+         {
+             if (role == PlayerRole.OfficePlayer)
+             {
+                 uiManager.ShowAnagramForOfficePlayer();
+             }
+             else
+             {
+                 uiManager.ShowAnagramForBombPlayer(scrambled);
+             }
+         }
+        */
     }
 
     [Command(requiresAuthority = false)]
