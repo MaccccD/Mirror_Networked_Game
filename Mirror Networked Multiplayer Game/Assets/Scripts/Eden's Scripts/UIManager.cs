@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Mirror;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 //Eden: Handles all the panels for the game flow and also handles role selection 
 //and assigning each player to the correct screens.
@@ -255,6 +256,18 @@ public class UIManager : MonoBehaviour
         }
     
     }
+
+    public void ActivateRiddleButtons() //E
+    {
+        foreach (Button btn in RiddleButtons)
+        {
+            btn.gameObject.SetActive(true);
+            btn.interactable = true;
+        }
+
+        SolveRiddlePuzzle();
+    }
+
     IEnumerator HideStoryTextAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -1064,11 +1077,11 @@ public void OnAnagramComplete()
             StartCoroutine(FlashErrorPanel());
         }
 
-        foreach (Button riddleBtn in RiddleButtons) //Dumi: so im ensuring that players only get access to the btns in the bomb after the 2nd puzzle has been solved and completed.
+        /*foreach (Button riddleBtn in RiddleButtons) //Dumi: so im ensuring that players only get access to the btns in the bomb after the 2nd puzzle has been solved and completed.
         {
             riddleBtn.gameObject.SetActive(true);
             Debug.Log("all riddle btns have been enabled successfully, dankoooooo");
-        }
+        }*/
 
 
     }

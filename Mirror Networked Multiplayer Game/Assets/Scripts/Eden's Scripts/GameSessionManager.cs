@@ -767,8 +767,21 @@ public class GameSessionManager : NetworkBehaviour
     void OnPuzzle1SolvedChanged(bool oldVal, bool newVal)
     {
         if (newVal)
+        {
             RpcPuzzle1Complete();
+            RpcActivateRiddleButtons(); //E
+        }
     }
+
+    [ClientRpc]
+    void RpcActivateRiddleButtons() //E added this method
+    {
+        if (uiManager != null)
+        {
+            uiManager.ActivateRiddleButtons();
+        }
+    }
+
 
     [ClientRpc]
      void RpcPuzzle1Complete()
