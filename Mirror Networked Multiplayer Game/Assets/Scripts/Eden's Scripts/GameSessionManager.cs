@@ -686,7 +686,6 @@ public class GameSessionManager : NetworkBehaviour
         if (uiManager != null)
         {
             uiManager.OnMoralChoiceComplete();
-            uiManager.ShowGameOverScreen(true);
         }
     }
 

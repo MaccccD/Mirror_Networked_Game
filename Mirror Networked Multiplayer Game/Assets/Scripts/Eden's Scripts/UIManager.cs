@@ -783,7 +783,13 @@ public void OnAnagramComplete()
         {
             ChoiceResultPanel.SetActive(true);
             ChoiceResultText.text = result;
+            StartCoroutine(HideChoiceResult(8f));
         }
+    }
+    IEnumerator HideChoiceResult(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (ChoiceResultPanel != null) ChoiceResultPanel.SetActive(false);
     }
 
     public void ShowConflictMessage(string conflictText)
@@ -811,6 +817,7 @@ public void OnAnagramComplete()
         yield return new WaitForSeconds(delay);
         if (SuccessPanel != null) SuccessPanel.SetActive(false);
     }
+
 
     public void ShowFailure()
     {
