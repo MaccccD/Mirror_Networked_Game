@@ -919,6 +919,7 @@ public class GameSessionManager : NetworkBehaviour
     void RpcShowChoiceResult(string result)
     {
         uiManager.ShowChoiceResult(result);
+        uiManager.ShowGameOverScreen(true);
     }
 
     [ClientRpc]

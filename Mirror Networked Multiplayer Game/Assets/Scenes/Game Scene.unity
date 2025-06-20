@@ -1725,7 +1725,7 @@ MonoBehaviour:
   ChoiceResultPanel: {fileID: 1454159836}
   ChoiceResultText: {fileID: 1459147603}
   ConflictPanel: {fileID: 426615918}
-  ConflictText: {fileID: 0}
+  ConflictText: {fileID: 1774011923}
   EndingPanel: {fileID: 497090524}
   periodicPasswordsContainer: {fileID: 998645524}
   calendarBtn: {fileID: 1943998227}

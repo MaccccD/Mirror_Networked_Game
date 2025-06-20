@@ -606,11 +606,10 @@ public class UIManager : MonoBehaviour
 
 public void ShowAnagramForBombPlayer(string scrambled)
 {
-    // Clean up other UIs
-    OfficeFinalPanel.SetActive(false);
-    ShowStoryContext($"The message on the bomb is scrambled as seen :{scrambled}.In the flashback, Mr. Du Plessis made a comment about Zipho using a specific phrase that suggests she wasn't quite clever enough for something. What exact words did he use to describe her intelligence level?");
-    Debug.Log("Showing anagram context for bomb player");
-        
+      ShowStoryContext($"The message on the bomb is scrambled as seen :{scrambled}.In the flashback, Mr. Du Plessis made a comment about Zipho using a specific phrase that suggests she wasn't quite clever enough for something. What exact words did he use to describe her intelligence level?");
+      Debug.Log("Showing anagram context for bomb player");
+      // Clean up other UIs
+      OfficeFinalPanel.SetActive(false);
 }
 
 public void OnAnagramComplete()
@@ -784,6 +783,7 @@ public void OnAnagramComplete()
             ChoiceResultPanel.SetActive(true);
             ChoiceResultText.text = result;
             StartCoroutine(HideChoiceResult(8f));
+            ShowGameOverScreen(true);
         }
     }
     IEnumerator HideChoiceResult(float delay)
