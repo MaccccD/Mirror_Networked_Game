@@ -14,6 +14,8 @@ using System.Linq;
 
 public class GameSessionManager : NetworkBehaviour
 {
+
+    public float bombDuration = 900f;
     //Eden: Singleton setup for easy access from UIManager
     public static GameSessionManager Instance { get; private set; }
 
@@ -136,6 +138,7 @@ public class GameSessionManager : NetworkBehaviour
     void RpcBeginStory()
     {
         UIManager.Instance.EnterStory();
+        RpcStartBombTimer(NetworkTime.time);
 
 
         if (isServer) //Dumi :  trigger the story flow from Act 1 after the players have selected their roles and have connected
@@ -150,6 +153,15 @@ public class GameSessionManager : NetworkBehaviour
                 Debug.LogError("StoryManager not found! Make sure it's spawned before GameSessionManager.");
             }
         }
+    }
+
+    [ClientRpc]
+    void RpcStartBombTimer(double serverStartTime)
+    {
+        // find the Timer component in the scene and hand it the timestamp:
+        var timer = FindObjectOfType<Timer>();
+        if (timer != null)
+            timer.Initialize(serverStartTime, bombDuration);
     }
 
     /*Eden: This is called by a client when they choose either bomb player or office player

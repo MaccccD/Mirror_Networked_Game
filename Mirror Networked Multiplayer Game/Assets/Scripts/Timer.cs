@@ -1,39 +1,37 @@
 using UnityEngine;
 using TMPro;
+using Mirror;
 
-public class Timer : MonoBehaviour
+public class Timer : NetworkBehaviour
 {
-    public float remainingTime;
-    public float currentTime = 900f; //Sibahle: setting countdown timer for 10 minutes
+    [SyncVar] private double startTime;   
+    [SyncVar] private float duration;      
     public TMP_Text timerText;
+    private bool isPaused;
 
-    public bool isPaused = false; //Sibahle: this is for the end of the game
-
-    void Start()
+    public void Initialize(double serverStartTime, float countdownLength)
     {
-        remainingTime = currentTime;
+        startTime = serverStartTime;
+        duration = countdownLength;
+        isPaused = false;
     }
 
     void Update()
     {
         if (isPaused) return;
+        if (startTime <= 0) return;
 
-        if (remainingTime > 0)
-        {
-            remainingTime -= Time.deltaTime;
-        }
-        else if (remainingTime < 0)
-        {
-            remainingTime = 0;
-        }
-        int minutes = Mathf.FloorToInt(remainingTime / 60);
-        int seconds = Mathf.FloorToInt(remainingTime % 60);
-        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        float elapsed = (float)(NetworkTime.time - startTime);
+        float remaining = Mathf.Clamp(duration - elapsed, 0, duration);
+
+        int mins = Mathf.FloorToInt(remaining / 60f);
+        int secs = Mathf.FloorToInt(remaining % 60f);
+        timerText.text = $"{mins:00}:{secs:00}";
     }
 
     public void PauseTimer()
     {
         isPaused = true;
-        Debug.Log("Game is Complete!");
+        Debug.Log("Timer paused");
     }
 }
