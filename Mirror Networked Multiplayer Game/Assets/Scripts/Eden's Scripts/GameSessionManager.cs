@@ -61,6 +61,10 @@ public class GameSessionManager : NetworkBehaviour
     private UIManager uiManager;
     private AudioManager audioManager;
 
+    //Dumi: making sure that the bg music only plays on the server and not client so that two sounds play at the same time.
+    [SerializeField] private AudioSource audioSource;
+
+
     void Awake()
     {
         //Eden: Singleton setup ensures only one GameSessionManager exists at any time
@@ -75,6 +79,15 @@ public class GameSessionManager : NetworkBehaviour
     {
         uiManager = FindObjectOfType<UIManager>();
         audioManager = FindFirstObjectByType<AudioManager>();
+
+        if (isServer) //Dumi: making sure that the bg music only plays on the server and not client so that two sounds play at the same time.
+        {
+            audioSource.Play();
+        }
+        else
+        {
+            audioSource.Stop();
+        }
     }
 
     void Update()

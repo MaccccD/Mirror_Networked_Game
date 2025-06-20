@@ -163,7 +163,7 @@ public class StoryManager : NetworkBehaviour
         RpcTriggerAudioCue("revelation_theme");
         Debug.Log("revelation theme build audio is playing that's why you see me");
         ModifyBombTimer(-30f); // Lose 30 seconds for dramatic effect
-        yield return new WaitForSeconds(5f); //delay for seconds
+        yield return new WaitForSeconds(2f); //delay for seconds....
     }
 
     IEnumerator ExecuteAct3()
