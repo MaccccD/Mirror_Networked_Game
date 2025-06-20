@@ -111,4 +111,9 @@ public class CustomLobbyUI : MonoBehaviour
         chatBtn.SetActive(false);
         Debug.Log("Restart screen back to lobby executed successfullyyy, yayyy!");
     }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }

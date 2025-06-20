@@ -122,8 +122,8 @@ public class UIManager : MonoBehaviour
 
     [Header("Ending UI")]
     public GameObject EndingPanel;
-    public TMP_Text EndingText;
-    public TMP_Text EndingTitle;
+   // public TMP_Text EndingText;
+    //public TMP_Text EndingTitle;
 
     [Header("Puzzle Activation Containers")]
     public GameObject periodicPasswordsContainer;
@@ -295,11 +295,11 @@ public class UIManager : MonoBehaviour
 
     public void ShowEnding(string endingMessage, string endingType) //Dumi// this is responsible for the dning after sibahle's puzzle and the krola choices have been selected.
     {
-        if (EndingPanel != null && EndingText != null && EndingTitle != null)
+        if (EndingPanel != null)
         {
             EndingPanel.SetActive(true);
-            EndingText.text = endingMessage;
-            EndingTitle.text = endingType;
+            //EndingText.text = endingMessage;
+            //EndingTitle.text = endingType;
         }
     }
 

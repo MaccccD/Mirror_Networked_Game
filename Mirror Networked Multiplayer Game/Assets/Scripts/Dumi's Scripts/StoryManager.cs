@@ -115,8 +115,8 @@ public class StoryManager : NetworkBehaviour
         storyState = StoryState.StoryReveal;
         yield return new WaitForSeconds(5f); //delay for 5 seconds
         Debug.Log("The delay is working!");
-        RpcShowThoughtBubble("The lights are now on and the bomb player can now see the bomb display. By tampering with the security system to cause darkness, someone was trying to plant a bomb in the dark. But why ?", PlayerRole.OfficePlayer, 6f);
-        RpcShowThoughtBubble("The lights are now on and I can see the bomb display. By tampering with the security system to cause darkness, someone was trying to plant a bomb in the dark. But why ?", PlayerRole.BombPlayer, 6f);
+        RpcShowThoughtBubble("The lights are now on and the bomb player can now see the bomb display. By tampering with the security system to cause darkness, someone was trying to plant a bomb in the dark. But why?", PlayerRole.OfficePlayer, 6f);
+        RpcShowThoughtBubble("The lights are now on and I can see the bomb display. By tampering with the security system to cause darkness, someone was trying to plant a bomb in the dark. But why?", PlayerRole.BombPlayer, 6f);
         yield return new WaitForSeconds(6f); //delay for seconds
         //Dumi: Periodic Table Puzzle Introdcution.
         RpcShowThoughtBubble("To find out the reason why a bomb has been planted, we need to access any computer files that might gives us information.", PlayerRole.BombPlayer, 6f);
@@ -157,8 +157,8 @@ public class StoryManager : NetworkBehaviour
         //Dumi: @sibahle you can trigger the page flip anim here :
         RpcTriggerPageAnimation();//Sibahle: page flip animation
         yield return new WaitForSeconds(5f); //delay for 5 seconds
-        RpcShowStoryBeat("Zipho's personal vendetta against Mr Du Plessi's was not random. It was caused by the teacher's words to him", PlayerRole.OfficePlayer, 5f);
-        RpcShowStoryBeat("Mr Du Plessis said those words to Zipho to motivate him to take his work seriously.It was meant to build him, not destroy him confidence.", PlayerRole.BombPlayer, 5f);
+        RpcShowStoryBeat("Zipho's personal vendetta against Mr Du Plessi's was not random. It was caused by the teacher's words to him.", PlayerRole.OfficePlayer, 5f);
+        RpcShowStoryBeat("Mr Du Plessis said those words to Zipho to motivate him to take his work seriously. It was meant to build him, not destroy his confidence.", PlayerRole.BombPlayer, 5f);
         yield return new WaitForSeconds(5f); //delay for 5 seconds
         RpcTriggerAudioCue("revelation_theme");
         Debug.Log("revelation theme build audio is playing that's why you see me");
@@ -174,8 +174,8 @@ public class StoryManager : NetworkBehaviour
         //Dumi: @sibahle you can trigger the page flip anim here :
         RpcTriggerPageAnimation();//Sibahle: page flip animation
         yield return new WaitForSeconds(5f); //delay for 5 seconds
-        RpcShowStoryBeat("The bomb is more complex than I  initially thought. Zipho planned this strategically.", PlayerRole.OfficePlayer, 8f);
-        RpcShowStoryBeat("There are multiple wire sequences... each one seems to represent something personal about  Zipho's motives.Each wire color represents a different emotion from that day. Find out what each wire represents as a starting point", PlayerRole.BombPlayer, 8f);
+        RpcShowStoryBeat("The bomb is more complex than I initially thought. Zipho planned this strategically.", PlayerRole.OfficePlayer, 8f);
+        RpcShowStoryBeat("There are multiple wire sequences and each one seems to represent something personal about Zipho's motives. Each wire color represents a different emotion from that day. Find out what each wire represents as a starting point.", PlayerRole.BombPlayer, 8f);
         yield return new WaitForSeconds(8f); //delay for 5 seconds
         //Dumi: @sibahle you can trigger the page flip anim here :
         RpcTriggerPageAnimation();//Sibahle: page flip animation
@@ -191,8 +191,8 @@ public class StoryManager : NetworkBehaviour
         //Dumi: @sibahle you can trigger the page flip anim here :
         RpcTriggerPageAnimation();//Sibahle: page flip animation
         yield return new WaitForSeconds(2f); //delay for 2 seconds
-        RpcShowStoryBeat("The wires have been cut but the timer on the bomb has not stopped. Zipho also used AI to further encyrpt this bomb", PlayerRole.OfficePlayer, 7f);
-        RpcShowStoryBeat("If AI was used to further encrypt the bomb, then Zipho must have made a mistake somewhere. Look for something digital that Zipho may have used to get the AI encryption system", PlayerRole.BombPlayer, 7f);
+        RpcShowStoryBeat("The wires have been cut but the timer on the bomb has not stopped. Zipho also used AI to further encrypt this bomb.", PlayerRole.OfficePlayer, 7f);
+        RpcShowStoryBeat("If AI was used to further encrypt the bomb, then Zipho must have made a mistake somewhere. Look for something digital that Zipho may have used to get the AI encryption system.", PlayerRole.BombPlayer, 7f);
         yield return new WaitForSeconds(7f); //delay for 5 seconds
         // Dumi : Sibahle's Light Switch Memory Puzzle with Story Context
         storyState = StoryState.PuzzleSolving;
@@ -232,8 +232,8 @@ public class StoryManager : NetworkBehaviour
         yield return new WaitForSeconds(6f); //delay for seconds
         RpcShowStoryBeat("The bomb has been successfully defused... but Zipho left one final choice.", PlayerRole.OfficePlayer, 8f);
         RpcShowStoryBeat("You can either:", PlayerRole.BombPlayer, 5f);
-        RpcShowStoryBeat("1. Completely neutralize everything. Meaning; erase everything, let  Mr Du Plessis never know how much damage his words caused", PlayerRole.OfficePlayer, 8f);
-        RpcShowStoryBeat("2. Leave a message. Meaning; a clear reminder that words have consequences", PlayerRole.BombPlayer, 8f);
+        RpcShowStoryBeat("1. Completely neutralize everything. Meaning; erase everything, let  Mr Du Plessis never know how much damage his words caused.", PlayerRole.OfficePlayer, 8f);
+        RpcShowStoryBeat("2. Leave a message. Meaning: a clear reminder that words have consequences.", PlayerRole.BombPlayer, 8f);
         yield return new WaitForSeconds(8f); //delay for seconds
         // Dumi : Final Moral Choice Puzzle
         storyState = StoryState.PuzzleSolving;
