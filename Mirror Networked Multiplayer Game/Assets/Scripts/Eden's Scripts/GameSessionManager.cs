@@ -59,6 +59,7 @@ public class GameSessionManager : NetworkBehaviour
 
     // Component References
     private UIManager uiManager;
+    private AudioManager audioManager;
 
     void Awake()
     {
@@ -73,6 +74,7 @@ public class GameSessionManager : NetworkBehaviour
     void Start()
     {
         uiManager = FindObjectOfType<UIManager>();
+        audioManager = FindFirstObjectByType<AudioManager>();
     }
 
     void Update()
@@ -518,6 +520,7 @@ public class GameSessionManager : NetworkBehaviour
         if (wireColor == "Red")
         {
             puzzle2Solved = true;
+            RpcTriggerAudioCue("success");
             RpcShowWin();
             Debug.Log("[Server] Wire cutting puzzle solved!");
         }
@@ -608,6 +611,7 @@ public class GameSessionManager : NetworkBehaviour
     public void CmdRiddleSolved()
     {
         bombdifuseComplete = true;
+        RpcTriggerAudioCue("success");
 
     }
 
@@ -755,6 +759,7 @@ public class GameSessionManager : NetworkBehaviour
     {
         if (puzzle1Solved) return;
         puzzle1Solved = true;
+        RpcTriggerAudioCue("success");
         Debug.Log("[Server] Puzzle 1 complete!");
     }
 
@@ -795,6 +800,7 @@ public class GameSessionManager : NetworkBehaviour
         if (uiManager != null)
         {
             lightSwitchComplete = true;
+            RpcTriggerAudioCue("success");
             uiManager.OnLightSwitchComplete();
            
         }
@@ -817,6 +823,7 @@ public class GameSessionManager : NetworkBehaviour
     void RpcAnagramSuccess()
     {
         uiManager.ShowSuccess("Message decoded: FUELED BY HATE");
+        RpcTriggerAudioCue("success");
     }
 
     [ClientRpc]
@@ -831,6 +838,7 @@ public class GameSessionManager : NetworkBehaviour
         if (uiManager != null)
         {
             periodicTableComplete = true;
+            RpcTriggerAudioCue("success");
             uiManager.OnPeriodicTableComplete();
 
         }
@@ -841,7 +849,11 @@ public class GameSessionManager : NetworkBehaviour
     {
         uiManager.ShowFailure();
     }
-
+    [ClientRpc]
+    void RpcTriggerAudioCue(string audioKey)
+    {
+        audioManager.PlayStoryAudio(audioKey);
+    }
 
 
     [ClientRpc]

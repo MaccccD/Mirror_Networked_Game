@@ -95,14 +95,14 @@ public class StoryManager : NetworkBehaviour
         //Dumi:  Story Introduction like we discussed
         storyState = StoryState.IntroDialogue;
         RpcTriggerPageAnimation();
-         RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You guys are both on different rooms but you will be able to see each other's thoughts as you work via the text chat together to defuse the bomb before the timer runs out.", PlayerRole.OfficePlayer, 10f);
-         RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the office player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You guys are both on different rooms but you will be able to see each other's thoughts as you work via the text chat together to defuse the bomb before the timer runs out.", PlayerRole.BombPlayer, 10f);
-         yield return new WaitForSeconds(10f);
+         RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the bomb player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You guys are both on different rooms but you will be able to see each other's thoughts as you work via the text chat together to defuse the bomb before the timer runs out.", PlayerRole.OfficePlayer, 13f);
+         RpcShowStoryBeat("A bomb has been planted at St Francis College. Both you and the office player are detectives that have been put onto this case to solve the bomb mystery, while uncovering what has happened.You guys are both on different rooms but you will be able to see each other's thoughts as you work via the text chat together to defuse the bomb before the timer runs out.", PlayerRole.BombPlayer, 13f);
+         yield return new WaitForSeconds(13f);
 
        
-         RpcShowStoryBeat("The security system  of the school has been tampered with. Restore the power back by turning on the light switch to see the bomb set up clearly.", PlayerRole.OfficePlayer, 7f);
-         RpcShowStoryBeat("The security system  of the school has been tampered with. Restore the power back by turning on the light switch to see the bomb set up clearly.", PlayerRole.BombPlayer, 7f);
-         yield return new WaitForSeconds(7f);
+         RpcShowStoryBeat("The security system  of the school has been tampered with. Restore the power back by turning on the light switch to see the bomb set up clearly.", PlayerRole.OfficePlayer, 9f);
+         RpcShowStoryBeat("The security system  of the school has been tampered with. Restore the power back by turning on the light switch to see the bomb set up clearly.", PlayerRole.BombPlayer, 9f);
+         yield return new WaitForSeconds(9f);
          Debug.Log("I am also showing hence you can see the debug here");
 
 
@@ -115,13 +115,13 @@ public class StoryManager : NetworkBehaviour
         storyState = StoryState.StoryReveal;
         yield return new WaitForSeconds(5f); //delay for 5 seconds
         Debug.Log("The delay is working!");
-        RpcShowThoughtBubble("The lights are now on and the bomb player can now see the bomb display. By tampering with the security system to cause darkness, someone was trying to plant a bomb in the dark. But why?", PlayerRole.OfficePlayer, 6f);
-        RpcShowThoughtBubble("The lights are now on and I can see the bomb display. By tampering with the security system to cause darkness, someone was trying to plant a bomb in the dark. But why?", PlayerRole.BombPlayer, 6f);
-        yield return new WaitForSeconds(6f); //delay for seconds
+        RpcShowThoughtBubble("The lights are now on and the bomb player can now see the bomb display. By tampering with the security system to cause darkness, someone was trying to plant a bomb in the dark. But why?", PlayerRole.OfficePlayer, 9f);
+        RpcShowThoughtBubble("The lights are now on and I can see the bomb display. By tampering with the security system to cause darkness, someone was trying to plant a bomb in the dark. But why?", PlayerRole.BombPlayer, 9f);
+        yield return new WaitForSeconds(9f); //delay for seconds
         //Dumi: Periodic Table Puzzle Introdcution.
-        RpcShowThoughtBubble("To find out the reason why a bomb has been planted, we need to access any computer files that might gives us information.", PlayerRole.BombPlayer, 6f);
-        RpcShowThoughtBubble("To find out the reason why a bomb has been planted, we need to access any computer files that might gives us information.", PlayerRole.OfficePlayer, 6f);
-        yield return new WaitForSeconds(6f); //delay for seconds
+        RpcShowThoughtBubble("To find out the reason why a bomb has been planted, we need to access any computer files that might gives us information.", PlayerRole.BombPlayer, 9f);
+        RpcShowThoughtBubble("To find out the reason why a bomb has been planted, we need to access any computer files that might gives us information.", PlayerRole.OfficePlayer, 9f);
+        yield return new WaitForSeconds(9f); //delay for seconds
         //Sraer periodic tabe puzzle
         storyState = StoryState.PuzzleSolving;
         sessionManager.StartPeriodicTablePuzzle(new int[] { 32, 28, 92, 16 }, "GeNiUS");
@@ -129,8 +129,8 @@ public class StoryManager : NetworkBehaviour
         //Dumi :  Act 1 Story Conclusion
         ziphoMotivationKnown = true;
         yield return new WaitForSeconds(5f); //delay for 5  seconds
-        RpcShowThoughtBubble("The computer belongs to Mr. Du Plessis, Head of IT at St Francis College. But why would someone target him specifically?", PlayerRole.OfficePlayer, 6f);
-        RpcShowThoughtBubble("The computer belongs to Mr. Du Plessis, Head of IT at St Francis College. But why would someone target him specifically?", PlayerRole.BombPlayer, 6f);
+        RpcShowThoughtBubble("The computer belongs to Mr. Du Plessis, Head of IT at St Francis College. But why would someone target him specifically?", PlayerRole.OfficePlayer, 9f);
+        RpcShowThoughtBubble("The computer belongs to Mr. Du Plessis, Head of IT at St Francis College. But why would someone target him specifically?", PlayerRole.BombPlayer, 9f);
         RpcTriggerAudioCue("suspense_build");
         Debug.Log("Suspense build audio is playing that's why you see me");
         yield return new WaitForSeconds(6f); //delay for seconds
@@ -157,9 +157,9 @@ public class StoryManager : NetworkBehaviour
         //Dumi: @sibahle you can trigger the page flip anim here :
         RpcTriggerPageAnimation();//Sibahle: page flip animation
         yield return new WaitForSeconds(5f); //delay for 5 seconds
-        RpcShowStoryBeat("Zipho's personal vendetta against Mr Du Plessi's was not random. It was caused by the teacher's words to him.", PlayerRole.OfficePlayer, 5f);
-        RpcShowStoryBeat("Mr Du Plessis said those words to Zipho to motivate him to take his work seriously. It was meant to build him, not destroy his confidence.", PlayerRole.BombPlayer, 5f);
-        yield return new WaitForSeconds(5f); //delay for 5 seconds
+        RpcShowStoryBeat("Zipho's personal vendetta against Mr Du Plessi's was not random. It was caused by the teacher's words to him.", PlayerRole.OfficePlayer, 8f);
+        RpcShowStoryBeat("Mr Du Plessis said those words to Zipho to motivate him to take his work seriously. It was meant to build him, not destroy his confidence.", PlayerRole.BombPlayer, 8f);
+        yield return new WaitForSeconds(8f); //delay for 5 seconds
         RpcTriggerAudioCue("revelation_theme");
         Debug.Log("revelation theme build audio is playing that's why you see me");
         ModifyBombTimer(-30f); // Lose 30 seconds for dramatic effect
@@ -191,9 +191,9 @@ public class StoryManager : NetworkBehaviour
         //Dumi: @sibahle you can trigger the page flip anim here :
         RpcTriggerPageAnimation();//Sibahle: page flip animation
         yield return new WaitForSeconds(2f); //delay for 2 seconds
-        RpcShowStoryBeat("The wires have been cut but the timer on the bomb has not stopped. Zipho also used AI to further encrypt this bomb.", PlayerRole.OfficePlayer, 7f);
-        RpcShowStoryBeat("If AI was used to further encrypt the bomb, then Zipho must have made a mistake somewhere. Look for something digital that Zipho may have used to get the AI encryption system.", PlayerRole.BombPlayer, 7f);
-        yield return new WaitForSeconds(7f); //delay for 5 seconds
+        RpcShowStoryBeat("The wires have been cut but the timer on the bomb has not stopped. Zipho also used AI to further encrypt this bomb.", PlayerRole.OfficePlayer, 8f);
+        RpcShowStoryBeat("If AI was used to further encrypt the bomb, then Zipho must have made a mistake somewhere. Look for something digital that Zipho may have used to get the AI encryption system.", PlayerRole.BombPlayer, 8f);
+        yield return new WaitForSeconds(8f); //delay for 5 seconds
         // Dumi : Sibahle's Light Switch Memory Puzzle with Story Context
         storyState = StoryState.PuzzleSolving;
         sessionManager.StartChalkPuzzle();
@@ -222,9 +222,9 @@ public class StoryManager : NetworkBehaviour
         // //Dumi: @sibahle you can trigger the page flip anim here :
         RpcTriggerPageAnimation();//Sibahle: page flip animation
         yield return new WaitForSeconds(5f); //delay for 5 seconds
-        RpcShowStoryBeat("Du Plessis probably doesn't even remember that day 10 years ago. But Zipho never forgot. The question is - does destroying a man's life over forgotten words solve anything?", PlayerRole.OfficePlayer, 8f);
+        RpcShowStoryBeat("Du Plessis probably doesn't even remember that day 10 years ago. But Zipho never forgot. The question is - does destroying a man's life over forgotten words solve anything?", PlayerRole.OfficePlayer, 9f);
         RpcShowStoryBeat("Du Plessis probably doesn't even remember that day 10 years ago. But Zipho never forgot. The question is - does destroying a man's life over forgotten words solve anything?", PlayerRole.BombPlayer, 9f);
-        yield return new WaitForSeconds(8f); //delay for seconds
+        yield return new WaitForSeconds(9f); //delay for seconds
         //Dumi :  Moral Choice Setup
         storyState = StoryState.StoryReveal;
         //Dumi: @sibahle you can trigger the page flip anim here :

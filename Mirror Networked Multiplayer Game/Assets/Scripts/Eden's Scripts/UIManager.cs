@@ -15,7 +15,8 @@ public class UIManager : MonoBehaviour
 
     [Header("Timer UI")]
     public GameObject TimerPanel;
-
+    [Header("Audio Reference")]
+    public AudioManager audioManager;
     [Header("Startup UI")]
     public GameObject StartPanel;
     public Button StartButton;
@@ -138,6 +139,8 @@ public class UIManager : MonoBehaviour
     public GameObject riddleText;
     public GameObject chalkclueTxt;
     public GameObject phoneLocked;
+
+   
    
 
 
@@ -152,6 +155,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        audioManager = FindFirstObjectByType<AudioManager>();
         // Add this debug to verify UI elements exist
         if (OfficeDarkPanel == null) Debug.LogError("OfficeDarkPanel not assigned!");
         if (BombDarkPanel == null) Debug.LogError("BombDarkPanel not assigned!");
@@ -453,7 +457,6 @@ public class UIManager : MonoBehaviour
             {
                 if (btn == clickedButton)
                 {
-
                     StartCoroutine(WarningTextFlash());
                     return;
                 }
@@ -464,6 +467,7 @@ public class UIManager : MonoBehaviour
                 if (btn == clickedButton)
                 {
                     ShowFailure();
+                    
                     //StartCoroutine(FlashandReset());
                     //GameSessionManager.Instance.CmdLightSwitchInput(); //d: triggers the failure case:
                     break;
@@ -797,11 +801,13 @@ public void OnAnagramComplete()
 
     public void ShowFailure()
     {
-        if (FailurePanel != null && failureImage != null)
+        if (FailurePanel != null && audioManager != null)
         {
             FailurePanel.SetActive(true);
+            audioManager.PlayStoryAudio("fast_heartbeat");
+            Debug.Log("heartbeat is playing");
           //  failureImage.gameObject.SetActive(true);
-            StartCoroutine(HideFailureAfterDelay(2f));
+            StartCoroutine(HideFailureAfterDelay(5f));
         }
     }
 

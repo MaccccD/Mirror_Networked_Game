@@ -21,7 +21,9 @@ public class AudioManager : MonoBehaviour
    {
         new AudioKeyPair { audioKey = "suspense_build", audioSource = null },
         new AudioKeyPair { audioKey = "revelation_theme", audioSource = null },
-        new AudioKeyPair { audioKey = "climax_resolution", audioSource = null }
+        new AudioKeyPair { audioKey = "climax_resolution", audioSource = null },
+        new AudioKeyPair { audioKey = "fast_heartbeat", audioSource = null},
+        new AudioKeyPair { audioKey = "success", audioSource = null}
    };
 
     //D: Dictionary for fast lookup during runtime
