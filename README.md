@@ -1,4 +1,4 @@
-1. Game Name: Bomb Squad.
+Game Name: Bomb Squad.
 
 Game Description:
 Taking inspiration from the popular "Keep Talking and Nobody Explodes", Bomb Squad is a 2D, networked cooperative game where two players work together to solve bomb logic-related puzzles. 
